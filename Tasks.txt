@@ -1,0 +1,93 @@
+-government/tech effects on popularity
+-display popularity of candidates
+-add factor of happiness change to government popularity
+-improve economics/run tests
+-move candidate views based on popularity
+-button to show/hide side bar
+-tech levels
+-tool to fix tax-rate
+-testing system
+-refactor displays with prefabs
+-sort this file
+-fix problem with rut at 100% tax
+-make government propaganda stop at max gov size
+-move data to separate objects
+-add tax component to profits
+-improve candidate
+-add non-linear factor to gov growth
+-consider level cap
+-fix election influence: currently it will not use happiness and give bias even if it doesn't matter
+
+brainstorm:
+-heists
+-events
+-contracts, should promote use of resources
+-upgrades
+-secrets
+-threats
+-corporate abilities
+
+heists:
+-pretend to be one country, attack another, play countries/companies against each other
+-nuke country
+-sabotage/impersonate company, short them
+-bribe for contract, then release data
+-boost company, invest in them
+-sell secrets to another country
+-boost power in one company to attack another
+-invent drones/guided missiles/automation/driverless cars and then control them
+-ransomware
+-slow technology development
+-abilities on different companies to chase
+-affect profitability of different government systems
+-put in new politician/CEO
+-sabotage other tech company to gain control of contract
+-recuring characters you can appoint to different groups/turn up in different places
+-referendums you can sway
+-notice high "natural variance" in popularity scores and investigate
+-hack national grid to cause disruption
+-effect policies
+-hack santa
+-distractions
+-hire gunmen/bombers to influence elections/policy popularity
+
+Aesthetics:
+-tabloid media
+-low education=>trashier headlines
+-spam when defences are low/if you get too much publicity
+-russian spam bots
+
+Event storylines:
+-support conspiracy theories leads to lack of faith in the media
+-implement ML for tech companies => more extreme political divide
+-support/harm education => trashier headlines, slower research, more media influence, lower economic output
+-support terrorists => explosions
+-fake threats
+
+Political simulation:
+-things to influence popularity of left and right candidates
+
+Tax stuff:
+Tax too high => corp size decreases, eventually tax money decreases
+Tax too low => corp size grows
+-move linearly towards a value
+-could split into a gov growth rate vs corp growth rate, lerp still makes sense
+-could limit size ratio by tax
+e.g. tax=40%=>corp stops growing at size 10, gov requires certain tax to grow at each level
+-gov should not grow more at lower taxes, due to corp growth, this can be done by making corp size decrease slowly or by ensuring the function decreases with corp size growth due to decreased proportion taken
+Profit limit for corp to go increase on level x = L(x)
+Tax taken at level
+Profit before tax = P
+Tax needed for gov to grow at level y = G(y)
+
+Level Plateau at tax rate x = L(x)
+x*P(L(x))<(x+1)*P(L(x+1)) for x<L
+x*P(L(x))>(x+1)*P(L(x+1)) for x>U
+L(x) = max {p: P(p)*(1-x)>LuC(p)}
+
+Stuff to test:
+-both gov and corp run-away power growth are feasible
+-player can affect stuff, use bias in one direction
+
+Attacks
+-literal worm virus
