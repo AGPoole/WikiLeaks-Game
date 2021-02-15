@@ -85,4 +85,9 @@ public class CyberSecurity : SystemBase
     {
         m_bDisabledByPlayer = bDisabled;
     }
+
+    public bool IsDisabledByPlayer()
+    {
+        return m_bDisabledByPlayer;
+    }
 }

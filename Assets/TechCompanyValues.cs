@@ -45,7 +45,7 @@ public class TechCompanyValues : MonoBehaviour
     {
         return GetTechCompanyValues().m_fTotalCostToLevelUpLinearFactor * iLevel * GetTechCompanyValues().m_fLevelFactor;
     }
-
+    #if (UNITY_EDITOR)
     [ContextMenu("Run Calculations")]
     void RunCalculations()
     {
@@ -97,6 +97,7 @@ public class TechCompanyValues : MonoBehaviour
             Debug.LogError("Incorrect ordering of scores");
         }
     }
+    #endif
     public static int CalculateLevelPlateau(float fTax)
     {
         int i = 1;

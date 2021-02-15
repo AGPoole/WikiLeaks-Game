@@ -17,19 +17,19 @@ public class Propaganda : SystemBase
 
     int m_iCoolDownCompletionTime=1;
 
-    protected override void OnLevelReachesZero()
+    protected override void OnDeactivation()
     {
         m_bActive = false;
         m_xActiveIndicator.SetActive(false);
-        base.OnLevelReachesZero();
+        base.OnDeactivation();
     }
 
-    protected override void OnLevelReachesOne()
+    protected override void OnActivation()
     {
         m_bActive = false;
         m_xActiveIndicator.SetActive(false);
         m_iCoolDownCompletionTime = Manager.GetTurnNumber() + PropagandaValuesContainer.GetPropagandaValues(m_eType).GetCooldownLength();
-        base.OnLevelReachesOne();
+        base.OnActivation();
     }
 
     float m_fActiveIndicatorNextSwitchTime = 0f;
