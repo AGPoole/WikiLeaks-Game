@@ -14570,7 +14570,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30823fca390c44f4fadfdcf12a332b4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_fTimeGap: 2
+  m_fTimeGap: 0.1
   m_xMoneyText: {fileID: 2053656420}
   m_fPlayerMoney: 100
   m_xCountry: {fileID: 1958554215}

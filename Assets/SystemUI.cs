@@ -56,22 +56,33 @@ public class SystemUI : MonoBehaviour
 
     public void AddAction(GameObject xAction)
     {
-        foreach (GameObject x in m_xActions)
+        foreach (GameObject xAction2 in m_xActions)
         {
-            var Type1 = x.GetType();
-            var Type2 = xAction.GetType();
+            var Type1 = xAction.GetComponent<ActionBase>().GetType();
+            var Type2 = xAction2.GetComponent<ActionBase>().GetType();
             if(Type1 == Type2)
             {
                 return;
             }
         }
         GameObject xNewAction = Instantiate(xAction, m_xActionsBase.transform);
+        m_xActions.Add(xNewAction);
         var xNewActionComponent = xNewAction.GetComponent<ActionBase>();
         xNewActionComponent.SetOwner(GetParent());
+
+        xNewActionComponent.SetHacked(GetParent().IsHacked());
     }
 
     protected SystemBase GetParent()
     {
         return transform.parent.GetComponent<SystemBase>();
+    }
+
+    public void SetHacked(bool bHacked)
+    {
+        foreach(var xAction in m_xActions)
+        {
+            xAction.GetComponent<ActionBase>().SetHacked(bHacked);
+        }
     }
 }

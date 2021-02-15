@@ -145,7 +145,7 @@ public abstract class SystemBase : MonoBehaviour
         m_fDefences = Mathf.Max(m_fDefences - 1, 0);
         if (Mathf.Approximately(m_fDefences, 0f))
         {
-            m_bHacked = true;
+            Hack();
         }
     }
 
@@ -157,5 +157,11 @@ public abstract class SystemBase : MonoBehaviour
     public bool GetIsHacked()
     {
         return m_bHacked;
+    }
+
+    protected virtual void Hack()
+    {
+        m_bHacked = true;
+        m_xUI.SetHacked(true);
     }
 }

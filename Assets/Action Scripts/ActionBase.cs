@@ -16,4 +16,8 @@ public abstract class ActionBase : MonoBehaviour
     {
         m_xOwner = xOwner;
     }
+
+    public virtual void SetHacked(bool bHacked)
+    {
+    }
 }
