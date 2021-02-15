@@ -5,8 +5,6 @@ using UnityEngine;
 public class SystemUI : MonoBehaviour
 {
     [SerializeField]
-    SystemBase m_xParent;
-    [SerializeField]
     UnityEngine.UI.Text m_xTitleText;
     [SerializeField]
     UnityEngine.UI.Text m_xLevelText;
@@ -21,7 +19,7 @@ public class SystemUI : MonoBehaviour
 
     protected virtual void Start()
     {
-        m_xTitleText.text = m_xParent.gameObject.name;
+        m_xTitleText.text = GetParent().gameObject.name;
     }
 
     public void Select()
@@ -33,14 +31,14 @@ public class SystemUI : MonoBehaviour
     void Update()
     {
         m_xActionsBase.SetActive(s_xSelected == this);
-        m_xLevelText.text = m_xParent.GetLevel().ToString();
-        m_xDefencesText.text = m_xParent.GetDefences().ToString("0");
-        if (m_xParent.GetLevel() > 0f)
+        m_xLevelText.text = GetParent().GetLevel().ToString();
+        m_xDefencesText.text = GetParent().GetDefences().ToString("0");
+        if (GetParent().GetLevel() > 0f)
         {
-            m_xTitleText.color = m_xParent.IsHacked() ? Color.green : Color.white;
+            m_xTitleText.color = GetParent().IsHacked() ? Color.green : Color.white;
         }
         Color c = m_xTitleText.color;
-        m_xTitleText.color = new Color(c.r, c.g, c.b, m_xParent.GetLevel() > 0 ? 1f : 0.4f);
+        m_xTitleText.color = new Color(c.r, c.g, c.b, GetParent().GetLevel() > 0 ? 1f : 0.4f);
     }
 
 
@@ -68,6 +66,12 @@ public class SystemUI : MonoBehaviour
             }
         }
         GameObject xNewAction = Instantiate(xAction, m_xActionsBase.transform);
-        xAction.GetComponent<ActionBase>().SetOwner(m_xParent);
+        var xNewActionComponent = xNewAction.GetComponent<ActionBase>();
+        xNewActionComponent.SetOwner(GetParent());
+    }
+
+    protected SystemBase GetParent()
+    {
+        return transform.parent.GetComponent<SystemBase>();
     }
 }

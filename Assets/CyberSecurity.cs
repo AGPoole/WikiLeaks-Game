@@ -7,8 +7,6 @@ public class CyberSecurity : SystemBase
     List<SystemBase> m_xSystemQueue;
     float m_fSystemTimer;
     float m_fSystemTimerReset = 0.1f;
-    [SerializeField]
-    GameObject m_xDisableButton;
 
     protected override void Start()
     {
@@ -25,7 +23,6 @@ public class CyberSecurity : SystemBase
     public override void OnNextTurn(int iLevel)
     {
         base.OnNextTurn(iLevel);
-        m_xDisableButton.SetActive(GetIsHacked());
         if (!m_bDisabledByPlayer)
         {
             iApplyDefenceTimer -= 1;
