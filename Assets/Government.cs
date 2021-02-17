@@ -452,12 +452,12 @@ public class GovernmentData : OrganisationData
 
     public override float GetCostsAtLevel(int iLevel)
     {
-        return GovernmentValues.GetLevelUpCostAtLevel(iLevel);
+        return GovernmentValuesContainer.GetGovernmentValues().GetCostsAtLevel(iLevel);
     }
 
     public override float GetLevelUpRequirementAtLevel(int iLevel)
     {
-        return GovernmentValues.GetTotalRequirementAtLevel(iLevel);
+        return GovernmentValuesContainer.GetGovernmentValues().GetLevelUpRequirementAtLevel(iLevel);
     }
 }
 

@@ -5786,7 +5786,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1386430395}
   m_HandleRect: {fileID: 1386430394}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -14106,7 +14106,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -10.146957, y: 0.000030517578}
+  m_AnchoredPosition: {x: -10.146957, y: -0.000030517578}
   m_SizeDelta: {x: -20.296127, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &2080925866
@@ -14718,8 +14718,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03d011ae60d2b494386b07ce3539bf32, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_fGrowthCostLinearFactor: 4.5
-  m_fTotalCostToLevelUpLinearFactor: 10
+  m_xGovValues:
+    m_fGrowthCostLinearFactor: 4.5
+    m_fTotalCostToLevelUpLinearFactor: 10
 --- !u!114 &2130128996
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14732,12 +14733,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10b67fd29f0238e4d9c8cf6ae60a817d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_fGrowthCostLinearFactor: 10
-  m_fProfitConstantFactor: 100
-  m_fProfitLinearFactor: 50
-  m_fProfitExponentialDecreaseFactor: 0.98
-  m_fTotalCostToLevelUpLinearFactor: 30
-  m_fLevelFactor: 1
+  m_xTechCompanyValues:
+    m_fGrowthCostLinearFactor: 10
+    m_fProfitConstantFactor: 100
+    m_fProfitLinearFactor: 50
+    m_fProfitExponentialDecreaseFactor: 0.98
+    m_fTotalCostToLevelUpLinearFactor: 30
+    m_fLevelFactor: 1
 --- !u!114 &2130128997
 MonoBehaviour:
   m_ObjectHideFlags: 0
