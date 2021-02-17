@@ -65,7 +65,7 @@ public class TechCompanyData : OrganisationData
         float fTotalProfit = 0;
         if (m_iSize > 0.0f)
         {
-            fTotalProfit += TechCompanyValuesContainer.GetTechCompanyValues().GetProfitAtLevel(m_iSize);
+            fTotalProfit += GetTechValues().GetProfitAtLevel(m_iSize);
             xGovernment.PayTaxes(fTotalProfit * xGovernment.GetTaxRate());
             fTotalProfit -= fTotalProfit * xGovernment.GetTaxRate();
         }
@@ -80,7 +80,7 @@ public class TechCompanyData : OrganisationData
     }
     public float GetProfit()
     {
-        return TechCompanyValuesContainer.GetTechCompanyValues().GetProfitAtLevel(m_iSize);
+        return GetTechValues().GetProfitAtLevel(m_iSize);
     }
     public float GetProfitAfterTax()
     {
@@ -89,11 +89,7 @@ public class TechCompanyData : OrganisationData
         {
             Debug.LogError("No government");
         }
-        return TechCompanyValuesContainer.GetTechCompanyValues().GetProfitAtLevel(m_iSize) * (1 - xGovernment.GetTaxRate());
-    }
-    public override float GetCostsAtLevel(int iLevel)
-    {
-        return TechCompanyValuesContainer.GetTechCompanyValues().GetCostsAtLevel(iLevel);
+        return GetTechValues().GetProfitAtLevel(m_iSize) * (1 - xGovernment.GetTaxRate());
     }
 
     public float GetTimeToLevelUp()
@@ -101,7 +97,7 @@ public class TechCompanyData : OrganisationData
         float fSavingsGain = GetSavingsGain();
         if (fSavingsGain > 0)
         {
-            return (TechCompanyValuesContainer.GetTechCompanyValues().GetLevelUpRequirementAtLevel(m_iSize) - m_fSavings) / fSavingsGain;
+            return (GetValues().GetLevelUpRequirementAtLevel(m_iSize) - m_fSavings) / fSavingsGain;
         }else if (fSavingsGain != 0)
         {
             return m_fSavings / (-fSavingsGain);
@@ -111,11 +107,16 @@ public class TechCompanyData : OrganisationData
 
     public float GetSavingsGain()
     {
-        return GetProfitAfterTax() - TechCompanyValuesContainer.GetTechCompanyValues().GetCostsAtLevel(m_iSize);
+        return GetProfitAfterTax() - GetValues().GetCostsAtLevel(m_iSize);
     }
 
-    public override float GetLevelUpRequirementAtLevel(int iLevel)
+    public override OrganisationValuesBase GetValues()
     {
-        return TechCompanyValuesContainer.GetTechCompanyValues().GetCostsAtLevel(iLevel);
+        return TechCompanyValuesContainer.GetTechCompanyValues();
+    }
+
+    private TechCompanyValues GetTechValues()
+    {
+        return (TechCompanyValues)GetValues();
     }
 }

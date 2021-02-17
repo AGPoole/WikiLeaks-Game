@@ -450,14 +450,9 @@ public class GovernmentData : OrganisationData
         return m_xCandidateData.GetPowerPercentage();
     }
 
-    public override float GetCostsAtLevel(int iLevel)
+    public override OrganisationValuesBase GetValues()
     {
-        return GovernmentValuesContainer.GetGovernmentValues().GetCostsAtLevel(iLevel);
-    }
-
-    public override float GetLevelUpRequirementAtLevel(int iLevel)
-    {
-        return GovernmentValuesContainer.GetGovernmentValues().GetLevelUpRequirementAtLevel(iLevel);
+        return GovernmentValuesContainer.GetGovernmentValues();
     }
 }
 

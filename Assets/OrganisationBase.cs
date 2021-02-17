@@ -135,8 +135,8 @@ public abstract class OrganisationData
     public float GetCosts() { return GetCostsAtLevel(m_iSize); }
     public float GetLevelUpRequirement() { return GetLevelUpRequirementAtLevel(m_iSize); }
 
-    public abstract float GetCostsAtLevel(int iLevel);
-    public abstract float GetLevelUpRequirementAtLevel(int iLevel);
+    public float GetCostsAtLevel(int iLevel) { return GetValues().GetCostsAtLevel(iLevel); }
+    public float GetLevelUpRequirementAtLevel(int iLevel) { return GetValues().GetLevelUpRequirementAtLevel(iLevel); }
     public abstract OrganisationData ShallowCopy();
 
     public virtual void OnNextTurn()
@@ -163,4 +163,6 @@ public abstract class OrganisationData
     {
         m_xCountryData = xCountryData;
     }
+
+    public abstract OrganisationValuesBase GetValues();
 }
