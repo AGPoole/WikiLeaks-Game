@@ -12392,17 +12392,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f08f59f7ecd418489ef858da7aa5d89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_fTechLevel: 1
-  m_xGovernmentData:
-    m_fApproval: 0.5
-    m_iSize: 55
-    m_fSavings: 0
-  m_xTaxText: {fileID: 270990907}
+  m_xSystems:
+  - {fileID: 100020275625698247}
+  - {fileID: 729610391}
   m_xSizeText: {fileID: 1214156717}
   m_xSavingsText: {fileID: 1233761874}
+  m_xCostsText: {fileID: 0}
   m_xLevelUpRequirementText: {fileID: 189528681}
+  m_xSlider: {fileID: 1403087282}
+  m_fTechLevel: 1
+  m_xTaxText: {fileID: 270990907}
   m_xSavingsPerTurnText: {fileID: 1083140615}
-  m_xLevelUpSlider: {fileID: 1403087282}
   m_xTimeTilNextElectionText: {fileID: 1969442172}
   m_xLeftTransform: {fileID: 559118796}
   m_xRightTransform: {fileID: 1520662811}
@@ -12422,9 +12422,6 @@ MonoBehaviour:
   m_fBiasWeight: 0
   m_fBias: 0
   m_xModifiers: []
-  m_xSystems:
-  - {fileID: 100020275625698247}
-  - {fileID: 729610391}
 --- !u!1 &1745435661
 GameObject:
   m_ObjectHideFlags: 0
