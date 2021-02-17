@@ -10,26 +10,16 @@ public enum Orientation
     RIGHT
 }
 
-public class Government : MonoBehaviour
+public class Government : OrganisationBase
 {
 
     [SerializeField]
     float m_fTechLevel = 1;
-    [SerializeField]
-    GovernmentData m_xGovernmentData;
 
     [SerializeField]
     UnityEngine.UI.Text m_xTaxText;
     [SerializeField]
-    UnityEngine.UI.Text m_xSizeText;
-    [SerializeField]
-    UnityEngine.UI.Text m_xSavingsText;
-    [SerializeField]
-    UnityEngine.UI.Text m_xLevelUpRequirementText;
-    [SerializeField]
     UnityEngine.UI.Text m_xSavingsPerTurnText;
-    [SerializeField]
-    UnityEngine.UI.Slider m_xLevelUpSlider;
     [SerializeField]
     UnityEngine.UI.Text m_xTimeTilNextElectionText;
 
@@ -71,16 +61,17 @@ public class Government : MonoBehaviour
     [SerializeField]
     Transform m_xRightTarget;
 
-    void Start()
+    protected override void Start()
     {
         string xPath = Application.dataPath + "/CSV/Taxes.csv";
         m_xStreamWriter = File.CreateText(xPath);
 
-        m_xGovernmentData.SetCandidateData(m_xLeftCandidate.GetCandidateData());
+        var xGovData = (GovernmentData)m_xMyData;
+        xGovData.SetCandidateData(m_xLeftCandidate.GetCandidateData());
         m_xLeftCandidate.SetAsLeader();
 
-        m_xLeftCandidate.SetUp(m_xGovernmentData.GetCountryData(), this);
-        m_xRightCandidate.SetUp(m_xGovernmentData.GetCountryData(), this);
+        m_xLeftCandidate.SetUp(xGovData.GetCountryData(), this);
+        m_xRightCandidate.SetUp(xGovData.GetCountryData(), this);
     }
 
     float m_fPreviousSavings = 0f;
@@ -94,13 +85,11 @@ public class Government : MonoBehaviour
     float m_fBias = 0f;
     [SerializeField]
     List<PopularityModifier> m_xModifiers;
-    [SerializeField]
-    List<SystemBase> m_xSystems;
     bool m_bElectionsEnabled = true;
 
-    public void OnNextTurn()
+    public override void OnNextTurn()
     {
-        UpdateSystems();
+        base.OnNextTurn();
 
         if (GetTimeTillNextElection() < 100)
         {
@@ -124,12 +113,13 @@ public class Government : MonoBehaviour
             }
         }
 
-        float fCurrentHappiness = m_xGovernmentData.GetCountryData().GetPopulationData().GetHappiness();
+        var xGovData = (GovernmentData)m_xMyData;
+        float fCurrentHappiness = xGovData.GetCountryData().GetPopulationData().GetHappiness();
         float fLeftHappiness = m_xLeftCandidate.GetPredictedHappiness();
         float fRightHappiness = m_xRightCandidate.GetPredictedHappiness();
 
         if (DebugSettings.ShouldDetectFakeChanges()
-            && fCurrentHappiness != m_xGovernmentData.GetCountryData().GetPopulationData().GetHappiness())
+            && fCurrentHappiness != xGovData.GetCountryData().GetPopulationData().GetHappiness())
         {
             Debug.LogError("Mock country has changed the real world");
         }
@@ -156,7 +146,7 @@ public class Government : MonoBehaviour
                 ReplaceCandidate(xLoser);
                 NotificationSystem.AddNotification(string.Format("{0} won the election!", bLeftWon ? "Liberals" : "Conservatives"));
 
-                m_xGovernmentData.SetCandidateData(m_xLeader.GetCandidateData());
+                xGovData.SetCandidateData(m_xLeader.GetCandidateData());
             }
             m_xLeftCandidate.OnNextTurn(fLeftScore / (fLeftScore + fRightScore));
             m_xRightCandidate.OnNextTurn(fRightScore / (fLeftScore + fRightScore));
@@ -167,7 +157,6 @@ public class Government : MonoBehaviour
             m_xLeader.OnNextTurn(fLeaderScore / fLeftScore + fRightScore);
         }
 
-        RefreshGUI();
         if (GetTimeTillNextElection() == 5)
         {
             NotificationSystem.AddNotification("5 turns until the election");
@@ -178,45 +167,6 @@ public class Government : MonoBehaviour
         if (Manager.GetTurnNumber() % 100 == 0)
         {
             WriteToFile();
-        }
-    }
-
-    public void UpdateSystems()
-    {
-        foreach (SystemBase m_xSys in m_xSystems)
-        {
-            m_xSys.OnNextTurn(m_xGovernmentData.GetSize());
-        }
-        // Calculate Total Cost
-        float fTotal = 0;
-        do
-        {
-            fTotal = 0;
-            foreach (SystemBase m_xSys in m_xSystems)
-            {
-                fTotal += m_xSys.GetCurrentCost();
-            }
-            if(fTotal > GetGovernmentData().GetSize())
-            {
-                int iToRemove = UnityEngine.Random.Range(0, m_xSystems.Count - 1);
-                m_xSystems[iToRemove].LevelDown();
-            }
-        } while (fTotal > GetGovernmentData().GetSize());
-        // Calculate Cheapest
-        float fCheapestCost = m_xSystems[0].GetLevelUpCost() - m_xSystems[0].GetCurrentCost();
-        var xCheapest = m_xSystems[0];
-        foreach (SystemBase xSys in m_xSystems)
-        {
-            if (xSys.GetLevelUpCost() - xSys.GetCurrentCost() < fCheapestCost)
-            {
-                fCheapestCost = xSys.GetLevelUpCost() - xSys.GetCurrentCost();
-                xCheapest = xSys;
-            }
-        }
-        // UpgradeCheapest, if you can
-        if(fTotal + fCheapestCost <= GetGovernmentData().GetSize() + 5)
-        {
-            xCheapest.LevelUp();
         }
     }
 
@@ -305,29 +255,28 @@ public class Government : MonoBehaviour
         }
     }
 
-    void RefreshGUI()
+    protected override void UpdateUI()
     {
-        m_xTaxText.text = m_xGovernmentData.GetTaxRate().ToString("0.00");
-        m_xSavingsText.text = m_xGovernmentData.GetSavings().ToString("0.00");
-        m_xSizeText.text = m_xGovernmentData.GetSize().ToString();
-        float fSavingsDiff = m_xGovernmentData.GetSavings() - m_fPreviousSavings;
-        m_fPreviousSavings = m_xGovernmentData.GetSavings();
+        base.UpdateUI();
+        var xGovData = (GovernmentData)GetData();
+        m_xTaxText.text = xGovData.GetTaxRate().ToString("0.00");
+        float fSavingsDiff = xGovData.GetSavings() - m_fPreviousSavings;
+        m_fPreviousSavings = xGovData.GetSavings();
         m_xSavingsPerTurnText.text = fSavingsDiff.ToString("0.00");
-        m_xLevelUpRequirementText.text = GovernmentValues.GetTotalRequirementAtLevel(m_xGovernmentData.GetSize()).ToString("0.00");
-        m_xLevelUpSlider.value = m_xGovernmentData.GetSavings() / GovernmentValues.GetTotalRequirementAtLevel(m_xGovernmentData.GetSize());
         m_xTimeTilNextElectionText.text = GetTimeTillNextElection().ToString();
     }
 
     void WriteToFile()
     {
-        float fHappiness = m_xGovernmentData.GetCountryData().GetPopulationData().GetHappiness();
+        var xGovData = (GovernmentData)GetData();
+        float fHappiness = xGovData.GetCountryData().GetPopulationData().GetHappiness();
         fHappiness -= 0.45f;
         fHappiness /= 0.55f;
         m_xStreamWriter.WriteLine(string.Format("{0} {1} {2} {3}", 
-            m_xGovernmentData.GetTaxRate().ToString("0.00"), 
+            xGovData.GetTaxRate().ToString("0.00"), 
             fHappiness.ToString("0.00"),
-            (m_xGovernmentData.GetSize()/140f).ToString("0.00"),
-            (m_xGovernmentData.GetCountryData().GetTechCompanyData().GetSize()/80f).ToString("0.00")));
+            (xGovData.GetSize()/140f).ToString("0.00"),
+            (xGovData.GetCountryData().GetTechCompanyData().GetSize()/80f).ToString("0.00")));
         m_xStreamWriter.Flush();
     }
 
@@ -352,11 +301,6 @@ public class Government : MonoBehaviour
     public void AddModifier(PopularityModifier xModifier)
     {
         m_xModifiers.Add(xModifier);
-    }
-
-    public GovernmentData GetGovernmentData()
-    {
-        return m_xGovernmentData;
     }
 
     public Country GetCountry()
@@ -438,26 +382,21 @@ public class Government : MonoBehaviour
             sys.ModifyLevel(-100, 1000);
         }
         m_xLeftCandidate.GetCandidateData().SetTaxRate(0.35f);
-        m_xGovernmentData.ForceSize(1);
+        ((GovernmentData)m_xMyData).ForceSize(1);
         return true;
-    }
-
-    public List<SystemBase> GetSystemsOfType(System.Type xType)
-    {
-        List<SystemBase> xItems = new List<SystemBase>();
-        foreach (SystemBase sys in m_xSystems)
-        {
-            if (sys.GetType() == xType)
-            {
-                xItems.Add(sys);
-            }
-        }
-        return xItems;
     }
 
     public Transform GetTarget(Orientation eOrientation)
     {
         return eOrientation == Orientation.LEFT ? m_xLeftTarget : m_xRightTarget;
+    }
+
+    protected override void SetData()
+    {
+        if (m_xMyData == null)
+        {
+            m_xMyData = new GovernmentData();
+        }
     }
 }
 

@@ -18,7 +18,7 @@ public class Censorship : SystemBase
         xCensorshipValues.UseNotification();
         // will this work with children?
         var xTechComp = m_xOwner.GetCountry().GetTechCompany();
-        if (xTechComp.GetData().GetSize() < m_xOwner.GetGovernmentData().GetSize() * xCensorshipValues.GetRatioRequirement())
+        if (xTechComp.GetData().GetSize() < m_xOwner.GetData().GetSize() * xCensorshipValues.GetRatioRequirement())
         {
             var xPropagandaSystems = xTechComp.GetSystemsOfType(typeof(Propaganda));
             foreach (var xSys in xPropagandaSystems)

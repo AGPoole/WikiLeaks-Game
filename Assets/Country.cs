@@ -15,7 +15,7 @@ public class Country : MonoBehaviour
 
     void Awake()
     {
-        m_xCountryData = new CountryData(m_xPopulation.GetPopulationData(), (TechCompanyData)m_xTechCompany.GetData(), m_xGovernment.GetGovernmentData());
+        m_xCountryData = new CountryData(m_xPopulation.GetPopulationData(), (TechCompanyData)m_xTechCompany.GetData(), (GovernmentData)m_xGovernment.GetData());
         m_xPopulation.SetGovernment(m_xGovernment);
     }
 

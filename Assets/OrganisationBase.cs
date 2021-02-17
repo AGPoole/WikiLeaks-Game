@@ -88,11 +88,20 @@ public abstract class OrganisationBase : MonoBehaviour
     protected virtual void UpdateUI()
     {
         m_xSizeText.text = m_xMyData.GetSize().ToString();
-        m_xCostsText.text = m_xMyData.GetCosts().ToString("0.00");
-        m_xSavingsText.text = m_xMyData.GetSavings().ToString("0.00");
-        m_xLevelUpRequirementText.text = TechCompanyValues.GetTotalRequirementAtLevel(m_xMyData.GetSize()).ToString("0.00");
+        if (m_xCostsText != null)
+        {
+            m_xCostsText.text = m_xMyData.GetCosts().ToString("0.00");
+        }
+        if (m_xSavingsText != null)
+        {
+            m_xSavingsText.text = m_xMyData.GetSavings().ToString("0.00");
+        }
+        if (m_xLevelUpRequirementText != null)
+        {
+            m_xLevelUpRequirementText.text = m_xMyData.GetLevelUpRequirementAtLevel(m_xMyData.GetSize()).ToString("0.00");
+        }
 
-        m_xSlider.value = m_xMyData.GetSavings() / TechCompanyValues.GetTotalRequirementAtLevel(m_xMyData.GetSize());
+        m_xSlider.value = m_xMyData.GetSavings() / m_xMyData.GetLevelUpRequirementAtLevel(m_xMyData.GetSize());
     }
 
     public List<SystemBase> GetSystemsOfType(System.Type xType)
@@ -135,7 +144,7 @@ public abstract class OrganisationData
         m_fSavings -= GetCostsAtLevel(m_iSize);
         if (m_fSavings > GetLevelUpRequirementAtLevel(m_iSize))
         {
-            m_fSavings -= GetCostsAtLevel(m_iSize);
+            m_fSavings -= GetLevelUpRequirementAtLevel(m_iSize);
             m_iSize += 1;
         }
         else if (m_fSavings < 0)
