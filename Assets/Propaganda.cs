@@ -64,8 +64,11 @@ public class Propaganda : SystemBase
         if (!m_bActive && Manager.GetTurnNumber()>m_iCoolDownCompletionTime)
         {
             m_bActive = true;
+            GameObject xPropagandaMessage = Instantiate(PropagandaValuesContainer.GetPropagandaValues(m_eType).GetPropagandaMessageObject(), transform);
+            xPropagandaMessage.GetComponent<PropagandaMessageIcon>().SetSource(transform);
             Orientation eOrientation = m_eType == PropagandaValuesContainer.ObjectType.Government ? Orientation.LEFT : Orientation.RIGHT;
-            m_xGov.AddModifier(new PropagandaPopMod(PropagandaValuesContainer.GetPropagandaValues(m_eType).GetPropagandaStrength(), eOrientation, PropagandaValuesContainer.GetPropagandaValues(m_eType).GetPropagandaLength(), this));
+            xPropagandaMessage.GetComponent<PropagandaMessageIcon>().SetTarget(m_xGov.GetTarget(eOrientation));
+            xPropagandaMessage.GetComponent<PropagandaMessageIcon>().SetGovernment(m_xGov);
         }
     }
 
@@ -89,6 +92,12 @@ public class Propaganda : SystemBase
     protected override SystemValuesBase GetMyValues()
     {
         return PropagandaValuesContainer.GetPropagandaValues(m_eType);
+    }
+
+    public PopularityModifier CreatePopularityModifier()
+    {
+        Orientation eOrientation = m_eType == PropagandaValuesContainer.ObjectType.Government ? Orientation.LEFT : Orientation.RIGHT;
+        return new PropagandaPopMod(PropagandaValuesContainer.GetPropagandaValues(m_eType).GetPropagandaStrength(), eOrientation, PropagandaValuesContainer.GetPropagandaValues(m_eType).GetPropagandaLength(), this);
     }
 
     class PropagandaPopMod : PopularityModifier

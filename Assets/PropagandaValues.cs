@@ -11,6 +11,8 @@ public class PropagandaValues : SystemValuesBase
     float m_fPropangandaStrength = 0.1f;
     [SerializeField]
     int m_iCoolDownLength = 70;
+    [SerializeField]
+    GameObject m_xPropagandaMessageObject;
 
     public int GetPropagandaLength()
     {
@@ -23,5 +25,10 @@ public class PropagandaValues : SystemValuesBase
     public int GetCooldownLength()
     {
         return m_iCoolDownLength;
+    }
+
+    public GameObject GetPropagandaMessageObject()
+    {
+        return m_xPropagandaMessageObject;
     }
 }
