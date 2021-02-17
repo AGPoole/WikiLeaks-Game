@@ -65,6 +65,12 @@ public class Government : MonoBehaviour
     Country m_xCountry;
 
     StreamWriter m_xStreamWriter;
+
+    [SerializeField]
+    Transform m_xLeftTarget;
+    [SerializeField]
+    Transform m_xRightTarget;
+
     void Start()
     {
         string xPath = Application.dataPath + "/CSV/Taxes.csv";
@@ -447,6 +453,11 @@ public class Government : MonoBehaviour
             }
         }
         return xItems;
+    }
+
+    public Transform GetTarget(Orientation eOrientation)
+    {
+        return eOrientation == Orientation.LEFT ? m_xLeftTarget : m_xRightTarget;
     }
 }
 

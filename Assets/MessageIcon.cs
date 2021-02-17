@@ -5,6 +5,7 @@ using UnityEngine;
 public abstract class MessageIcon : MonoBehaviour
 {
     protected Transform m_xTarget;
+    protected Transform m_xSource; 
     [SerializeField]
     float m_fSpeed;
 
@@ -12,6 +13,11 @@ public abstract class MessageIcon : MonoBehaviour
     {
         Debug.LogFormat("{0} {1}", xTransform.gameObject.name, (xTransform.position - transform.position).magnitude);
         m_xTarget = xTransform;
+    }
+
+    public void SetSource(Transform xTransform)
+    {
+        m_xSource = xTransform;
     }
 
     // Update is called once per frame
