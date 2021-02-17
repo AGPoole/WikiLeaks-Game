@@ -7,6 +7,7 @@ public class Propaganda : SystemBase
     [SerializeField]
     PropagandaValuesContainer.ObjectType m_eType; 
 
+    // TODO: remove this
     [SerializeField]
     GameObject m_xActiveIndicator;
 
@@ -17,19 +18,21 @@ public class Propaganda : SystemBase
 
     int m_iCoolDownCompletionTime=1;
 
-    protected override void OnLevelReachesZero()
+    protected override void OnDeactivation()
     {
         m_bActive = false;
-        m_xActiveIndicator.SetActive(false);
-        base.OnLevelReachesZero();
+        if(m_xActiveIndicator!=null)
+            m_xActiveIndicator.SetActive(false);
+        base.OnDeactivation();
     }
 
-    protected override void OnLevelReachesOne()
+    protected override void OnActivation()
     {
         m_bActive = false;
-        m_xActiveIndicator.SetActive(false);
+        if (m_xActiveIndicator != null)
+            m_xActiveIndicator.SetActive(false);
         m_iCoolDownCompletionTime = Manager.GetTurnNumber() + PropagandaValuesContainer.GetPropagandaValues(m_eType).GetCooldownLength();
-        base.OnLevelReachesOne();
+        base.OnActivation();
     }
 
     float m_fActiveIndicatorNextSwitchTime = 0f;
@@ -44,7 +47,8 @@ public class Propaganda : SystemBase
             m_fActiveIndicatorNextSwitchTime -= Time.deltaTime;
             if(m_fActiveIndicatorNextSwitchTime < 0f)
             {
-                m_xActiveIndicator.SetActive(!m_xActiveIndicator.activeSelf);
+                if (m_xActiveIndicator != null)
+                    m_xActiveIndicator.SetActive(!m_xActiveIndicator.activeSelf);
                 m_fActiveIndicatorNextSwitchTime = m_fActiveIndicatorSwitchDuration;
             }
         }
@@ -78,7 +82,8 @@ public class Propaganda : SystemBase
 
         m_bActive = false;
         m_iCoolDownCompletionTime = Manager.GetTurnNumber() + PropagandaValuesContainer.GetPropagandaValues(m_eType).GetCooldownLength();
-        m_xActiveIndicator.SetActive(false);
+        if (m_xActiveIndicator != null)
+            m_xActiveIndicator.SetActive(false);
     }
 
     protected override SystemValuesBase GetMyValues()

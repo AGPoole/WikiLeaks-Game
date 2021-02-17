@@ -5,13 +5,9 @@ using UnityEngine;
 public abstract class SystemBase : MonoBehaviour
 {
     [SerializeField]
-    protected UnityEngine.UI.Text m_xTitleText;
+    SystemUI m_xUI;
     [SerializeField]
     protected int m_iLevel = 0;
-    [SerializeField]
-    protected UnityEngine.UI.Text m_xLevelText;
-    [SerializeField]
-    protected UnityEngine.UI.Text m_xDefencesText;
     [SerializeField]
     bool m_bHacked = false;
 
@@ -26,14 +22,17 @@ public abstract class SystemBase : MonoBehaviour
     {
         SetLevel(m_iLevel, GetDefaultTimer());
         m_fDefences = GetMyValues().GetBaseDefenceMax();
+        if(m_xUI == null)
+        {
+            Debug.LogError(string.Format("Missing UI object on {0}", gameObject.name));
+            return;
+        }
+        GetMyValues().SetUpUIActions(m_xUI);
     }
 
     protected virtual void Update()
     {
-        if (GetLevel() > 0f)
-        {
-            m_xTitleText.color = m_bHacked ? Color.green : Color.white;
-        }
+        
     }
     public virtual void OnNextTurn(int iOwnerLevel)
     {
@@ -44,10 +43,11 @@ public abstract class SystemBase : MonoBehaviour
         {
             m_fDefences = Mathf.Max(m_fDefences - GetMyValues().GetAdditionalShielddeteriorationRate(), GetMyValues().GetBaseDefenceMax());
         }
-        m_xDefencesText.text = m_fDefences.ToString("0");
     }
 
+    public bool IsHacked() { return m_bHacked; }
     public int GetLevel() { return m_iLevel; }
+    public float GetDefences() { return m_fDefences; }
     protected void SetLevel(int iLevel) 
     {
         SetLevel(iLevel, GetDefaultTimer());
@@ -57,7 +57,7 @@ public abstract class SystemBase : MonoBehaviour
         if(iLevel <= 0)
         {
             iLevel = 0;
-            OnLevelReachesZero();
+            OnDeactivation();
         }
         if(iLevel > GetMaxLevel())
         {
@@ -65,12 +65,10 @@ public abstract class SystemBase : MonoBehaviour
         }
         if(iLevel==1 && m_iLevel == 0)
         {
-            OnLevelReachesOne();
+            OnActivation();
         }
         m_iLevel = iLevel;
-        Color c = m_xTitleText.color;
-        m_xTitleText.color = new Color(c.r, c.g, c.b, m_iLevel > 0 ? 1f : 0.4f);
-        m_xLevelText.text = m_iLevel.ToString();
+
         m_iLevelChangeTimer = iTimer;
     }
 
@@ -132,15 +130,13 @@ public abstract class SystemBase : MonoBehaviour
         }
     }
 
-    protected virtual void OnLevelReachesZero() 
+    protected virtual void OnDeactivation() 
     {
-        m_xLevelText.gameObject.SetActive(false);
-        m_xDefencesText.gameObject.SetActive(false);
+        m_xUI.OnDeactivation();
     }
-    protected virtual void OnLevelReachesOne() 
+    protected virtual void OnActivation() 
     {
-        m_xLevelText.gameObject.SetActive(true);
-        m_xDefencesText.gameObject.SetActive(true);
+        m_xUI.OnActivation();
     }
     protected abstract SystemValuesBase GetMyValues();
 
@@ -149,7 +145,7 @@ public abstract class SystemBase : MonoBehaviour
         m_fDefences = Mathf.Max(m_fDefences - 1, 0);
         if (Mathf.Approximately(m_fDefences, 0f))
         {
-            m_bHacked = true;
+            Hack();
         }
     }
 
@@ -161,5 +157,11 @@ public abstract class SystemBase : MonoBehaviour
     public bool GetIsHacked()
     {
         return m_bHacked;
+    }
+
+    protected virtual void Hack()
+    {
+        m_bHacked = true;
+        m_xUI.SetHacked(true);
     }
 }

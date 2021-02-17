@@ -19,7 +19,8 @@ public class Finance : SystemBase
     public override void OnNextTurn(int iOwnerLevel)
     {
         base.OnNextTurn(iOwnerLevel);
-        m_xSharesText.text = iSharesBought.ToString();
+        if(m_xSharesText!=null)
+            m_xSharesText.text = iSharesBought.ToString();
     }
 
     public void BuyShare()
@@ -29,7 +30,8 @@ public class Finance : SystemBase
         {
             iSharesBought += 1;
             Manager.GetManager().ChangeMoney(-fCost);
-            m_xSharesText.text = iSharesBought.ToString();
+            if (m_xSharesText != null)
+                m_xSharesText.text = iSharesBought.ToString();
         }
     }
 
@@ -39,7 +41,8 @@ public class Finance : SystemBase
         {
             iSharesBought -= 1;
             Manager.GetManager().ChangeMoney(m_xOwner.GetTechCompanyData().GetSize());
-            m_xSharesText.text = iSharesBought.ToString();
+            if (m_xSharesText != null)
+                m_xSharesText.text = iSharesBought.ToString();
         }
     }
 }

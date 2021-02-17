@@ -37,6 +37,9 @@ public class SystemValuesBase
     [SerializeField]
     protected float m_fAdditionalShieldsMax = 5;
 
+    [SerializeField]
+    List<GameObject> m_xActions;
+
     public int GetLevelUpCost(int iCurrentLevel)
     {
         return m_xLevelRequirements[iCurrentLevel].GetCost();
@@ -66,5 +69,13 @@ public class SystemValuesBase
     public float GetAdditionalShieldsMax()
     {
         return m_fAdditionalShieldsMax;
+    }
+
+    public void SetUpUIActions(SystemUI xUI)
+    {
+        foreach(var xAction in m_xActions)
+        {
+            xUI.AddAction(xAction);
+        }
     }
 }
