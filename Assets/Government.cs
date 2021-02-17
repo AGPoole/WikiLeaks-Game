@@ -462,38 +462,12 @@ public class Government : MonoBehaviour
 }
 
 [System.Serializable]
-public class GovernmentData
+public class GovernmentData : OrganisationData
 {
     CandidateData m_xCandidateData;
     [SerializeField]
     [Range(0, 1)]
     float m_fApproval = 0.5f;
-    [SerializeField]
-    int m_iSize = 1;
-    [SerializeField]
-    float m_fSavings = 0;
-    [SerializeField]
-    CountryData m_xCountryData;
-
-    public void SetCountryData(CountryData xCountryData)
-    {
-        m_xCountryData = xCountryData;
-    }
-
-    public void OnNextTurn()
-    {
-        m_fSavings -= GovernmentValues.GetLevelUpCostAtLevel(m_iSize);
-        if (m_fSavings > GovernmentValues.GetTotalRequirementAtLevel(m_iSize))
-        {
-            m_iSize += 1;
-            m_fSavings -= GovernmentValues.GetTotalRequirementAtLevel(m_iSize);
-        }
-        else if(m_fSavings<0 && m_iSize>1)
-        {
-            m_iSize -= 1;
-            m_fSavings += GovernmentValues.GetTotalRequirementAtLevel(m_iSize);
-        }
-    }
 
     public void PayTaxes(float fTaxes)
     {
@@ -507,7 +481,7 @@ public class GovernmentData
         return m_xCountryData;
     }
 
-    public GovernmentData ShallowCopy()
+    public override OrganisationData ShallowCopy()
     {
         return (GovernmentData)this.MemberwiseClone();
     }
@@ -526,25 +500,25 @@ public class GovernmentData
         return m_fApproval;
     }
 
-    public int GetSize()
-    {
-        return m_iSize;
-    }
-
     // TODO: remove this
     public void ForceSize(int iSize)
     {
         m_iSize = iSize;
     }
 
-    public float GetSavings()
-    {
-        return m_fSavings;
-    }
-
     public float GetPowerPercentage()
     {
         return m_xCandidateData.GetPowerPercentage();
+    }
+
+    public override float GetCostsAtLevel(int iLevel)
+    {
+        return GovernmentValues.GetLevelUpCostAtLevel(iLevel);
+    }
+
+    public override float GetLevelUpRequirementAtLevel(int iLevel)
+    {
+        return GovernmentValues.GetTotalRequirementAtLevel(iLevel);
     }
 }
 

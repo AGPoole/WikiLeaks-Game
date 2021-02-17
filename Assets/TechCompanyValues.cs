@@ -31,7 +31,7 @@ public class TechCompanyValues : MonoBehaviour
         return s_xStaticInstance;
     }
 
-    public static float GetLevelUpCostAtLevel(int iLevel)
+    public static float GetCostAtLevel(int iLevel)
     {
         return GetTechCompanyValues().m_fGrowthCostLinearFactor * iLevel*GetTechCompanyValues().m_fLevelFactor;
     }
@@ -103,7 +103,7 @@ public class TechCompanyValues : MonoBehaviour
         int i = 1;
         while (i < 1000)
         {
-            if (TechCompanyValues.GetProfitAtLevel(i) * (1 - fTax) < TechCompanyValues.GetLevelUpCostAtLevel(i))
+            if (TechCompanyValues.GetProfitAtLevel(i) * (1 - fTax) < TechCompanyValues.GetCostAtLevel(i))
             {
                 return i;
             }

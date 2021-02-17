@@ -130,7 +130,25 @@ public abstract class OrganisationData
     public abstract float GetLevelUpRequirementAtLevel(int iLevel);
     public abstract OrganisationData ShallowCopy();
 
-    public abstract void OnNextTurn();
+    public virtual void OnNextTurn()
+    {
+        m_fSavings -= GetCostsAtLevel(m_iSize);
+        if (m_fSavings > GetLevelUpRequirementAtLevel(m_iSize))
+        {
+            m_fSavings -= GetCostsAtLevel(m_iSize);
+            m_iSize += 1;
+        }
+        else if (m_fSavings < 0)
+        {
+            m_iSize -= 1;
+            m_fSavings = GetLevelUpRequirementAtLevel(m_iSize) + m_fSavings;
+        }
+        //TODO: deal with 0 case
+        if (m_iSize < 1)
+        {
+            m_iSize = 1;
+        }
+    }
 
     public void SetCountryData(CountryData xCountryData)
     {

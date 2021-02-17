@@ -93,7 +93,7 @@ public class CountryData
     {
         PopulationData xFakePop = m_xPopulationData.ShallowCopy();
         TechCompanyData xFakeTech = (TechCompanyData)m_xTechCompanyData.ShallowCopy();
-        GovernmentData xFakeGov = m_xGovernmentData.ShallowCopy();
+        GovernmentData xFakeGov = (GovernmentData)m_xGovernmentData.ShallowCopy();
         return new CountryData(xFakePop, xFakeTech, xFakeGov);
     }
 }

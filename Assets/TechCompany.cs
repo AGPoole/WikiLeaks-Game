@@ -70,22 +70,7 @@ public class TechCompanyData : OrganisationData
             fTotalProfit -= fTotalProfit * xGovernment.GetTaxRate();
         }
         m_fSavings += fTotalProfit;
-        m_fSavings -= TechCompanyValues.GetLevelUpCostAtLevel(m_iSize);
-        if (m_fSavings > TechCompanyValues.GetTotalRequirementAtLevel(m_iSize))
-        {
-            m_fSavings -= TechCompanyValues.GetTotalRequirementAtLevel(m_iSize);
-            m_iSize += 1;
-        }
-        else if(m_fSavings<0)
-        {
-            m_iSize -= 1;
-            m_fSavings = TechCompanyValues.GetTotalRequirementAtLevel(m_iSize) + m_fSavings;
-        }
-        //TODO: deal with 0 case
-        if (m_iSize < 1)
-        {
-            m_iSize = 1;
-        }
+        base.OnNextTurn();
         m_xCountryData.GetPopulationData().ContributeToHappiness(fTotalProfit);
     }
 
@@ -108,7 +93,7 @@ public class TechCompanyData : OrganisationData
     }
     public override float GetCostsAtLevel(int iLevel)
     {
-        return TechCompanyValues.GetLevelUpCostAtLevel(iLevel);
+        return TechCompanyValues.GetCostAtLevel(iLevel);
     }
 
     public float GetTimeToLevelUp()
@@ -126,11 +111,11 @@ public class TechCompanyData : OrganisationData
 
     public float GetSavingsGain()
     {
-        return GetProfitAfterTax() - TechCompanyValues.GetLevelUpCostAtLevel(m_iSize);
+        return GetProfitAfterTax() - TechCompanyValues.GetCostAtLevel(m_iSize);
     }
 
     public override float GetLevelUpRequirementAtLevel(int iLevel)
     {
-        return TechCompanyValues.GetLevelUpCostAtLevel(iLevel);
+        return TechCompanyValues.GetCostAtLevel(iLevel);
     }
 }
