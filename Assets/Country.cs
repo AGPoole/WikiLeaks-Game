@@ -15,7 +15,7 @@ public class Country : MonoBehaviour
 
     void Awake()
     {
-        m_xCountryData = new CountryData(m_xPopulation.GetPopulationData(), m_xTechCompany.GetTechCompanyData(), m_xGovernment.GetGovernmentData());
+        m_xCountryData = new CountryData(m_xPopulation.GetPopulationData(), (TechCompanyData)m_xTechCompany.GetData(), (GovernmentData)m_xGovernment.GetData());
         m_xPopulation.SetGovernment(m_xGovernment);
     }
 
@@ -92,8 +92,8 @@ public class CountryData
     public CountryData GetFake()
     {
         PopulationData xFakePop = m_xPopulationData.ShallowCopy();
-        TechCompanyData xFakeTech = m_xTechCompanyData.ShallowCopy();
-        GovernmentData xFakeGov = m_xGovernmentData.ShallowCopy();
+        TechCompanyData xFakeTech = (TechCompanyData)m_xTechCompanyData.ShallowCopy();
+        GovernmentData xFakeGov = (GovernmentData)m_xGovernmentData.ShallowCopy();
         return new CountryData(xFakePop, xFakeTech, xFakeGov);
     }
 }

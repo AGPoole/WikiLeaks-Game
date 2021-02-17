@@ -1389,7 +1389,7 @@ GameObject:
   - component: {fileID: 248216746}
   - component: {fileID: 248216747}
   m_Layer: 5
-  m_Name: Size Value
+  m_Name: Savings Value
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2214,7 +2214,7 @@ GameObject:
   - component: {fileID: 376176043}
   - component: {fileID: 376176044}
   m_Layer: 5
-  m_Name: Size Value
+  m_Name: Savings Gain Value
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3239,7 +3239,7 @@ GameObject:
   - component: {fileID: 607245162}
   - component: {fileID: 607245163}
   m_Layer: 5
-  m_Name: Size Value
+  m_Name: Costs Value
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4316,7 +4316,7 @@ GameObject:
   - component: {fileID: 972204277}
   - component: {fileID: 972204278}
   m_Layer: 5
-  m_Name: Size Value
+  m_Name: Lvl up req Value
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4589,7 +4589,7 @@ GameObject:
   - component: {fileID: 1071665079}
   - component: {fileID: 1071665080}
   m_Layer: 5
-  m_Name: Size Value
+  m_Name: Profit Value
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5006,22 +5006,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: adbe1cf0226f77b48acf656984aa322d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_xTechCompanyData:
-    m_iSize: 50
-    m_fSavings: 100
-  m_xSizeText: {fileID: 1024865431}
-  m_xSavingsText: {fileID: 248216747}
-  m_xProfitText: {fileID: 1071665080}
-  m_xCostsText: {fileID: 607245163}
-  m_xSavingsGain: {fileID: 376176044}
-  m_xLevelUpRequirementText: {fileID: 972204278}
-  m_xSavingsGainText: {fileID: 376176044}
-  m_xTurnsToLevelUpText: {fileID: 1499520380}
-  m_xSlider: {fileID: 1495136764}
   m_xSystems:
   - {fileID: 6635532817160789123}
   - {fileID: 1612799694497976421}
   - {fileID: 6777280586706456464}
+  m_xSizeText: {fileID: 1024865431}
+  m_xSavingsText: {fileID: 248216747}
+  m_xCostsText: {fileID: 607245163}
+  m_xLevelUpRequirementText: {fileID: 972204278}
+  m_xSlider: {fileID: 1495136764}
+  m_xProfitText: {fileID: 1071665080}
+  m_xSavingsGain: {fileID: 376176044}
+  m_xSavingsGainText: {fileID: 376176044}
+  m_xTurnsToLevelUpText: {fileID: 1499520380}
 --- !u!4 &1139978403
 Transform:
   m_ObjectHideFlags: 0
@@ -6800,7 +6797,7 @@ GameObject:
   - component: {fileID: 1499520381}
   - component: {fileID: 1499520380}
   m_Layer: 5
-  m_Name: Size Value
+  m_Name: Turns until lvl up Value
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12395,17 +12392,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f08f59f7ecd418489ef858da7aa5d89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_fTechLevel: 1
-  m_xGovernmentData:
-    m_fApproval: 0.5
-    m_iSize: 55
-    m_fSavings: 0
-  m_xTaxText: {fileID: 270990907}
+  m_xSystems:
+  - {fileID: 100020275625698247}
+  - {fileID: 729610391}
   m_xSizeText: {fileID: 1214156717}
   m_xSavingsText: {fileID: 1233761874}
+  m_xCostsText: {fileID: 0}
   m_xLevelUpRequirementText: {fileID: 189528681}
+  m_xSlider: {fileID: 1403087282}
+  m_fTechLevel: 1
+  m_xTaxText: {fileID: 270990907}
   m_xSavingsPerTurnText: {fileID: 1083140615}
-  m_xLevelUpSlider: {fileID: 1403087282}
   m_xTimeTilNextElectionText: {fileID: 1969442172}
   m_xLeftTransform: {fileID: 559118796}
   m_xRightTransform: {fileID: 1520662811}
@@ -12425,9 +12422,6 @@ MonoBehaviour:
   m_fBiasWeight: 0
   m_fBias: 0
   m_xModifiers: []
-  m_xSystems:
-  - {fileID: 100020275625698247}
-  - {fileID: 729610391}
 --- !u!1 &1745435661
 GameObject:
   m_ObjectHideFlags: 0
@@ -14724,8 +14718,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03d011ae60d2b494386b07ce3539bf32, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_fGrowthCostLinearFactor: 4.5
-  m_fTotalCostToLevelUpLinearFactor: 10
+  m_xGovValues:
+    m_fGrowthCostLinearFactor: 4.5
+    m_fTotalCostToLevelUpLinearFactor: 10
 --- !u!114 &2130128996
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14738,12 +14733,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10b67fd29f0238e4d9c8cf6ae60a817d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_fGrowthCostLinearFactor: 10
-  m_fProfitConstantFactor: 100
-  m_fProfitLinearFactor: 50
-  m_fProfitExponentialDecreaseFactor: 0.98
-  m_fTotalCostToLevelUpLinearFactor: 30
-  m_fLevelFactor: 1
+  m_xTechCompanyValues:
+    m_fGrowthCostLinearFactor: 10
+    m_fProfitConstantFactor: 100
+    m_fProfitLinearFactor: 50
+    m_fProfitExponentialDecreaseFactor: 0.98
+    m_fTotalCostToLevelUpLinearFactor: 30
+    m_fLevelFactor: 1
 --- !u!114 &2130128997
 MonoBehaviour:
   m_ObjectHideFlags: 0

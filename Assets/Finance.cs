@@ -25,7 +25,7 @@ public class Finance : SystemBase
 
     public void BuyShare()
     {
-        float fCost = m_xOwner.GetTechCompanyData().GetSize();
+        float fCost = m_xOwner.GetData().GetSize();
         if (fCost <= Manager.GetManager().GetMoney())
         {
             iSharesBought += 1;
@@ -40,7 +40,7 @@ public class Finance : SystemBase
         if (iSharesBought > 0)
         {
             iSharesBought -= 1;
-            Manager.GetManager().ChangeMoney(m_xOwner.GetTechCompanyData().GetSize());
+            Manager.GetManager().ChangeMoney(m_xOwner.GetData().GetSize());
             if (m_xSharesText != null)
                 m_xSharesText.text = iSharesBought.ToString();
         }

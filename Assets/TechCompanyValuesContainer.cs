@@ -4,47 +4,21 @@ using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
-public class TechCompanyValues : MonoBehaviour
+public class TechCompanyValuesContainer : MonoBehaviour
 {
     [SerializeField]
-    float m_fGrowthCostLinearFactor = 10f;
-    [SerializeField]
-    float m_fProfitConstantFactor = 100f;
-    [SerializeField]
-    float m_fProfitLinearFactor = 30f;
-    [SerializeField]
-    float m_fProfitExponentialDecreaseFactor = 0.95f;
-    [SerializeField]
-    float m_fTotalCostToLevelUpLinearFactor = 300f;
-    [SerializeField]
-    float m_fLevelFactor = 2f;
+    TechCompanyValues m_xTechCompanyValues;
+    static TechCompanyValuesContainer s_xInstance;
 
-    static TechCompanyValues s_xStaticInstance;
-
-    static TechCompanyValues GetTechCompanyValues()
+    public static TechCompanyValues GetTechCompanyValues()
     {
-        // WSTODO: in awake, count instances to ensure there is only one
-        if (s_xStaticInstance==null)
+        if (s_xInstance == null)
         {
-            s_xStaticInstance = FindObjectOfType(typeof(TechCompanyValues)) as TechCompanyValues;
+            s_xInstance = FindObjectOfType(typeof(TechCompanyValuesContainer)) as TechCompanyValuesContainer;
         }
-        return s_xStaticInstance;
+        return s_xInstance.m_xTechCompanyValues;
     }
 
-    public static float GetLevelUpCostAtLevel(int iLevel)
-    {
-        return GetTechCompanyValues().m_fGrowthCostLinearFactor * iLevel*GetTechCompanyValues().m_fLevelFactor;
-    }
-
-    public static float GetProfitAtLevel(int iLevel)
-    {
-        s_xStaticInstance = GetTechCompanyValues();
-        return s_xStaticInstance.m_fProfitConstantFactor + (s_xStaticInstance.m_fProfitLinearFactor * iLevel * GetTechCompanyValues().m_fLevelFactor * Mathf.Pow(s_xStaticInstance.m_fProfitExponentialDecreaseFactor, iLevel * GetTechCompanyValues().m_fLevelFactor));
-    }
-    public static float GetTotalRequirementAtLevel(int iLevel)
-    {
-        return GetTechCompanyValues().m_fTotalCostToLevelUpLinearFactor * iLevel * GetTechCompanyValues().m_fLevelFactor;
-    }
     #if (UNITY_EDITOR)
     [ContextMenu("Run Calculations")]
     void RunCalculations()
@@ -62,9 +36,10 @@ public class TechCompanyValues : MonoBehaviour
         float fBestHappinessTax = 0f;
         for (float fTax = 0.05f; fTax <= 0.85f; fTax += 0.01f)
         {
-            int iCorpLevel = TechCompanyValues.CalculateLevelPlateau(fTax);
-            float fGov = TechCompanyValues.GetProfitAtLevel(CalculateLevelPlateau(fTax)) * fTax;
-            int iGovLevel = GovernmentValues.CalculateLevelPlateau(fGov);
+            var xTechCompValues = TechCompanyValuesContainer.GetTechCompanyValues();
+            int iCorpLevel = xTechCompValues.CalculateLevelPlateau(fTax);
+            float fGov = xTechCompValues.GetProfitAtLevel(xTechCompValues.CalculateLevelPlateau(fTax)) * fTax;
+            int iGovLevel = GovernmentValuesContainer.GetGovernmentValues().CalculateLevelPlateau(fGov);
 
             if (iCorpLevel > iMaxCorpLevel)
             {
@@ -98,12 +73,44 @@ public class TechCompanyValues : MonoBehaviour
         }
     }
     #endif
-    public static int CalculateLevelPlateau(float fTax)
+}
+
+[System.Serializable]
+public class TechCompanyValues : OrganisationValuesBase
+{
+    [SerializeField]
+    float m_fGrowthCostLinearFactor = 10f;
+    [SerializeField]
+    float m_fProfitConstantFactor = 100f;
+    [SerializeField]
+    float m_fProfitLinearFactor = 50f;
+    [SerializeField]
+    float m_fProfitExponentialDecreaseFactor = 0.98f;
+    [SerializeField]
+    float m_fTotalCostToLevelUpLinearFactor = 30f;
+    [SerializeField]
+    float m_fLevelFactor = 1f;
+
+    public override float GetCostsAtLevel(int iLevel)
+    {
+        return m_fGrowthCostLinearFactor * iLevel * m_fLevelFactor;
+    }
+
+    public float GetProfitAtLevel(int iLevel)
+    {
+        return m_fProfitConstantFactor + (m_fProfitLinearFactor * iLevel * m_fLevelFactor * Mathf.Pow(m_fProfitExponentialDecreaseFactor, iLevel * m_fLevelFactor));
+    }
+    public override float GetLevelUpRequirementAtLevel(int iLevel)
+    {
+        return m_fTotalCostToLevelUpLinearFactor * iLevel * m_fLevelFactor;
+    }
+
+    public int CalculateLevelPlateau(float fTax)
     {
         int i = 1;
         while (i < 1000)
         {
-            if (TechCompanyValues.GetProfitAtLevel(i) * (1 - fTax) < TechCompanyValues.GetLevelUpCostAtLevel(i))
+            if (GetProfitAtLevel(i) * (1 - fTax) < GetCostsAtLevel(i))
             {
                 return i;
             }
