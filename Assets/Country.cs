@@ -7,7 +7,7 @@ public class Country : MonoBehaviour
     [SerializeField]
     Government m_xGovernment;
     [SerializeField]
-    TechCompany m_xTechCompany;
+    List<TechCompany> m_xTechCompanies;
     [SerializeField]
     Population m_xPopulation;
 
@@ -15,7 +15,11 @@ public class Country : MonoBehaviour
 
     void Awake()
     {
-        m_xCountryData = new CountryData(m_xPopulation.GetPopulationData(), (TechCompanyData)m_xTechCompany.GetData(), (GovernmentData)m_xGovernment.GetData());
+        m_xCountryData = new CountryData(m_xPopulation.GetPopulationData(), (GovernmentData)m_xGovernment.GetData());
+        foreach(var xData in m_xTechCompanies)
+        {
+            m_xCountryData.AddTechCompanyData((TechCompanyData)xData.GetData());
+        }
         m_xPopulation.SetGovernment(m_xGovernment);
     }
 
@@ -23,7 +27,10 @@ public class Country : MonoBehaviour
     {
         m_xCountryData.OnNextTurn();
 
-        m_xTechCompany.OnNextTurn();
+        foreach(var xTechComp in m_xTechCompanies)
+        {
+            xTechComp.OnNextTurn();
+        }
         m_xGovernment.OnNextTurn();
         m_xPopulation.OnNextTurn();
 
@@ -45,31 +52,39 @@ public class Country : MonoBehaviour
         return m_xPopulation;
     }
     
-    public TechCompany GetTechCompany()
+    public List<TechCompany> GetTechCompanies()
     {
-        return m_xTechCompany;
+        return m_xTechCompanies;
     }
 }
 
 public class CountryData
 {
     PopulationData m_xPopulationData;
-    TechCompanyData m_xTechCompanyData;
+    List<TechCompanyData> m_xTechCompaniesData;
     GovernmentData m_xGovernmentData;
 
-    public CountryData(PopulationData xPopulationData, TechCompanyData xTechCompanyData, GovernmentData xGovernmentData)
+    public CountryData(PopulationData xPopulationData, GovernmentData xGovernmentData)
     {
+        m_xTechCompaniesData = new List<TechCompanyData>();
         m_xPopulationData = xPopulationData;
         m_xPopulationData.SetCountryData(this);
-        m_xTechCompanyData = xTechCompanyData;
-        m_xTechCompanyData.SetCountryData(this);
         m_xGovernmentData = xGovernmentData;
         m_xGovernmentData.SetCountryData(this);
     }
 
+    public void AddTechCompanyData(TechCompanyData xData)
+    {
+        m_xTechCompaniesData.Add(xData);
+        xData.SetCountryData(this);
+    }
+
     public void OnNextTurn()
     {
-        m_xTechCompanyData.OnNextTurn();
+        foreach (var xData in m_xTechCompaniesData)
+        {
+            xData.OnNextTurn();
+        }
         m_xGovernmentData.OnNextTurn();
         m_xPopulationData.OnNextTurn();
     }
@@ -79,9 +94,14 @@ public class CountryData
         return m_xGovernmentData;
     }
 
-    public TechCompanyData GetTechCompanyData()
+    public int GetTotalTechCompaniesSize()
     {
-        return m_xTechCompanyData;
+        int iValue = 0;
+        foreach(var xData in m_xTechCompaniesData)
+        {
+            iValue += xData.GetSize();
+        }
+        return iValue;
     }
 
     public PopulationData GetPopulationData()
@@ -92,8 +112,12 @@ public class CountryData
     public CountryData GetFake()
     {
         PopulationData xFakePop = m_xPopulationData.ShallowCopy();
-        TechCompanyData xFakeTech = (TechCompanyData)m_xTechCompanyData.ShallowCopy();
         GovernmentData xFakeGov = (GovernmentData)m_xGovernmentData.ShallowCopy();
-        return new CountryData(xFakePop, xFakeTech, xFakeGov);
+        var xFake = new CountryData(xFakePop, xFakeGov);
+        foreach(var xData in m_xTechCompaniesData)
+        {
+            xFake.AddTechCompanyData((TechCompanyData)xData.ShallowCopy());
+        }
+        return xFake;
     }
 }

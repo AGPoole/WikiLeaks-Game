@@ -276,7 +276,7 @@ public class Government : OrganisationBase
             xGovData.GetTaxRate().ToString("0.00"), 
             fHappiness.ToString("0.00"),
             (xGovData.GetSize()/140f).ToString("0.00"),
-            (xGovData.GetCountryData().GetTechCompanyData().GetSize()/80f).ToString("0.00")));
+            (xGovData.GetCountryData().GetTotalTechCompaniesSize()/80f).ToString("0.00")));
         m_xStreamWriter.Flush();
     }
 

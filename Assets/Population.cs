@@ -65,10 +65,10 @@ public class PopulationData
 
     public void OnNextTurn()
     {
-        m_fHappiness = Manager.CalculateHappiness(m_xCountryData.GetGovernmentData().GetSize(), m_xCountryData.GetTechCompanyData().GetSize(), true);
+        m_fHappiness = Manager.CalculateHappiness(m_xCountryData.GetGovernmentData().GetSize(), m_xCountryData.GetTotalTechCompaniesSize(), true);
 
         // 10/12/2020 - currently the overall happiness should just be the sum of these 2, so it is ok to sum them. If that ever changes, this should be updates
-        m_fCorpHappiness = Manager.CalculateHappiness(0, m_xCountryData.GetTechCompanyData().GetSize(), true);
+        m_fCorpHappiness = Manager.CalculateHappiness(0, m_xCountryData.GetTotalTechCompaniesSize(), true);
         m_fGovHappiness = Manager.CalculateHappiness(m_xCountryData.GetGovernmentData().GetSize(), 0, true);
         if (Mathf.Abs(m_fCorpHappiness + m_fGovHappiness-m_fHappiness)>0.005)
         {
