@@ -12,6 +12,8 @@ public class Manager : MonoBehaviour
     [SerializeField]
     [Range(0f, 5f)]
     float m_fTimeGap = 1f;
+    [SerializeField]
+    bool m_bShouldWriteTaxesToFile = true;
 
     //TODO: move to PLAYER class
     [SerializeField]
@@ -115,6 +117,15 @@ public class Manager : MonoBehaviour
             return 0;
         }
         return s_xInstance.m_iTurnNumber;
+    }
+
+    public static bool ShouldWriteTaxesToFile()
+    {
+        if (s_xInstance == null)
+        {
+            return false;
+        }
+        return s_xInstance.m_bShouldWriteTaxesToFile;
     }
 
     [SerializeField]
