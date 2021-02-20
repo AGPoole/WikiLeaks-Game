@@ -120,4 +120,14 @@ public class CountryData
         }
         return xFake;
     }
+
+    public float GetTotalShare()
+    {
+        float fValue = 0;
+        foreach(var xData in m_xTechCompaniesData)
+        {
+            fValue += xData.GetMarketShare();
+        }
+        return fValue;
+    }
 }

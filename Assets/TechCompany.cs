@@ -14,6 +14,8 @@ public class TechCompany : OrganisationBase
     UnityEngine.UI.Text m_xSavingsGainText;
     [SerializeField]
     UnityEngine.UI.Text m_xTurnsToLevelUpText;
+    [SerializeField]
+    UnityEngine.UI.Text m_xMarketShareText;
 
     int m_iPreviousSize = 1;
 
@@ -32,6 +34,7 @@ public class TechCompany : OrganisationBase
             NotificationSystem.AddNotification(string.Format("Tech company has shrunk to level {0}", iSize.ToString()));
         }
         m_iPreviousSize = iSize;
+        ((TechCompanyData)m_xMyData).UpdateShare();
     }
 
     protected override void UpdateUI()
@@ -41,6 +44,7 @@ public class TechCompany : OrganisationBase
         m_xProfitText.text = xTechCompanyData.GetProfit().ToString("0.00");
         m_xSavingsGainText.text = xTechCompanyData.GetSavingsGain().ToString("0.00");
         m_xTurnsToLevelUpText.text = xTechCompanyData.GetTimeToLevelUp().ToString("0");
+        m_xMarketShareText.text = (xTechCompanyData.GetNormalisedMarketShare()*100).ToString("0.00");
     }
 
     protected override void SetData()
@@ -55,6 +59,8 @@ public class TechCompany : OrganisationBase
 [System.Serializable]
 public class TechCompanyData : OrganisationData
 {
+    float m_fMarketShare = 50;
+
     public override void OnNextTurn()
     {
         GovernmentData xGovernment = m_xCountryData.GetGovernmentData();
@@ -65,13 +71,27 @@ public class TechCompanyData : OrganisationData
         float fTotalProfit = 0;
         if (m_iSize > 0.0f)
         {
-            fTotalProfit += GetTechValues().GetProfitAtLevel(m_iSize);
+            fTotalProfit += GetNormalisedMarketShare()*GetTechValues().GetProfitAtLevel(m_xCountryData.GetTotalTechCompaniesSize());
             xGovernment.PayTaxes(fTotalProfit * xGovernment.GetTaxRate());
             fTotalProfit -= fTotalProfit * xGovernment.GetTaxRate();
         }
         m_fSavings += fTotalProfit;
         base.OnNextTurn();
         m_xCountryData.GetPopulationData().ContributeToHappiness(fTotalProfit);
+    }
+
+    public void UpdateShare()
+    {
+        // TODO: put values in data
+        m_fMarketShare += RandomFromDistribution.RandomNormalDistribution(0f, 1f);
+        if (m_fMarketShare < 1f)
+        {
+            m_fMarketShare = 1f;
+        }
+        if(m_fMarketShare > 100f)
+        {
+            m_fMarketShare = 100f;
+        }
     }
 
     public override OrganisationData ShallowCopy()
@@ -118,5 +138,14 @@ public class TechCompanyData : OrganisationData
     private TechCompanyValues GetTechValues()
     {
         return (TechCompanyValues)GetValues();
+    }
+
+    public float GetMarketShare()
+    {
+        return m_fMarketShare;
+    }
+    public float GetNormalisedMarketShare()
+    {
+        return m_fMarketShare/m_xCountryData.GetTotalShare();
     }
 }
