@@ -90,6 +90,12 @@ public class TechCompanyValues : OrganisationValuesBase
     float m_fTotalCostToLevelUpLinearFactor = 30f;
     [SerializeField]
     float m_fLevelFactor = 1f;
+    [SerializeField]
+    float m_fShareStdDeviation = 0.3f;
+    [SerializeField]
+    float m_fShareMin = 1f;
+    [SerializeField]
+    float m_fShareMax = 100f;
 
     public override float GetCostsAtLevel(int iLevel)
     {
@@ -117,5 +123,19 @@ public class TechCompanyValues : OrganisationValuesBase
             i++;
         }
         return 1000;
+    }
+
+    public float GetShareStdDev()
+    {
+        return m_fShareStdDeviation;
+    }
+
+    public float GetShareMin()
+    {
+        return m_fShareMin;
+    }
+    public float GetShareMax()
+    {
+        return m_fShareMax;
     }
 }

@@ -4628,7 +4628,6 @@ MonoBehaviour:
   m_xUI: {fileID: 1853084160}
   m_iLevel: 0
   m_bHacked: 0
-  m_xOwner: {fileID: 1688866774}
 --- !u!1 &747103354
 GameObject:
   m_ObjectHideFlags: 0
@@ -7036,7 +7035,6 @@ MonoBehaviour:
   m_iLevel: 0
   m_bHacked: 0
   m_xSharesText: {fileID: 229079056}
-  m_xOwner: {fileID: 980479570}
   iSharesBought: 0
 --- !u!1001 &1233761872
 PrefabInstance:
@@ -7851,7 +7849,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1386430395}
   m_HandleRect: {fileID: 1386430394}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -9958,7 +9956,6 @@ MonoBehaviour:
   m_uLastElection: 0
   m_xHappinessSlider: {fileID: 1514053205}
   m_xScoreSlider: {fileID: 2096607773}
-  m_xCountry: {fileID: 1958554215}
   m_xLeftTarget: {fileID: 42256290}
   m_xRightTarget: {fileID: 1344293985}
   m_fHappinessWeight: 1
@@ -12251,7 +12248,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -10.146957, y: 0.000061035156}
+  m_AnchoredPosition: {x: -10.146957, y: 0}
   m_SizeDelta: {x: -20.296127, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &2080925866
@@ -13064,6 +13061,9 @@ MonoBehaviour:
     m_fProfitExponentialDecreaseFactor: 0.98
     m_fTotalCostToLevelUpLinearFactor: 30
     m_fLevelFactor: 1
+    m_fShareStdDeviation: 0.3
+    m_fShareMin: 1
+    m_fShareMax: 100
 --- !u!114 &2130128997
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13401,6 +13401,8 @@ MonoBehaviour:
     - {fileID: 1587854577892866458, guid: b8844e2b7a68f294286f5ef323a35899, type: 3}
     - {fileID: 1587854577892866458, guid: 6af9fcd14e229e54f862d1fac7669e04, type: 3}
     - {fileID: 1587854577892866458, guid: 94be34e6cc88c484bb1e08e1be0661ac, type: 3}
+    - {fileID: 1587854577892866458, guid: c5517c734edafb849bd879d53770dade, type: 3}
+    - {fileID: 1587854577892866458, guid: e7866bdc2b1cf194c86079647d284b67, type: 3}
 --- !u!1 &100020275625698245
 GameObject:
   m_ObjectHideFlags: 0
@@ -13585,7 +13587,6 @@ MonoBehaviour:
   m_iLevel: 0
   m_bHacked: 0
   m_xSharesText: {fileID: 901551853}
-  m_xOwner: {fileID: 1139978402}
   iSharesBought: 0
 --- !u!1001 &7000455101788696826
 PrefabInstance:

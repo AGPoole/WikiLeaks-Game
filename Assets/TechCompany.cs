@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class TechCompany : OrganisationBase
 {
-    [SerializeField]
+   [SerializeField]
     UnityEngine.UI.Text m_xProfitText;
     [SerializeField]
     UnityEngine.UI.Text m_xSavingsGain;
@@ -83,15 +83,8 @@ public class TechCompanyData : OrganisationData
     public void UpdateShare()
     {
         // TODO: put values in data
-        m_fMarketShare += RandomFromDistribution.RandomNormalDistribution(0f, 1f);
-        if (m_fMarketShare < 1f)
-        {
-            m_fMarketShare = 1f;
-        }
-        if(m_fMarketShare > 100f)
-        {
-            m_fMarketShare = 100f;
-        }
+        m_fMarketShare += RandomFromDistribution.RandomNormalDistribution(0f, GetTechValues().GetShareStdDev());
+        m_fMarketShare = Mathf.Clamp(m_fMarketShare, GetTechValues().GetShareMin(), GetTechValues().GetShareMax());
     }
 
     public override OrganisationData ShallowCopy()
@@ -147,5 +140,10 @@ public class TechCompanyData : OrganisationData
     public float GetNormalisedMarketShare()
     {
         return m_fMarketShare/m_xCountryData.GetTotalShare();
+    }
+
+    public void ChangeMarketShare(float fChange)
+    {
+        m_fMarketShare = Mathf.Clamp(m_fMarketShare + fChange, GetTechValues().GetShareMin(), GetTechValues().GetShareMax());
     }
 }

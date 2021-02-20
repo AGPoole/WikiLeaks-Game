@@ -11,6 +11,8 @@ public abstract class SystemBase : MonoBehaviour
     [SerializeField]
     bool m_bHacked = false;
 
+    protected OrganisationBase m_xOwner;
+
     protected int m_iLevelChangeTimer;
 
     protected int m_iHackLevel = 0;
@@ -20,6 +22,14 @@ public abstract class SystemBase : MonoBehaviour
 
     protected virtual void Start()
     {
+        if (m_xOwner == null)
+        {
+            m_xOwner = transform.parent.GetComponent<OrganisationBase>();
+            if (m_xOwner == null)
+            {
+                Debug.LogError("Incorrect object tree to find parent");
+            }
+        }
         SetLevel(m_iLevel, GetDefaultTimer());
         m_fDefences = GetMyValues().GetBaseDefenceMax();
         if(m_xUI == null)
@@ -70,6 +80,16 @@ public abstract class SystemBase : MonoBehaviour
         m_iLevel = iLevel;
 
         m_iLevelChangeTimer = iTimer;
+    }
+
+    public void SetOwner(OrganisationBase xOwner)
+    {
+        m_xOwner = xOwner;
+    }
+
+    public OrganisationBase GetOwner()
+    {
+        return m_xOwner;
     }
 
     public void LevelDown()

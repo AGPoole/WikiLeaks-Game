@@ -4,9 +4,6 @@ using UnityEngine;
 
 public class Censorship : SystemBase
 {
-    [SerializeField]
-    Government m_xOwner;
-
     public override void OnNextTurn(int iOwnerLevel)
     {
         base.OnNextTurn(iOwnerLevel);
@@ -36,11 +33,11 @@ public class Censorship : SystemBase
         base.SetLevel(iLevel, iTimer);
         if (m_iLevel == 2)
         {
-            m_xOwner.DisableElections();
+            ((Government)m_xOwner).DisableElections();
         }
         else
         {
-            m_xOwner.EnableElections();
+            ((Government)m_xOwner).EnableElections();
         }
     }
 

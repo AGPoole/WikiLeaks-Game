@@ -51,9 +51,6 @@ public class Government : OrganisationBase
     [SerializeField]
     UnityEngine.UI.Slider m_xScoreSlider;
 
-    [SerializeField]
-    Country m_xCountry;
-
     StreamWriter m_xStreamWriter;
 
     [SerializeField]
@@ -182,7 +179,7 @@ public class Government : OrganisationBase
         CandidateData xNewCandidateData = xNewCandidate.GetCandidateData();
         xNewCandidateData.SetTaxRate(bLeft ? m_xLeader.GetCandidateData().GetTaxRate() + CandidateValues.GetTaxDifference() : m_xLeader.GetCandidateData().GetTaxRate() + CandidateValues.GetTaxDifference() - CandidateValues.GetTaxDifference());
         xNewCandidateData.SetPoliticalOrientation(eNewOrientation);
-        xNewCandidate.SetUp(m_xCountry.GetCountryData(), this);
+        xNewCandidate.SetUp(GetCountry().GetCountryData(), this);
         if (bLeft)
         {
             m_xLeftCandidate = xNewCandidate;
@@ -303,11 +300,6 @@ public class Government : OrganisationBase
         m_xModifiers.Add(xModifier);
     }
 
-    public Country GetCountry()
-    {
-        return m_xCountry;
-    }
-
     public Candidate GetCandidate(Orientation eOrientation)
     {
         // TODO: change to a hashmap/array
@@ -361,7 +353,7 @@ public class Government : OrganisationBase
                 }
 
         }
-        xNewCandidate.SetUp(m_xCountry.GetCountryData(), this);
+        xNewCandidate.SetUp(GetCountry().GetCountryData(), this);
     }
 
     public int GetTimeTillNextElection()
