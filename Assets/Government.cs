@@ -51,8 +51,9 @@ public class Government : OrganisationBase
     [SerializeField]
     UnityEngine.UI.Slider m_xScoreSlider;
 
+    #if (UNITY_EDITOR)
     StreamWriter m_xStreamWriter;
-
+    #endif
     [SerializeField]
     Transform m_xLeftTarget;
     [SerializeField]
@@ -60,9 +61,10 @@ public class Government : OrganisationBase
 
     protected override void Start()
     {
+        #if (UNITY_EDITOR)
         string xPath = Application.dataPath + "/CSV/Taxes.csv";
         m_xStreamWriter = File.CreateText(xPath);
-
+        #endif
         var xGovData = (GovernmentData)m_xMyData;
         xGovData.SetCandidateData(m_xLeftCandidate.GetCandidateData());
         m_xLeftCandidate.SetAsLeader();
@@ -279,13 +281,15 @@ public class Government : OrganisationBase
             (xGovData.GetCountryData().GetTotalTechCompaniesSize()/80f).ToString("0.00")));
         m_xStreamWriter.Flush();
     }
-    #endif
+#endif
 
+    #if (UNITY_EDITOR)
     void OnApplicationQuit()
     {
         m_xStreamWriter.Close();
         Debug.Log("Application ending after " + Time.time + " seconds");
     }
+    #endif
     void UpdateModifiers()
     {
         for(int i=m_xModifiers.Count-1; i>=0; i--)
