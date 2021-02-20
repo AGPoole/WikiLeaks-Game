@@ -164,10 +164,12 @@ public class Government : OrganisationBase
 
         UpdateModifiers();
 
-        if (Manager.GetTurnNumber() % 100 == 0)
+        #if (UNITY_EDITOR)
+        if (Manager.GetTurnNumber() % 100 == 0 && Manager.ShouldWriteTaxesToFile())
         {
             WriteToFile();
         }
+        #endif
     }
 
     public void EnableElections()
@@ -266,6 +268,7 @@ public class Government : OrganisationBase
         m_xTimeTilNextElectionText.text = GetTimeTillNextElection().ToString();
     }
 
+    #if (UNITY_EDITOR)
     void WriteToFile()
     {
         var xGovData = (GovernmentData)GetData();
@@ -279,6 +282,7 @@ public class Government : OrganisationBase
             (xGovData.GetCountryData().GetTechCompanyData().GetSize()/80f).ToString("0.00")));
         m_xStreamWriter.Flush();
     }
+    #endif
 
     void OnApplicationQuit()
     {
