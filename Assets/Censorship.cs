@@ -4,9 +4,6 @@ using UnityEngine;
 
 public class Censorship : SystemBase
 {
-    [SerializeField]
-    Government m_xOwner;
-
     public override void OnNextTurn(int iOwnerLevel)
     {
         base.OnNextTurn(iOwnerLevel);
@@ -17,14 +14,16 @@ public class Censorship : SystemBase
         var xCensorshipValues = CensorshipValuesContainer.GetCensorshipValues();
         xCensorshipValues.UseNotification();
         // will this work with children?
-        var xTechComp = m_xOwner.GetCountry().GetTechCompany();
-        if (xTechComp.GetData().GetSize() < m_xOwner.GetData().GetSize() * xCensorshipValues.GetRatioRequirement())
+        foreach (var xTechComp in m_xOwner.GetCountry().GetTechCompanies())
         {
-            var xPropagandaSystems = xTechComp.GetSystemsOfType(typeof(Propaganda));
-            foreach (var xSys in xPropagandaSystems)
+            if (xTechComp.GetData().GetSize() < m_xOwner.GetData().GetSize() * xCensorshipValues.GetRatioRequirement())
             {
-                var xPropSys = (Propaganda)xSys;
-                xPropSys.ModifyLevel(-1, 30);
+                var xPropagandaSystems = xTechComp.GetSystemsOfType(typeof(Propaganda));
+                foreach (var xSys in xPropagandaSystems)
+                {
+                    var xPropSys = (Propaganda)xSys;
+                    xPropSys.ModifyLevel(-1, 30);
+                }
             }
         }
     }
@@ -34,11 +33,11 @@ public class Censorship : SystemBase
         base.SetLevel(iLevel, iTimer);
         if (m_iLevel == 2)
         {
-            m_xOwner.DisableElections();
+            ((Government)m_xOwner).DisableElections();
         }
         else
         {
-            m_xOwner.EnableElections();
+            ((Government)m_xOwner).EnableElections();
         }
     }
 

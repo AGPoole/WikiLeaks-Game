@@ -51,9 +51,6 @@ public class Government : OrganisationBase
     [SerializeField]
     UnityEngine.UI.Slider m_xScoreSlider;
 
-    [SerializeField]
-    Country m_xCountry;
-
     #if (UNITY_EDITOR)
     StreamWriter m_xStreamWriter;
     #endif
@@ -186,7 +183,7 @@ public class Government : OrganisationBase
         CandidateData xNewCandidateData = xNewCandidate.GetCandidateData();
         xNewCandidateData.SetTaxRate(bLeft ? m_xLeader.GetCandidateData().GetTaxRate() + CandidateValues.GetTaxDifference() : m_xLeader.GetCandidateData().GetTaxRate() + CandidateValues.GetTaxDifference() - CandidateValues.GetTaxDifference());
         xNewCandidateData.SetPoliticalOrientation(eNewOrientation);
-        xNewCandidate.SetUp(m_xCountry.GetCountryData(), this);
+        xNewCandidate.SetUp(GetCountry().GetCountryData(), this);
         if (bLeft)
         {
             m_xLeftCandidate = xNewCandidate;
@@ -281,7 +278,7 @@ public class Government : OrganisationBase
             xGovData.GetTaxRate().ToString("0.00"), 
             fHappiness.ToString("0.00"),
             (xGovData.GetSize()/140f).ToString("0.00"),
-            (xGovData.GetCountryData().GetTechCompanyData().GetSize()/80f).ToString("0.00")));
+            (xGovData.GetCountryData().GetTotalTechCompaniesSize()/80f).ToString("0.00")));
         m_xStreamWriter.Flush();
     }
 #endif
@@ -309,11 +306,6 @@ public class Government : OrganisationBase
     public void AddModifier(PopularityModifier xModifier)
     {
         m_xModifiers.Add(xModifier);
-    }
-
-    public Country GetCountry()
-    {
-        return m_xCountry;
     }
 
     public Candidate GetCandidate(Orientation eOrientation)
@@ -369,7 +361,7 @@ public class Government : OrganisationBase
                 }
 
         }
-        xNewCandidate.SetUp(m_xCountry.GetCountryData(), this);
+        xNewCandidate.SetUp(GetCountry().GetCountryData(), this);
     }
 
     public int GetTimeTillNextElection()

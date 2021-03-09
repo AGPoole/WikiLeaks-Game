@@ -6,8 +6,6 @@ public class Finance : SystemBase
 {
     [SerializeField]
     UnityEngine.UI.Text m_xSharesText;
-    [SerializeField]
-    TechCompany m_xOwner;
     protected override SystemValuesBase GetMyValues()
     {
         return FinanceValuesContainer.GetFinanceValues();

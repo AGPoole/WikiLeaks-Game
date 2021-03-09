@@ -17,6 +17,8 @@ public abstract class OrganisationBase : MonoBehaviour
     UnityEngine.UI.Text m_xLevelUpRequirementText;
     [SerializeField]
     UnityEngine.UI.Slider m_xSlider;
+    
+    Country m_xCountry;
 
     public OrganisationData GetData() {
         if (m_xMyData == null)
@@ -32,6 +34,10 @@ public abstract class OrganisationBase : MonoBehaviour
     protected virtual void Start()
     {
         SetData();
+        foreach (var xSys in m_xSystems)
+        {
+            xSys.SetOwner(this);
+        }
     }
 
     // Update is called once per frame
@@ -54,6 +60,7 @@ public abstract class OrganisationBase : MonoBehaviour
         }
         // Calculate Total Cost
         float fTotal = 0;
+
         do
         {
             fTotal = 0;
@@ -63,7 +70,7 @@ public abstract class OrganisationBase : MonoBehaviour
             }
             if (fTotal > m_xMyData.GetSize())
             {
-                int iToRemove = UnityEngine.Random.Range(0, m_xSystems.Count - 1);
+                int iToRemove = UnityEngine.Random.Range(0, m_xSystems.Count);
                 m_xSystems[iToRemove].LevelDown();
             }
         } while (fTotal > m_xMyData.GetSize());
@@ -117,6 +124,14 @@ public abstract class OrganisationBase : MonoBehaviour
         return xItems;
     }
 
+    public Country GetCountry()
+    {
+        if (m_xCountry == null)
+        {
+            m_xCountry = transform.parent.gameObject.GetComponent<Country>();
+        }
+        return m_xCountry;
+    }
 }
 
 [System.Serializable]
