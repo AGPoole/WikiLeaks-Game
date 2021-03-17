@@ -8,4 +8,10 @@ public class AttackAction : ActionBase
     {
         m_xOwner.Attack();
     }
+
+    public override void Update()
+    {
+        base.Update();
+        gameObject.SetActive(m_xOwner.IsHackable());
+    }
 }

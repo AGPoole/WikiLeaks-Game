@@ -12960,8 +12960,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_fTimeGap: 0.1
+  m_bShouldWriteTaxesToFile: 1
   m_xMoneyText: {fileID: 2053656420}
   m_fPlayerMoney: 100
+  m_xVertexPrefab: {fileID: 9034355350164614112, guid: e14f9e93c13aeda4b937e8c08852f965, type: 3}
+  m_fConnectionRange: 20
   m_xCountry: {fileID: 1958554215}
   dragSpeed: 2
   xMaxCam: {x: 25, y: 10}
@@ -13449,7 +13452,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_xUI: {fileID: 404975680}
   m_iLevel: 0
-  m_bHacked: 0
+  m_bHacked: 1
   m_eType: 1
   m_xActiveIndicator: {fileID: 0}
   m_bActive: 0

@@ -9,9 +9,9 @@ public class IncreaseMarketShareAction : ActionBase
         ((TechCompanyData)((TechCompany)m_xOwner.GetOwner()).GetData()).ChangeMarketShare(10f);
     }
 
-    public override void SetHacked(bool bHacked)
+    public override void Update()
     {
-        base.SetHacked(bHacked);
-        gameObject.SetActive(bHacked);
+        base.Update();
+        gameObject.SetActive(m_xOwner.IsHacked());
     }
 }

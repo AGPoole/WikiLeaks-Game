@@ -30,9 +30,9 @@ public class DisableAction : ActionBase
         Debug.LogError("Wrong type to disable");
     }
 
-    public override void SetHacked(bool bHacked)
+    public override void Update()
     {
-        base.SetHacked(bHacked);
-        gameObject.SetActive(bHacked);
+        base.Update();
+        gameObject.SetActive(m_xOwner.IsHacked());
     }
 }

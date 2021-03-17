@@ -21,6 +21,12 @@ public class Manager : MonoBehaviour
     [SerializeField]
     float m_fPlayerMoney;
 
+    // TODO: move to a better place
+    [SerializeField]
+    GameObject m_xVertexPrefab;
+    [SerializeField]
+    float m_fConnectionRange;
+
     [SerializeField]
     Country m_xCountry;
 
@@ -69,6 +75,7 @@ public class Manager : MonoBehaviour
             fNextTime = Time.time + m_fTimeGap;
             m_xCountry.OnNextTurn();
             NotificationSystem.OnNextTurn();
+            SystemBase.SetUpVertices();
             m_iTurnNumber++;
             if (DebugSettings.ShouldLogTurnEnd())
             {
@@ -217,6 +224,16 @@ public class Manager : MonoBehaviour
     public float GetMoney()
     {
         return m_fPlayerMoney;
+    }
+
+    public GameObject GetVertexPrefabGameObject()
+    {
+        return m_xVertexPrefab;
+    }
+
+    public float GetConnectionRange()
+    {
+        return m_fConnectionRange;
     }
 }
 
