@@ -9,6 +9,6 @@ public class AttackButton : MonoBehaviour
 
     public void OnClick()
     {
-        m_xParent.GetComponent<SystemBase>().Attack();
+        m_xParent.GetComponent<SystemBase>().Attack(true);
     }
 }

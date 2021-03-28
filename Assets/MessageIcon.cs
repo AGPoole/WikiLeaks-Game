@@ -1,13 +1,25 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class MessageIcon : MonoBehaviour
+public class MessageIcon : MonoBehaviour
 {
     protected Transform m_xTarget;
     protected Transform m_xSource; 
     [SerializeField]
     float m_fSpeed;
+
+    Action m_xCallBack;
+    protected void OnTargetReached()
+    {
+        m_xCallBack();
+    }
+
+    public void SetCallBack(Action xCallBack)
+    {
+        m_xCallBack = xCallBack;
+    }
 
     public void SetTarget(Transform xTransform)
     {
@@ -15,21 +27,32 @@ public abstract class MessageIcon : MonoBehaviour
         m_xTarget = xTransform;
     }
 
+    public Transform GetTarget()
+    {
+        return m_xTarget;
+    }
+
     public void SetSource(Transform xTransform)
     {
         m_xSource = xTransform;
     }
 
+    public Transform GetSource()
+    {
+        return m_xSource;
+    }
+
     // Update is called once per frame
     void Update()
     {
-        transform.position = transform.position + Time.deltaTime * m_fSpeed * (m_xTarget.transform.position - transform.position).normalized;
-        if((m_xTarget.transform.position - transform.position).magnitude < 0.1f)
+        if (!Manager.GetIsPaused())
         {
-            Destroy(gameObject);
-            OnTargetReached();
+            transform.position = transform.position + Time.deltaTime * m_fSpeed * (m_xTarget.transform.position - transform.position).normalized;
+            if ((m_xTarget.transform.position - transform.position).magnitude < 0.1f)
+            {
+                Destroy(gameObject);
+                OnTargetReached();
+            }
         }
     }
-
-    protected abstract void OnTargetReached();
 }

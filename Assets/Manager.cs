@@ -28,6 +28,26 @@ public class Manager : MonoBehaviour
     float m_fConnectionRange;
 
     [SerializeField]
+    int m_iHacksLeft = 10;
+    [SerializeField]
+    int m_iMaxHacksLeft = 10;
+    [SerializeField]
+    float m_fHackRechargeRatePerTurn = 0.01f;
+    [SerializeField]
+    float m_fHackRechargeValue = 0;
+    [SerializeField]
+    UnityEngine.UI.Text m_xHacksText;
+
+    [SerializeField]
+    int m_iTechLevel = 0;
+    [SerializeField]
+    int m_iTechLevelUpPoints = 0;
+    [SerializeField]
+    int[] m_aiTechScoreBoundaries;
+    [SerializeField]
+    UnityEngine.UI.Text m_xTechLevelText;
+
+    [SerializeField]
     Country m_xCountry;
 
     // Start is called before the first frame update
@@ -76,6 +96,19 @@ public class Manager : MonoBehaviour
             m_xCountry.OnNextTurn();
             NotificationSystem.OnNextTurn();
             SystemBase.SetUpVertices();
+            m_fHackRechargeValue += m_fHackRechargeRatePerTurn;
+            if (m_fHackRechargeValue > 1)
+            {
+                m_fHackRechargeValue--;
+                ChangeHacks(1);
+            }
+            m_iTechLevelUpPoints += 1;
+            if(m_iTechLevel<m_aiTechScoreBoundaries.Length && m_iTechLevelUpPoints > m_aiTechScoreBoundaries[m_iTechLevel])
+            {
+                m_iTechLevel++;
+                m_iTechLevelUpPoints = 0;
+            }
+
             m_iTurnNumber++;
             if (DebugSettings.ShouldLogTurnEnd())
             {
@@ -88,6 +121,7 @@ public class Manager : MonoBehaviour
         }
         HandleCameraMovement();
         m_xMoneyText.text = "$" + m_fPlayerMoney.ToString("0.00");
+        m_xTechLevelText.text = "Tech Level: " + GetTechLevel().ToString();
     }
 
     void HandleCameraMovement()
@@ -234,6 +268,35 @@ public class Manager : MonoBehaviour
     public float GetConnectionRange()
     {
         return m_fConnectionRange;
+    }
+
+    public int GetHacksLeft()
+    {
+        return m_iHacksLeft;
+    }
+
+    public void ChangeHacks(int iChange)
+    {
+        m_iHacksLeft += iChange;
+        if(m_iHacksLeft < 0)
+        {
+            m_iHacksLeft = 0;
+        }
+        if (m_iHacksLeft > m_iMaxHacksLeft)
+        {
+            m_iHacksLeft = m_iMaxHacksLeft;
+        }
+        m_xHacksText.text = m_iHacksLeft.ToString();
+    }
+
+    public int GetTechLevel()
+    {
+        return m_iTechLevel;
+    }
+
+    public int GetNumTechLevels()
+    {
+        return m_aiTechScoreBoundaries.Length;
     }
 }
 

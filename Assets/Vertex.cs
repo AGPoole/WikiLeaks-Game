@@ -66,6 +66,13 @@ public class Vertex : MonoBehaviour
         m_xRenderer.startColor = xCol;
         m_xRenderer.endColor = xCol;
     }
+    public void UnHack()
+    {
+        Color xCol = Color.white;
+        xCol.a = 0.4f;
+        m_xRenderer.startColor = xCol;
+        m_xRenderer.endColor = xCol;
+    }
 
     void OnDestroy()
     {

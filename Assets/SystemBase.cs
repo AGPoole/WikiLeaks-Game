@@ -181,23 +181,32 @@ public abstract class SystemBase : MonoBehaviour
     }
     protected abstract SystemValuesBase GetMyValues();
 
-    public void Attack()
+    public void Attack(bool bIsPlayer, int iDamage=1, bool bAttackingPlayer=false)
     {
-        m_fDefences = Mathf.Max(m_fDefences - 1, 0);
+        if (bIsPlayer)
+        {
+            if (Manager.GetManager().GetHacksLeft() <= iDamage)
+            {
+                return;
+            }
+            Manager.GetManager().ChangeHacks(-iDamage);
+        }
+        m_fDefences = Mathf.Max(m_fDefences - iDamage, 0);
         if (Mathf.Approximately(m_fDefences, 0f))
         {
-            Hack();
+            if (bAttackingPlayer)
+            {
+                UnHack();
+            }
+            else
+            {
+                Hack();
+            }
         }
     }
-
     public void Defend()
     {
         m_fDefences = Mathf.Min(m_fDefences + 1, GetMyValues().GetBaseDefenceMax() + GetMyValues().GetAdditionalShieldsMax());
-    }
-
-    public bool GetIsHacked()
-    {
-        return m_bHacked;
     }
 
     protected virtual void Hack()
@@ -209,6 +218,15 @@ public abstract class SystemBase : MonoBehaviour
             {
                 Vertex.GetConnection(this, xSys).Hack();
             }
+        }
+    }
+
+    protected virtual void UnHack()
+    {
+        m_bHacked = false;
+        foreach (SystemBase xSys in m_axConnectedSystems)
+        {
+            Vertex.GetConnection(this, xSys).UnHack();
         }
     }
 
@@ -276,5 +294,17 @@ public abstract class SystemBase : MonoBehaviour
     void OnDestroy()
     {
         s_xAllSystems.Remove(this);
+    }
+
+    public static List<SystemBase> GetAllSystems()
+    {
+        // a little inefficient but prevents errors from modifying actual lists
+        // TODO: look into best C# practices for this-in C++ you'd just use a const list
+        return new List<SystemBase>(s_xAllSystems);
+    }
+
+    public float GetDistanceTo(SystemBase xOther)
+    {
+        return (xOther.transform.position - transform.position).magnitude;
     }
 }

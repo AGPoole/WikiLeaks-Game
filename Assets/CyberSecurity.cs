@@ -29,12 +29,12 @@ public class CyberSecurity : SystemBase
         }
         if (iApplyDefenceTimer <= 0)
         {
-            var xSystemBases = new List<SystemBase>();
-            foreach(var xSys in FindObjectsOfType<SystemBase>())
+            var xSystemBases = GetAllSystems();
+            for(int i=xSystemBases.Count-1; i>=0; i--)
             {
-                if (xSys != this && xSys.GetLevel()>0)
+                if(xSystemBases[i]==this || xSystemBases[i].GetLevel() == 0)
                 {
-                    xSystemBases.Add(xSys);
+                    xSystemBases.RemoveAt(i);
                 }
             }
             int iTotal = 0;
@@ -43,9 +43,8 @@ public class CyberSecurity : SystemBase
                 iTotal += CyberSecurityValuesContainer.GetCyberSecurityValues().GetScoreAtDistance((xSys.transform.position - transform.position).magnitude);
             }
 
-            for (int i=0; i<CyberSecurityValuesContainer.GetCyberSecurityValues().GetDefenceGainAtLevel(m_iLevel); i++)
+            for (int i=0; i<CyberSecurityValuesContainer.GetCyberSecurityValues().GetDefenceGainAtLevel(m_iLevel, Manager.GetManager().GetTechLevel()); i++)
             {
-
                 int iChoice = Random.Range(0, iTotal);
                 int iScoreSoFar = 0;
                 foreach (var xSys in xSystemBases)
@@ -57,7 +56,6 @@ public class CyberSecurity : SystemBase
                         break;
                     }
                 }
-                
             }
             iApplyDefenceTimer = CyberSecurityValuesContainer.GetCyberSecurityValues().GetLaunchTime();
         }
@@ -71,6 +69,7 @@ public class CyberSecurity : SystemBase
         if (m_xSystemQueue.Count > 0 && m_fSystemTimer<0)
         {
             GameObject xMessage = Instantiate(CyberSecurityValuesContainer.GetCyberSecurityValues().GetMessagePrefab(), transform);
+            xMessage.GetComponent<MessageIcon>().SetCallBack(m_xSystemQueue[0].Defend);
             xMessage.GetComponent<MessageIcon>().SetTarget(m_xSystemQueue[0].transform);
             m_fSystemTimer = m_fSystemTimerReset;
             m_xSystemQueue.RemoveAt(0);

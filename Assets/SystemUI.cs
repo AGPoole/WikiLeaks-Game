@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SystemUI : MonoBehaviour
 {
@@ -75,6 +76,13 @@ public class SystemUI : MonoBehaviour
         m_xActions.Add(xNewAction);
         var xNewActionComponent = xNewAction.GetComponent<ActionBase>();
         xNewActionComponent.SetOwner(GetParent());
+        var axButtons = xNewActionComponent.GetComponentsInChildren<UnityEngine.UI.Button>();
+        foreach(var xButton in axButtons)
+        {
+            var xNav = xButton.navigation;
+            xNav.mode = Navigation.Mode.None;
+            xButton.navigation = xNav;
+        }
     }
 
     protected SystemBase GetParent()

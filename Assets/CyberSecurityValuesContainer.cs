@@ -28,10 +28,15 @@ public class CyberSecurityValues : SystemValuesBase
     GameObject m_xMessagePrefab;
     [SerializeField]
     int[] m_aiScoreBoundaries;
+    [SerializeField]
+    float[] m_afTechDefenceGainBonuses;
 
-    public float GetDefenceGainAtLevel(int iLevel)
+    public float GetDefenceGainAtLevel(int iLevel, int iTechLevel)
     {
-        return m_fDefenceGainPerLevel * iLevel;
+        float fTechGain = iTechLevel < m_afTechDefenceGainBonuses.Length ?
+            m_afTechDefenceGainBonuses[iTechLevel] :
+            m_afTechDefenceGainBonuses[m_afTechDefenceGainBonuses.Length - 1];
+        return m_fDefenceGainPerLevel * iLevel + fTechGain;
     }
 
     public int GetLaunchTime()
