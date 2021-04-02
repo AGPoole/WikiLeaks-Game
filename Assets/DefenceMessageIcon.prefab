@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1976775590686788093}
   - component: {fileID: 7432054400095290661}
-  - component: {fileID: 7986718367822380871}
+  - component: {fileID: -8343963576493956885}
   m_Layer: 0
-  m_Name: Shield
+  m_Name: DefenceMessageIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -83,7 +83,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &7986718367822380871
+--- !u!114 &-8343963576493956885
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -92,7 +92,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1813745609784449481}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e111bd8e25ee0c948a5c5ba07e8b6e19, type: 3}
+  m_Script: {fileID: 11500000, guid: b2d285d5c8a2bf0408921bb131d1bcae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_fSpeed: 15

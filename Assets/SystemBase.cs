@@ -4,6 +4,7 @@ using UnityEngine;
 
 public abstract class SystemBase : MonoBehaviour
 {
+    static List<SystemBase> s_xAllSystems;
     [SerializeField]
     SystemUI m_xUI;
     [SerializeField]
@@ -20,8 +21,14 @@ public abstract class SystemBase : MonoBehaviour
     // TODO: this shouldn't be a float
     protected float m_fDefences = 0;
 
+    protected List<SystemBase> m_axConnectedSystems;
+
     protected virtual void Start()
     {
+        if (s_xAllSystems == null)
+        {
+            s_xAllSystems = new List<SystemBase>();
+        }
         if (m_xOwner == null)
         {
             m_xOwner = transform.parent.GetComponent<OrganisationBase>();
@@ -38,6 +45,9 @@ public abstract class SystemBase : MonoBehaviour
             return;
         }
         GetMyValues().SetUpUIActions(m_xUI);
+        s_xAllSystems.Add(this);
+
+        m_axConnectedSystems = new List<SystemBase>();
     }
 
     protected virtual void Update()
@@ -56,6 +66,17 @@ public abstract class SystemBase : MonoBehaviour
     }
 
     public bool IsHacked() { return m_bHacked; }
+    public bool IsHackable() 
+    {
+        foreach(SystemBase xSys in m_axConnectedSystems)
+        {
+            if (xSys.IsHacked())
+            {
+                return true;
+            }
+        }
+        return false;
+    }
     public int GetLevel() { return m_iLevel; }
     public float GetDefences() { return m_fDefences; }
     protected void SetLevel(int iLevel) 
@@ -160,28 +181,130 @@ public abstract class SystemBase : MonoBehaviour
     }
     protected abstract SystemValuesBase GetMyValues();
 
-    public void Attack()
+    public void Attack(bool bIsPlayer, int iDamage=1, bool bAttackingPlayer=false)
     {
-        m_fDefences = Mathf.Max(m_fDefences - 1, 0);
+        if (bIsPlayer)
+        {
+            if (Manager.GetManager().GetHacksLeft() <= iDamage)
+            {
+                return;
+            }
+            Manager.GetManager().ChangeHacks(-iDamage);
+        }
+        m_fDefences = Mathf.Max(m_fDefences - iDamage, 0);
         if (Mathf.Approximately(m_fDefences, 0f))
         {
-            Hack();
+            if (bAttackingPlayer)
+            {
+                UnHack();
+            }
+            else
+            {
+                Hack();
+            }
         }
     }
-
     public void Defend()
     {
         m_fDefences = Mathf.Min(m_fDefences + 1, GetMyValues().GetBaseDefenceMax() + GetMyValues().GetAdditionalShieldsMax());
     }
 
-    public bool GetIsHacked()
-    {
-        return m_bHacked;
-    }
-
     protected virtual void Hack()
     {
         m_bHacked = true;
-        m_xUI.SetHacked(true);
+        foreach(SystemBase xSys in m_axConnectedSystems)
+        {
+            if (xSys.m_bHacked)
+            {
+                Vertex.GetConnection(this, xSys).Hack();
+            }
+        }
+    }
+
+    protected virtual void UnHack()
+    {
+        m_bHacked = false;
+        foreach (SystemBase xSys in m_axConnectedSystems)
+        {
+            Vertex.GetConnection(this, xSys).UnHack();
+        }
+    }
+
+    public static void SetUpVertices()
+    {
+        for(int i = 0; i<s_xAllSystems.Count; i++)
+        {
+            for (int j = i+1; j < s_xAllSystems.Count; j++)
+            {
+                bool bShouldConnected = ShouldBeConnected(s_xAllSystems[i], s_xAllSystems[j]);
+                Vertex xVert = Vertex.GetConnection(s_xAllSystems[i], s_xAllSystems[j]);
+                if (bShouldConnected && xVert==null)
+                {
+                    GameObject xGameObject = Instantiate(Manager.GetManager().GetVertexPrefabGameObject());
+                    xGameObject.GetComponent<Vertex>().SetEndPoints(s_xAllSystems[i], s_xAllSystems[j]);
+                    s_xAllSystems[i].SetConnected(s_xAllSystems[j], true);
+                    s_xAllSystems[j].SetConnected(s_xAllSystems[i], true);
+                }
+                else if (!bShouldConnected && xVert!=null)
+                {
+                    Destroy(xVert.gameObject);
+                    s_xAllSystems[i].SetConnected(s_xAllSystems[j], false);
+                    s_xAllSystems[j].SetConnected(s_xAllSystems[i], false);
+                }
+            }
+        }
+    }
+
+    public void SetConnected(SystemBase xSys, bool bConnected)
+    {
+        if (bConnected)
+        {
+            if (!m_axConnectedSystems.Contains(xSys))
+            {
+                m_axConnectedSystems.Add(xSys);
+            }
+            else
+            {
+                Debug.LogError("Connecting same system twice");
+            }
+        }
+        else
+        {
+            if (m_axConnectedSystems.Contains(xSys))
+            {
+                m_axConnectedSystems.Remove(xSys);
+            }
+            else
+            {
+                Debug.LogError("Removing same system twice");
+            }
+        }
+    }
+
+    public bool IsConnected(SystemBase xSys)
+    {
+        return m_axConnectedSystems.Contains(xSys);
+    }
+
+    public static bool ShouldBeConnected(SystemBase xSystem1, SystemBase xSystem2)
+    {
+        return (xSystem1.transform.position - xSystem2.transform.position).magnitude < Manager.GetManager().GetConnectionRange();
+    }
+
+    void OnDestroy()
+    {
+        s_xAllSystems.Remove(this);
+    }
+
+    public static List<SystemBase> GetAllSystems()
+    {
+        // a little inefficient but prevents errors from modifying actual lists
+        // TODO: look into best C# practices for this-in C++ you'd just use a const list
+        return new List<SystemBase>(s_xAllSystems);
+    }
+
+    public float GetDistanceTo(SystemBase xOther)
+    {
+        return (xOther.transform.position - transform.position).magnitude;
     }
 }

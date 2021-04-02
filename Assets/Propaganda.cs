@@ -65,10 +65,16 @@ public class Propaganda : SystemBase
         {
             m_bActive = true;
             GameObject xPropagandaMessage = Instantiate(PropagandaValuesContainer.GetPropagandaValues(m_eType).GetPropagandaMessageObject(), transform);
-            xPropagandaMessage.GetComponent<PropagandaMessageIcon>().SetSource(transform);
+            xPropagandaMessage.GetComponent<MessageIcon>().SetSource(transform);
             Orientation eOrientation = m_eType == PropagandaValuesContainer.ObjectType.Government ? Orientation.LEFT : Orientation.RIGHT;
-            xPropagandaMessage.GetComponent<PropagandaMessageIcon>().SetTarget(m_xGov.GetTarget(eOrientation));
-            xPropagandaMessage.GetComponent<PropagandaMessageIcon>().SetGovernment(m_xGov);
+            xPropagandaMessage.GetComponent<MessageIcon>().SetTarget(m_xGov.GetTarget(eOrientation));
+            xPropagandaMessage.GetComponent<MessageIcon>().SetCallBack(
+                () =>
+                {
+                    var xPopMod = gameObject.GetComponent<Propaganda>().CreatePopularityModifier();
+                    m_xGov.AddModifier(xPopMod);
+                }
+            );
         }
     }
 

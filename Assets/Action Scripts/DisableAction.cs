@@ -20,19 +20,30 @@ public class DisableAction : ActionBase
     }
     public override void OnClick()
     {
-        var xSecOwner = m_xOwner.GetComponent<CyberSecurity>();
-        if (xSecOwner != null)
         {
-            GetComponentInChildren<UnityEngine.UI.Button>().image.sprite = xSecOwner.IsDisabledByPlayer() ? m_xOnSprite : m_xOffSprite;
-            xSecOwner.SetDisabledByPlayer(!xSecOwner.IsDisabledByPlayer());
-            return;
+            var xSecOwner = m_xOwner.GetComponent<CyberSecurity>();
+            if (xSecOwner != null)
+            {
+                GetComponentInChildren<UnityEngine.UI.Button>().image.sprite = xSecOwner.IsDisabledByPlayer() ? m_xOnSprite : m_xOffSprite;
+                xSecOwner.SetDisabledByPlayer(!xSecOwner.IsDisabledByPlayer());
+                return;
+            }
+        }
+        {
+            var xAVOwner = m_xOwner.GetComponent<AntiVirusSystem>();
+            if (xAVOwner != null)
+            {
+                GetComponentInChildren<UnityEngine.UI.Button>().image.sprite = xAVOwner.IsDisabledByPlayer() ? m_xOnSprite : m_xOffSprite;
+                xAVOwner.SetDisabledByPlayer(!xAVOwner.IsDisabledByPlayer());
+                return;
+            }
         }
         Debug.LogError("Wrong type to disable");
     }
 
-    public override void SetHacked(bool bHacked)
+    public override void Update()
     {
-        base.SetHacked(bHacked);
-        gameObject.SetActive(bHacked);
+        base.Update();
+        gameObject.SetActive(m_xOwner.IsHacked());
     }
 }

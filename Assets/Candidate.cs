@@ -96,7 +96,7 @@ public class Candidate : MonoBehaviour
         m_xExposeButton.SetActive(false);
         foreach (var xProp in axPropagandas)
         {
-            if (xProp.GetIsHacked())
+            if (xProp.IsHacked())
             {
                 m_xExposeButton.SetActive(true);
             }

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SystemUI : MonoBehaviour
 {
@@ -30,7 +31,7 @@ public class SystemUI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        m_xActionsBase.SetActive(s_xSelected == this);
+        m_xActionsBase.SetActive(s_xSelected == this && GetParent().GetLevel()>0);
         m_xLevelText.text = GetParent().GetLevel().ToString();
         m_xDefencesText.text = GetParent().GetDefences().ToString("0");
         if (GetParent().GetLevel() > 0f)
@@ -39,6 +40,12 @@ public class SystemUI : MonoBehaviour
         }
         Color c = m_xTitleText.color;
         m_xTitleText.color = new Color(c.r, c.g, c.b, GetParent().GetLevel() > 0 ? 1f : 0.4f);
+
+        foreach(GameObject xActionObject in m_xActions)
+        {
+            ActionBase xAction = xActionObject.GetComponent<ActionBase>();
+            xAction.Update();
+        }
     }
 
 
@@ -69,20 +76,17 @@ public class SystemUI : MonoBehaviour
         m_xActions.Add(xNewAction);
         var xNewActionComponent = xNewAction.GetComponent<ActionBase>();
         xNewActionComponent.SetOwner(GetParent());
-
-        xNewActionComponent.SetHacked(GetParent().IsHacked());
+        var axButtons = xNewActionComponent.GetComponentsInChildren<UnityEngine.UI.Button>();
+        foreach(var xButton in axButtons)
+        {
+            var xNav = xButton.navigation;
+            xNav.mode = Navigation.Mode.None;
+            xButton.navigation = xNav;
+        }
     }
 
     protected SystemBase GetParent()
     {
         return transform.parent.GetComponent<SystemBase>();
-    }
-
-    public void SetHacked(bool bHacked)
-    {
-        foreach(var xAction in m_xActions)
-        {
-            xAction.GetComponent<ActionBase>().SetHacked(bHacked);
-        }
     }
 }
