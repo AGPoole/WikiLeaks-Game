@@ -241,8 +241,9 @@ public abstract class SystemBase : MonoBehaviour
     {
         m_fDefences = Mathf.Min(m_fDefences + 1, GetMyValues().GetBaseDefenceMax() + GetMyValues().GetAdditionalShieldsMax());
     }
-
-    protected virtual void Hack()
+    
+    // TODO: make private
+    public virtual void Hack()
     {
         m_bHacked = true;
         foreach(SystemBase xSys in m_axConnectedSystems)

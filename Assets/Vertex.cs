@@ -91,10 +91,21 @@ public class Vertex : MonoBehaviour
 
     public void Attack()
     {
-        m_iDefence--;
-        if (m_iDefence < 0)
+        if (m_xStart.IsHacked() || m_xEnd.IsHacked())
         {
-            m_iDefence = 0;
+            m_iDefence--;
+            if (m_iDefence < 0)
+            {
+                m_iDefence = 0;
+                if (!m_xStart.IsHacked())
+                {
+                    m_xStart.Hack();
+                }
+                else if (!m_xEnd.IsHacked())
+                {
+                    m_xEnd.Hack();
+                }
+            }
         }
     }
 
