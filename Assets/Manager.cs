@@ -25,6 +25,8 @@ public class Manager : MonoBehaviour
     [SerializeField]
     GameObject m_xVertexPrefab;
     [SerializeField]
+    GameObject m_xLineRendererPrefab;
+    [SerializeField]
     float m_fConnectionRange;
 
     [SerializeField]
@@ -49,6 +51,19 @@ public class Manager : MonoBehaviour
 
     [SerializeField]
     Country m_xCountry;
+
+    [SerializeField]
+    float m_fHexagonEdgeSize;
+
+    public enum GridDirection : int
+    {
+        UP,
+        UP_RIGHT,
+        DOWN_RIGHT,
+        DOWN,
+        DOWN_LEFT,
+        UP_LEFT
+    }
 
     // Start is called before the first frame update
     //void Awake()
@@ -264,6 +279,10 @@ public class Manager : MonoBehaviour
     {
         return m_xVertexPrefab;
     }
+    public GameObject GetLineRendererPrefabGameObject()
+    {
+        return m_xLineRendererPrefab;
+    }
 
     public float GetConnectionRange()
     {
@@ -297,6 +316,79 @@ public class Manager : MonoBehaviour
     public int GetNumTechLevels()
     {
         return m_aiTechScoreBoundaries.Length;
+    }
+
+    public Vector3 GetPositionFromGridCoords(int iX, int iY)
+    {
+        float fHexHeight = 0.86602540378f*m_fHexagonEdgeSize*2;
+        float fHexWidth = 2f*m_fHexagonEdgeSize;
+        float fOffset = ProjectMaths.Mod(iX, 2) == 0 ? 0 : -fHexHeight/2;
+        return new Vector3(iX * fHexWidth*0.75f, (iY * fHexHeight) + fOffset, 0f);
+    }
+
+    public float GetHexagonEdgeSize()
+    {
+        return m_fHexagonEdgeSize;
+    }
+
+    public static SystemBase GetAdjacentSystem(int iX, int iY, GridDirection eDir)
+    {
+        switch (eDir)
+        {
+            case GridDirection.UP:
+            {
+                return SystemBase.GetSystemWithCoords(iX, iY + 1);
+            }
+            case GridDirection.UP_LEFT:
+            {
+                if(ProjectMaths.Mod(iX, 2) == 0)
+                {
+                    return SystemBase.GetSystemWithCoords(iX - 1, iY+1);
+                }
+                else
+                {
+                    return SystemBase.GetSystemWithCoords(iX-1, iY);
+                }
+            }
+            case GridDirection.DOWN_LEFT:
+            {
+                if (ProjectMaths.Mod(iX, 2) == 0)
+                {
+                    return SystemBase.GetSystemWithCoords(iX - 1, iY);
+                }
+                else
+                {
+                    return SystemBase.GetSystemWithCoords(iX - 1, iY - 1);
+                }
+            }
+            case GridDirection.DOWN:
+            {
+                return SystemBase.GetSystemWithCoords(iX, iY - 1);
+            }
+            case GridDirection.DOWN_RIGHT:
+            {
+                if (ProjectMaths.Mod(iX, 2) == 0)
+                {
+                    return SystemBase.GetSystemWithCoords(iX + 1, iY);
+                }
+                else
+                {
+                    return SystemBase.GetSystemWithCoords(iX + 1, iY - 1);
+                }
+            }
+            case GridDirection.UP_RIGHT:
+            {
+                if (ProjectMaths.Mod(iX, 2) == 0)
+                {
+                    return SystemBase.GetSystemWithCoords(iX + 1, iY + 1);
+                }
+                else
+                {
+                    return SystemBase.GetSystemWithCoords(iX + 1, iY);
+                }
+            }
+        }
+        return null;
     }
 }
 

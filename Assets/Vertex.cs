@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// TODO: Rename this
 [RequireComponent(typeof(LineRenderer))]
 public class Vertex : MonoBehaviour
 {
@@ -20,6 +21,7 @@ public class Vertex : MonoBehaviour
             s_xAllVertices = new List<Vertex>();
         }
         s_xAllVertices.Add(this);
+        UnHack();
     }
 
     public void SetEndPoints(SystemBase xStart, SystemBase xEnd)

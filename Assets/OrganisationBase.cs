@@ -17,7 +17,11 @@ public abstract class OrganisationBase : MonoBehaviour
     UnityEngine.UI.Text m_xLevelUpRequirementText;
     [SerializeField]
     UnityEngine.UI.Slider m_xSlider;
-    
+    [SerializeField]
+    int m_iXPosInGrid = 0;
+    [SerializeField]
+    int m_iYPosInGrid = 0;
+
     Country m_xCountry;
 
     public OrganisationData GetData() {
@@ -43,7 +47,7 @@ public abstract class OrganisationBase : MonoBehaviour
     // Update is called once per frame
     protected virtual void Update()
     {
-        
+        transform.position = Manager.GetManager().GetPositionFromGridCoords(m_iXPosInGrid, m_iYPosInGrid);
     }
 
     public virtual void OnNextTurn()

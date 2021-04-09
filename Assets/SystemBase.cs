@@ -11,6 +11,10 @@ public abstract class SystemBase : MonoBehaviour
     protected int m_iLevel = 0;
     [SerializeField]
     bool m_bHacked = false;
+    [SerializeField]
+    int m_iXPosInGrid = 0;
+    [SerializeField]
+    int m_iYPosInGrid = 0;
 
     protected OrganisationBase m_xOwner;
 
@@ -22,6 +26,8 @@ public abstract class SystemBase : MonoBehaviour
     protected float m_fDefences = 0;
 
     protected List<SystemBase> m_axConnectedSystems;
+
+   List<GameObject> m_xHexagonLineRenderers;
 
     protected virtual void Start()
     {
@@ -48,11 +54,38 @@ public abstract class SystemBase : MonoBehaviour
         s_xAllSystems.Add(this);
 
         m_axConnectedSystems = new List<SystemBase>();
+
+        transform.position = Manager.GetManager().GetPositionFromGridCoords(m_iXPosInGrid, m_iYPosInGrid);
+
+        m_xHexagonLineRenderers = new List<GameObject>();
+        // Use 7 to loop to start
+        for(int i = 0; i<6; i++)
+        {
+            GameObject xLineRenderer = Instantiate(Manager.GetManager().GetLineRendererPrefabGameObject());
+            const float fAngleDifference = Mathf.PI / 3;
+            const float fStartingAngle = -Mathf.PI / 6;
+            float fAngle1 = fStartingAngle + (i * fAngleDifference);
+            float fAngle2 = fStartingAngle + ((i+1) * fAngleDifference);
+            Vector3 xPos1 = transform.position + (new Vector3(Mathf.Sin(fAngle1), Mathf.Cos(fAngle1), 0f) * Manager.GetManager().GetHexagonEdgeSize());
+            Vector3 xPos2 = transform.position + (new Vector3(Mathf.Sin(fAngle2), Mathf.Cos(fAngle2), 0f) * Manager.GetManager().GetHexagonEdgeSize());
+
+            xLineRenderer.GetComponent<LineRenderer>().positionCount = 2;
+            xLineRenderer.GetComponent<LineRenderer>().SetPositions(new Vector3[] { xPos1, xPos2 });
+
+            m_xHexagonLineRenderers.Add(xLineRenderer);
+        }
     }
 
     protected virtual void Update()
     {
-        
+        transform.position = Manager.GetManager().GetPositionFromGridCoords(m_iXPosInGrid, m_iYPosInGrid);
+
+        for(int i=0; i<6; i++)
+        {
+            SystemBase xSys = Manager.GetAdjacentSystem(m_iXPosInGrid, m_iYPosInGrid, (Manager.GridDirection)i);
+            bool bEnabled = xSys==null || xSys.m_xOwner!=m_xOwner;
+            m_xHexagonLineRenderers[i].SetActive(bEnabled);
+        }
     }
     public virtual void OnNextTurn(int iOwnerLevel)
     {
@@ -306,5 +339,17 @@ public abstract class SystemBase : MonoBehaviour
     public float GetDistanceTo(SystemBase xOther)
     {
         return (xOther.transform.position - transform.position).magnitude;
+    }
+
+    public static SystemBase GetSystemWithCoords(int iX, int iY)
+    {
+        foreach(SystemBase xSys in s_xAllSystems)
+        {
+            if(iX==xSys.m_iXPosInGrid && iY == xSys.m_iYPosInGrid)
+            {
+                return xSys;
+            }
+        }
+        return null;
     }
 }

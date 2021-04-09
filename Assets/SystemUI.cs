@@ -46,6 +46,12 @@ public class SystemUI : MonoBehaviour
             ActionBase xAction = xActionObject.GetComponent<ActionBase>();
             xAction.Update();
         }
+        //Vector3 xTarget = new Vector3(transform.position.x, Camera.main.transform.position.y, Camera.main.transform.position.z);
+        Vector3 xTarget = Camera.main.transform.position;
+        Vector3 v = xTarget - transform.position;
+        v.y = v.z = 0.0f;
+        transform.LookAt(xTarget - v);
+        transform.Rotate(0, 180, 0);
     }
 
 
