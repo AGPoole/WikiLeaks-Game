@@ -41,7 +41,7 @@ public class Censorship : SystemBase
         }
     }
 
-    protected override SystemValuesBase GetMyValues()
+    public override SystemValuesBase GetMyValues()
     {
         return CensorshipValuesContainer.GetCensorshipValues();
     }

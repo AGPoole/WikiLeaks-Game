@@ -95,7 +95,7 @@ public class Propaganda : SystemBase
             m_xActiveIndicator.SetActive(false);
     }
 
-    protected override SystemValuesBase GetMyValues()
+    public override SystemValuesBase GetMyValues()
     {
         return PropagandaValuesContainer.GetPropagandaValues(m_eType);
     }

@@ -14,7 +14,7 @@ public class CyberSecurity : SystemBase
         m_xSystemQueue = new List<SystemBase>();
     }
 
-    protected override SystemValuesBase GetMyValues()
+    public override SystemValuesBase GetMyValues()
     {
         return CyberSecurityValuesContainer.GetCyberSecurityValues();
     }

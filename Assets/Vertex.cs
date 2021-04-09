@@ -16,9 +16,18 @@ public class Vertex : MonoBehaviour
     [SerializeField]
     GameObject m_xDefenceIconInstance;
     [SerializeField]
+    int m_iDefenceMax = 10;
     int m_iDefence = 10;
     [SerializeField]
+    float m_fAdditionalDefenceDegradationTime = 0.5f;
+    [SerializeField]
+    float m_fDefenceRechargeTime = 0.5f;
+    [SerializeField]
+    float m_fDefencePauseAtZero = 2f;
+    [SerializeField]
     UnityEngine.UI.Text m_xDefenceText;
+
+    List<CyberSecurity> m_xCyberSecs;
 
     LineRenderer m_xRenderer;
     // Start is called before the first frame update
@@ -31,7 +40,7 @@ public class Vertex : MonoBehaviour
         }
         s_xAllVertices.Add(this);
         UnHack();
-    }
+     }
 
     public void SetEndPoints(SystemBase xStart, SystemBase xEnd)
     {
@@ -44,9 +53,57 @@ public class Vertex : MonoBehaviour
         m_xDefenceIconInstance.transform.position = (xStart.transform.position + xEnd.transform.position) / 2;
     }
 
+    float m_fRechargeTimer = 0;
+    float m_fDeteriorationTimer = 0;
     void Update()
     {
-        m_xDefenceText.text = m_iDefence.ToString();  
+        m_xDefenceText.text = m_iDefence.ToString();
+        m_iDefenceMax = m_xStart.GetMyValues().GetBaseDefenceMax();
+        m_fAdditionalDefenceDegradationTime = m_xStart.GetMyValues().GetAdditionalShielddeteriorationTime();
+        m_fDefenceRechargeTime = m_xStart.GetMyValues().GetBaseDefenceRefreshTime();
+        if (m_xEnd.GetMyValues().GetBaseDefenceMax() > m_iDefenceMax)
+        {
+            m_iDefenceMax = m_xEnd.GetMyValues().GetBaseDefenceMax();
+        }
+        if(m_xEnd.GetMyValues().GetBaseDefenceRefreshTime() < m_fDefenceRechargeTime)
+        {
+            m_fDefenceRechargeTime = m_xEnd.GetMyValues().GetBaseDefenceRefreshTime();
+        }
+        if (m_xEnd.GetMyValues().GetAdditionalShielddeteriorationTime() > m_fAdditionalDefenceDegradationTime)
+        {
+            m_fAdditionalDefenceDegradationTime = m_xEnd.GetMyValues().GetAdditionalShielddeteriorationTime();
+        }
+        if (!Manager.GetIsPaused())
+        {
+            //TODO: make Cybersecurity add more
+            if (m_iDefence < m_iDefenceMax)
+            {
+                m_fRechargeTimer += Time.deltaTime;
+                if ((m_iDefence != 0 && m_fRechargeTimer > m_fDefenceRechargeTime)
+                    || m_fRechargeTimer > m_fDefencePauseAtZero)
+                {
+                    m_fRechargeTimer -= m_iDefence == 0 ? m_fDefencePauseAtZero : m_fDefenceRechargeTime;
+                    m_iDefence++;
+                }
+            }
+            else
+            {
+                m_fRechargeTimer = 0;
+            }
+            if (m_iDefence > m_iDefenceMax)
+            {
+                m_fDeteriorationTimer += Time.deltaTime;
+                if (m_fDeteriorationTimer > m_fAdditionalDefenceDegradationTime)
+                {
+                    m_fDeteriorationTimer -= m_fAdditionalDefenceDegradationTime;
+                    m_iDefence++;
+                }
+            }
+            else
+            {
+                m_fDeteriorationTimer = 0;
+            }
+        }
     }
 
     public bool Contains(SystemBase xSys)
@@ -93,9 +150,15 @@ public class Vertex : MonoBehaviour
 
     public void Attack()
     {
+        if (Manager.GetManager().GetHacksLeft() <= 1)
+        {
+            return;
+        }
+        Manager.GetManager().ChangeHacks(-1);
         if (m_xStart.IsHacked() || m_xEnd.IsHacked())
         {
             m_iDefence--;
+            m_fRechargeTimer = 0;
             if (m_iDefence < 0)
             {
                 m_iDefence = 0;
@@ -108,6 +171,14 @@ public class Vertex : MonoBehaviour
                     m_xEnd.Hack();
                 }
             }
+        }
+    }
+
+    public void Defend()
+    {
+        if (m_iDefence < m_iDefenceMax)
+        {
+            m_iDefence += 1;
         }
     }
 

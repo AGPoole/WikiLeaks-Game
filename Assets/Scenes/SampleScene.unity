@@ -2740,7 +2740,7 @@ RectTransform:
   m_Children:
   - {fileID: 901551855}
   m_Father: {fileID: 1274283168}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -6278,7 +6278,7 @@ RectTransform:
   m_Children:
   - {fileID: 1172752348}
   m_Father: {fileID: 434681638}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -16275,7 +16275,7 @@ RectTransform:
   m_Children:
   - {fileID: 229079055}
   m_Father: {fileID: 1162170716}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -16626,10 +16626,9 @@ MonoBehaviour:
     - m_iCost: 100
       m_iLevelRequirement: 0
       m_iTechRequirement: 0
-    m_fBaseDefenceMax: 10
-    m_fBaseDefenceRefreshRate: 0.1
-    m_fAdditionalShielddeteriorationRate: 0.1
-    m_fAdditionalShieldsMax: 20
+    m_iBaseDefenceMax: 10
+    m_fBaseDefenceRefreshTime: 0.5
+    m_fAdditionalShielddeteriorationTime: 0.5
     m_xActions:
     - {fileID: 1587854577892866458, guid: 624cc080eb54a4b46abdba5602250640, type: 3}
     - {fileID: 1587854577892866458, guid: b8844e2b7a68f294286f5ef323a35899, type: 3}
@@ -16669,10 +16668,9 @@ MonoBehaviour:
     - m_iCost: 100
       m_iLevelRequirement: 0
       m_iTechRequirement: 0
-    m_fBaseDefenceMax: 10
-    m_fBaseDefenceRefreshRate: 0.1
-    m_fAdditionalShielddeteriorationRate: 0.1
-    m_fAdditionalShieldsMax: 5
+    m_iBaseDefenceMax: 10
+    m_fBaseDefenceRefreshTime: 0.1
+    m_fAdditionalShielddeteriorationTime: 0.1
     m_xActions:
     - {fileID: 1587854577892866458, guid: 624cc080eb54a4b46abdba5602250640, type: 3}
     - {fileID: 1587854577892866458, guid: b8844e2b7a68f294286f5ef323a35899, type: 3}
@@ -16854,10 +16852,9 @@ MonoBehaviour:
     - m_iCost: 100
       m_iLevelRequirement: 0
       m_iTechRequirement: 0
-    m_fBaseDefenceMax: 10
-    m_fBaseDefenceRefreshRate: 0.1
-    m_fAdditionalShielddeteriorationRate: 0.1
-    m_fAdditionalShieldsMax: 20
+    m_iBaseDefenceMax: 10
+    m_fBaseDefenceRefreshTime: 0.5
+    m_fAdditionalShielddeteriorationTime: 0.5
     m_xActions:
     - {fileID: 1587854577892866458, guid: 624cc080eb54a4b46abdba5602250640, type: 3}
     - {fileID: 1587854577892866458, guid: b8844e2b7a68f294286f5ef323a35899, type: 3}
@@ -16881,10 +16878,9 @@ MonoBehaviour:
     - m_iCost: 5
       m_iLevelRequirement: 0
       m_iTechRequirement: 0
-    m_fBaseDefenceMax: 10
-    m_fBaseDefenceRefreshRate: 0.1
-    m_fAdditionalShielddeteriorationRate: 0.1
-    m_fAdditionalShieldsMax: 20
+    m_iBaseDefenceMax: 10
+    m_fBaseDefenceRefreshTime: 0.5
+    m_fAdditionalShielddeteriorationTime: 0.5
     m_xActions:
     - {fileID: 1587854577892866458, guid: 624cc080eb54a4b46abdba5602250640, type: 3}
     - {fileID: 1587854577892866458, guid: b8844e2b7a68f294286f5ef323a35899, type: 3}
@@ -16914,10 +16910,9 @@ MonoBehaviour:
     - m_iCost: 0
       m_iLevelRequirement: 0
       m_iTechRequirement: 0
-    m_fBaseDefenceMax: 10
-    m_fBaseDefenceRefreshRate: 0.1
-    m_fAdditionalShielddeteriorationRate: 0.1
-    m_fAdditionalShieldsMax: 20
+    m_iBaseDefenceMax: 10
+    m_fBaseDefenceRefreshTime: 0.5
+    m_fAdditionalShielddeteriorationTime: 0.5
     m_xActions:
     - {fileID: 1587854577892866458, guid: 624cc080eb54a4b46abdba5602250640, type: 3}
     - {fileID: 1587854577892866458, guid: b8844e2b7a68f294286f5ef323a35899, type: 3}
@@ -16942,10 +16937,9 @@ MonoBehaviour:
     - m_iCost: 5
       m_iLevelRequirement: 0
       m_iTechRequirement: 0
-    m_fBaseDefenceMax: 10
-    m_fBaseDefenceRefreshRate: 0.1
-    m_fAdditionalShielddeteriorationRate: 0.1
-    m_fAdditionalShieldsMax: 5
+    m_iBaseDefenceMax: 15
+    m_fBaseDefenceRefreshTime: 0.5
+    m_fAdditionalShielddeteriorationTime: 0.5
     m_xActions:
     - {fileID: 1587854577892866458, guid: 624cc080eb54a4b46abdba5602250640, type: 3}
     - {fileID: 1587854577892866458, guid: b8844e2b7a68f294286f5ef323a35899, type: 3}

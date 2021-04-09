@@ -22,9 +22,6 @@ public abstract class SystemBase : MonoBehaviour
 
     protected int m_iHackLevel = 0;
 
-    // TODO: this shouldn't be a float
-    protected float m_fDefences = 0;
-
     protected List<Vertex> m_xVertices;
 
     List<GameObject> m_xHexagonLineRenderers;
@@ -44,7 +41,6 @@ public abstract class SystemBase : MonoBehaviour
             }
         }
         SetLevel(m_iLevel, GetDefaultTimer());
-        m_fDefences = GetMyValues().GetBaseDefenceMax();
         if(m_xUI == null)
         {
             Debug.LogError(string.Format("Missing UI object on {0}", gameObject.name));
@@ -93,13 +89,7 @@ public abstract class SystemBase : MonoBehaviour
     }
     public virtual void OnNextTurn(int iOwnerLevel)
     {
-        if (m_fDefences < GetMyValues().GetBaseDefenceMax())
-        {
-            m_fDefences = Mathf.Min(m_fDefences + GetMyValues().GetBaseDefenceRefreshRate(), GetMyValues().GetBaseDefenceMax());
-        }else if(m_fDefences > GetMyValues().GetBaseDefenceMax())
-        {
-            m_fDefences = Mathf.Max(m_fDefences - GetMyValues().GetAdditionalShielddeteriorationRate(), GetMyValues().GetBaseDefenceMax());
-        }
+        
     }
 
     public bool IsHacked() { return m_bHacked; }
@@ -116,7 +106,6 @@ public abstract class SystemBase : MonoBehaviour
         return false;
     }
     public int GetLevel() { return m_iLevel; }
-    public float GetDefences() { return m_fDefences; }
     protected void SetLevel(int iLevel) 
     {
         SetLevel(iLevel, GetDefaultTimer());
@@ -217,34 +206,41 @@ public abstract class SystemBase : MonoBehaviour
     {
         m_xUI.OnActivation();
     }
-    protected abstract SystemValuesBase GetMyValues();
+    public abstract SystemValuesBase GetMyValues();
 
+    // TODO: remove this
     public void Attack(bool bIsPlayer, int iDamage=1, bool bAttackingPlayer=false)
     {
-        if (bIsPlayer)
-        {
-            if (Manager.GetManager().GetHacksLeft() <= iDamage)
-            {
-                return;
-            }
-            Manager.GetManager().ChangeHacks(-iDamage);
-        }
-        m_fDefences = Mathf.Max(m_fDefences - iDamage, 0);
-        if (Mathf.Approximately(m_fDefences, 0f))
-        {
-            if (bAttackingPlayer)
-            {
-                UnHack();
-            }
-            else
-            {
-                Hack();
-            }
-        }
+        //if (bIsPlayer)
+        //{
+        //    if (Manager.GetManager().GetHacksLeft() <= iDamage)
+        //    {
+        //        return;
+        //    }
+        //    Manager.GetManager().ChangeHacks(-iDamage);
+        //}
+        //m_fDefences = Mathf.Max(m_fDefences - iDamage, 0);
+        //if (Mathf.Approximately(m_fDefences, 0f))
+        //{
+        //    if (bAttackingPlayer)
+        //    {
+        //        UnHack();
+        //    }
+        //    else
+        //    {
+        //        Hack();
+        //    }
+        //}
     }
     public void Defend()
     {
-        m_fDefences = Mathf.Min(m_fDefences + 1, GetMyValues().GetBaseDefenceMax() + GetMyValues().GetAdditionalShieldsMax());
+        for (int i = 0; i < 6; i++)
+        {
+            if (m_xVertices[i] != null)
+            {
+                m_xVertices[i].Defend();
+            }
+        }
     }
     
     // TODO: make private

@@ -10,8 +10,6 @@ public class SystemUI : MonoBehaviour
     [SerializeField]
     UnityEngine.UI.Text m_xLevelText;
     [SerializeField]
-    UnityEngine.UI.Text m_xDefencesText;
-    [SerializeField]
     GameObject m_xActionsBase;
     [SerializeField]
     List<GameObject> m_xActions;
@@ -33,7 +31,6 @@ public class SystemUI : MonoBehaviour
     {
         m_xActionsBase.SetActive(s_xSelected == this && GetParent().GetLevel()>0);
         m_xLevelText.text = GetParent().GetLevel().ToString();
-        m_xDefencesText.text = GetParent().GetDefences().ToString("0");
         if (GetParent().GetLevel() > 0f)
         {
             m_xTitleText.color = GetParent().IsHacked() ? Color.green : Color.white;
@@ -58,13 +55,11 @@ public class SystemUI : MonoBehaviour
     public void OnActivation()
     {
         m_xLevelText.gameObject.SetActive(true);
-        m_xDefencesText.gameObject.SetActive(true);
     }
 
     public void OnDeactivation()
     {
         m_xLevelText.gameObject.SetActive(false);
-        m_xDefencesText.gameObject.SetActive(false);
     }
 
     public void AddAction(GameObject xAction)

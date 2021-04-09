@@ -8,7 +8,7 @@ public class AntiVirusSystem : SystemBase
     float m_fSystemTimer;
     float m_fSystemTimerReset = 0.1f;
 
-    protected override SystemValuesBase GetMyValues()
+    public override SystemValuesBase GetMyValues()
     {
         return AntiVirusValuesContainer.GetAntiVirusValues();
     }
