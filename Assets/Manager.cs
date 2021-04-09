@@ -390,6 +390,28 @@ public class Manager : MonoBehaviour
         }
         return null;
     }
+
+    public static GridDirection GetOppositeDirection(GridDirection eDir)
+    {
+        switch (eDir)
+        {
+            case GridDirection.UP:
+                return GridDirection.DOWN;
+            case GridDirection.UP_RIGHT:
+                return GridDirection.DOWN_LEFT;
+            case GridDirection.DOWN_RIGHT:
+                return GridDirection.UP_LEFT;
+            case GridDirection.DOWN:
+                return GridDirection.UP;
+            case GridDirection.DOWN_LEFT:
+                return GridDirection.UP_RIGHT;
+            case GridDirection.UP_LEFT:
+                return GridDirection.DOWN_RIGHT;
+            default:
+                UnityEngine.Debug.LogError("Extra Grid Direction case");
+                return GridDirection.UP;
+        }
+    }
 }
 
 [System.Serializable]

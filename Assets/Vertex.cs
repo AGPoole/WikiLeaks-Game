@@ -8,7 +8,9 @@ public class Vertex : MonoBehaviour
 {
     static List<Vertex> s_xAllVertices;
 
+    [SerializeField]
     SystemBase m_xStart;
+    [SerializeField]
     SystemBase m_xEnd;
 
     [SerializeField]
@@ -109,8 +111,26 @@ public class Vertex : MonoBehaviour
         }
     }
 
+    public SystemBase GetStart()
+    {
+        return m_xStart;
+    }
+    
+    public SystemBase GetEnd()
+    {
+        return m_xEnd;
+    }
+
     void OnDestroy()
     {
         s_xAllVertices.Remove(this);
+        if (m_xStart != null)
+        {
+            m_xStart.RemoveVertexWithoutDestroy(this);
+        }
+        if (m_xEnd != null)
+        {
+            m_xEnd.RemoveVertexWithoutDestroy(this);
+        }
     }
 }

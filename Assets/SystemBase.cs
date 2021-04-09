@@ -25,9 +25,9 @@ public abstract class SystemBase : MonoBehaviour
     // TODO: this shouldn't be a float
     protected float m_fDefences = 0;
 
-    protected List<SystemBase> m_axConnectedSystems;
+    protected List<Vertex> m_xVertices;
 
-   List<GameObject> m_xHexagonLineRenderers;
+    List<GameObject> m_xHexagonLineRenderers;
 
     protected virtual void Start()
     {
@@ -53,7 +53,11 @@ public abstract class SystemBase : MonoBehaviour
         GetMyValues().SetUpUIActions(m_xUI);
         s_xAllSystems.Add(this);
 
-        m_axConnectedSystems = new List<SystemBase>();
+        m_xVertices = new List<Vertex>();
+        for(int i=0; i<6; i++)
+        {
+            m_xVertices.Add(null);
+        }
 
         transform.position = Manager.GetManager().GetPositionFromGridCoords(m_iXPosInGrid, m_iYPosInGrid);
 
@@ -101,9 +105,10 @@ public abstract class SystemBase : MonoBehaviour
     public bool IsHacked() { return m_bHacked; }
     public bool IsHackable() 
     {
-        foreach(SystemBase xSys in m_axConnectedSystems)
+        for (int i = 0; i < 6; i++)
         {
-            if (xSys.IsHacked())
+            SystemBase xSys = GetConnectedSystem((Manager.GridDirection)i);
+            if (xSys != null && xSys.m_bHacked)
             {
                 return true;
             }
@@ -246,11 +251,12 @@ public abstract class SystemBase : MonoBehaviour
     public virtual void Hack()
     {
         m_bHacked = true;
-        foreach(SystemBase xSys in m_axConnectedSystems)
+        for(int i=0; i<6; i++)
         {
-            if (xSys.m_bHacked)
+            SystemBase xSys = GetConnectedSystem((Manager.GridDirection)i);
+            if (xSys!=null && xSys.m_bHacked)
             {
-                Vertex.GetConnection(this, xSys).Hack();
+                m_xVertices[i].Hack();
             }
         }
     }
@@ -258,9 +264,12 @@ public abstract class SystemBase : MonoBehaviour
     protected virtual void UnHack()
     {
         m_bHacked = false;
-        foreach (SystemBase xSys in m_axConnectedSystems)
+        for (int i = 0; i < 6; i++)
         {
-            Vertex.GetConnection(this, xSys).UnHack();
+            if (m_xVertices[i] != null)
+            {
+                m_xVertices[i].UnHack();
+            }
         }
     }
 
@@ -268,56 +277,57 @@ public abstract class SystemBase : MonoBehaviour
     {
         for(int i = 0; i<s_xAllSystems.Count; i++)
         {
-            for (int j = i+1; j < s_xAllSystems.Count; j++)
+            SystemBase xSys1 = s_xAllSystems[i];
+            for (int iDir = 0; iDir < 6; iDir++)
             {
-                bool bShouldConnected = ShouldBeConnected(s_xAllSystems[i], s_xAllSystems[j]);
-                Vertex xVert = Vertex.GetConnection(s_xAllSystems[i], s_xAllSystems[j]);
-                if (bShouldConnected && xVert==null)
+                int iOpposite = (int)Manager.GetOppositeDirection((Manager.GridDirection)iDir);
+                SystemBase xSys2 = Manager.GetAdjacentSystem(xSys1.m_iXPosInGrid, xSys1.m_iYPosInGrid, (Manager.GridDirection)iDir);
+                Vertex xVert1 = xSys1 != null ? xSys1.m_xVertices[iDir] : null;
+                Vertex xVert2 = xSys2!=null ? xSys2.m_xVertices[iOpposite] : null;
+                if (xVert1 != null && !xVert1.Contains(xSys2))
+                {
+
+                    Debug.LogFormat("({0} {1}) ({2} {3}) {4} ", xVert1.GetStart().m_iXPosInGrid, xVert1.GetStart().m_iYPosInGrid, xVert1.GetEnd().m_iXPosInGrid, xVert1.GetEnd().m_iYPosInGrid, iDir);
+                    Destroy(xVert1.gameObject);
+                    xSys1.m_xVertices[iDir] = null;
+                }
+                if((xVert2 != null && !xVert2.Contains(xSys1)))
+                {
+                    Destroy(xVert2.gameObject);
+                    xSys2.m_xVertices[iOpposite] = null;
+                }
+                if (xSys1!=null && xSys2!=null && xVert1==null && xVert2==null)
                 {
                     GameObject xGameObject = Instantiate(Manager.GetManager().GetVertexPrefabGameObject());
-                    xGameObject.GetComponent<Vertex>().SetEndPoints(s_xAllSystems[i], s_xAllSystems[j]);
-                    s_xAllSystems[i].SetConnected(s_xAllSystems[j], true);
-                    s_xAllSystems[j].SetConnected(s_xAllSystems[i], true);
-                }
-                else if (!bShouldConnected && xVert!=null)
-                {
-                    Destroy(xVert.gameObject);
-                    s_xAllSystems[i].SetConnected(s_xAllSystems[j], false);
-                    s_xAllSystems[j].SetConnected(s_xAllSystems[i], false);
-                }
-            }
-        }
-    }
-
-    public void SetConnected(SystemBase xSys, bool bConnected)
-    {
-        if (bConnected)
-        {
-            if (!m_axConnectedSystems.Contains(xSys))
-            {
-                m_axConnectedSystems.Add(xSys);
-            }
-            else
-            {
-                Debug.LogError("Connecting same system twice");
-            }
-        }
-        else
-        {
-            if (m_axConnectedSystems.Contains(xSys))
-            {
-                m_axConnectedSystems.Remove(xSys);
-            }
-            else
-            {
-                Debug.LogError("Removing same system twice");
+                    xGameObject.GetComponent<Vertex>().SetEndPoints(xSys1, xSys2);
+                    xSys1.m_xVertices[iDir] = xGameObject.GetComponent<Vertex>();
+                    xSys2.m_xVertices[iOpposite] = xGameObject.GetComponent<Vertex>();
+                }          
             }
         }
     }
 
     public bool IsConnected(SystemBase xSys)
     {
-        return m_axConnectedSystems.Contains(xSys);
+        for(int i=0; i<6; i++)
+        {
+            if (GetConnectedSystem((Manager.GridDirection)i) == xSys)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void RemoveVertexWithoutDestroy(Vertex xVert)
+    {
+        for (int i = 0; i < 6; i++)
+        {
+            if (m_xVertices[i] == xVert)
+            {
+                m_xVertices[i] = null;
+            }
+        }
     }
 
     public static bool ShouldBeConnected(SystemBase xSystem1, SystemBase xSystem2)
@@ -352,5 +362,26 @@ public abstract class SystemBase : MonoBehaviour
             }
         }
         return null;
+    }
+
+    public SystemBase GetConnectedSystem(Manager.GridDirection eDir)
+    {
+        Vertex xVert = m_xVertices[(int)eDir];
+        if (xVert != null)
+        {
+            return xVert.GetStart() == this ? xVert.GetEnd() : xVert.GetStart();
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    public void GetConnectedSystems(ref List<SystemBase> xOut)
+    {
+        for(int i = 0; i<6; i++)
+        {
+            xOut[i] = GetConnectedSystem((Manager.GridDirection)i);
+        }
     }
 }
