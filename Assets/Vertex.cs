@@ -11,6 +11,13 @@ public class Vertex : MonoBehaviour
     SystemBase m_xStart;
     SystemBase m_xEnd;
 
+    [SerializeField]
+    GameObject m_xDefenceIconInstance;
+    [SerializeField]
+    int m_iDefence = 10;
+    [SerializeField]
+    UnityEngine.UI.Text m_xDefenceText;
+
     LineRenderer m_xRenderer;
     // Start is called before the first frame update
     void Start()
@@ -32,6 +39,12 @@ public class Vertex : MonoBehaviour
         m_xRenderer.positionCount = 2;
         m_xRenderer.SetPosition(0, m_xStart.transform.position);
         m_xRenderer.SetPosition(1, m_xEnd.transform.position);
+        m_xDefenceIconInstance.transform.position = (xStart.transform.position + xEnd.transform.position) / 2;
+    }
+
+    void Update()
+    {
+        m_xDefenceText.text = m_iDefence.ToString();  
     }
 
     public bool Contains(SystemBase xSys)
@@ -74,6 +87,15 @@ public class Vertex : MonoBehaviour
         xCol.a = 0.4f;
         m_xRenderer.startColor = xCol;
         m_xRenderer.endColor = xCol;
+    }
+
+    public void Attack()
+    {
+        m_iDefence--;
+        if (m_iDefence < 0)
+        {
+            m_iDefence = 0;
+        }
     }
 
     void OnDestroy()
