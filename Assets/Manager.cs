@@ -23,7 +23,7 @@ public class Manager : MonoBehaviour
 
     // TODO: move to a better place
     [SerializeField]
-    GameObject m_xVertexPrefab;
+    GameObject m_xEdgePrefab;
     [SerializeField]
     GameObject m_xLineRendererPrefab;
     [SerializeField]
@@ -40,6 +40,8 @@ public class Manager : MonoBehaviour
     [SerializeField]
     UnityEngine.UI.Text m_xHacksText;
 
+    [SerializeField]
+    bool m_bTechIncreaseEnabled = true;
     [SerializeField]
     int m_iTechLevel = 0;
     [SerializeField]
@@ -110,18 +112,21 @@ public class Manager : MonoBehaviour
             fNextTime = Time.time + m_fTimeGap;
             m_xCountry.OnNextTurn();
             NotificationSystem.OnNextTurn();
-            SystemBase.SetUpVertices();
+            SystemBase.SetUpEdges();
             m_fHackRechargeValue += m_fHackRechargeRatePerTurn;
             if (m_fHackRechargeValue > 1)
             {
                 m_fHackRechargeValue--;
                 ChangeHacks(1);
             }
-            m_iTechLevelUpPoints += 1;
-            if(m_iTechLevel<m_aiTechScoreBoundaries.Length && m_iTechLevelUpPoints > m_aiTechScoreBoundaries[m_iTechLevel])
+            if (m_bTechIncreaseEnabled)
             {
-                m_iTechLevel++;
-                m_iTechLevelUpPoints = 0;
+                m_iTechLevelUpPoints += 1;
+                if (m_iTechLevel < m_aiTechScoreBoundaries.Length && m_iTechLevelUpPoints > m_aiTechScoreBoundaries[m_iTechLevel])
+                {
+                    m_iTechLevel++;
+                    m_iTechLevelUpPoints = 0;
+                }
             }
 
             m_iTurnNumber++;
@@ -275,9 +280,9 @@ public class Manager : MonoBehaviour
         return m_fPlayerMoney;
     }
 
-    public GameObject GetVertexPrefabGameObject()
+    public GameObject GetEdgePrefabGameObject()
     {
-        return m_xVertexPrefab;
+        return m_xEdgePrefab;
     }
     public GameObject GetLineRendererPrefabGameObject()
     {

@@ -10078,8 +10078,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1386430395}
   m_HandleRect: {fileID: 1386430394}
   m_Direction: 2
-  m_Value: 0
-  m_Size: 1
+  m_Value: 1
+  m_Size: 0.9999974
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -15750,7 +15750,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -10.146957, y: 0}
+  m_AnchoredPosition: {x: -10.146957, y: 0.000061035156}
   m_SizeDelta: {x: -20.296127, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &2080925866
@@ -16467,7 +16467,7 @@ MonoBehaviour:
   m_bShouldWriteTaxesToFile: 1
   m_xMoneyText: {fileID: 2053656420}
   m_fPlayerMoney: 100
-  m_xVertexPrefab: {fileID: 9034355350164614112, guid: e14f9e93c13aeda4b937e8c08852f965, type: 3}
+  m_xEdgePrefab: {fileID: 9034355350164614112, guid: e14f9e93c13aeda4b937e8c08852f965, type: 3}
   m_xLineRendererPrefab: {fileID: 1686431534592750292, guid: 1cc2c639898dc4f4684e2952ddd88314, type: 3}
   m_fConnectionRange: 6
   m_iHacksLeft: 10
@@ -16475,6 +16475,7 @@ MonoBehaviour:
   m_fHackRechargeRatePerTurn: 0.1
   m_fHackRechargeValue: 0
   m_xHacksText: {fileID: 560356961}
+  m_bTechIncreaseEnabled: 0
   m_iTechLevel: 0
   m_iTechLevelUpPoints: 0
   m_aiTechScoreBoundaries: 0a00000064000000e803000010270000a0860100
@@ -16669,8 +16670,8 @@ MonoBehaviour:
       m_iLevelRequirement: 0
       m_iTechRequirement: 0
     m_iBaseDefenceMax: 10
-    m_fBaseDefenceRefreshTime: 0.1
-    m_fAdditionalShielddeteriorationTime: 0.1
+    m_fBaseDefenceRefreshTime: 0.5
+    m_fAdditionalShielddeteriorationTime: 0.5
     m_xActions:
     - {fileID: 1587854577892866458, guid: 624cc080eb54a4b46abdba5602250640, type: 3}
     - {fileID: 1587854577892866458, guid: b8844e2b7a68f294286f5ef323a35899, type: 3}

@@ -22,7 +22,7 @@ public abstract class SystemBase : MonoBehaviour
 
     protected int m_iHackLevel = 0;
 
-    protected List<Vertex> m_xVertices;
+    protected List<Edge> m_xEdgeices;
 
     List<GameObject> m_xHexagonLineRenderers;
 
@@ -49,10 +49,10 @@ public abstract class SystemBase : MonoBehaviour
         GetMyValues().SetUpUIActions(m_xUI);
         s_xAllSystems.Add(this);
 
-        m_xVertices = new List<Vertex>();
+        m_xEdgeices = new List<Edge>();
         for(int i=0; i<6; i++)
         {
-            m_xVertices.Add(null);
+            m_xEdgeices.Add(null);
         }
 
         transform.position = Manager.GetManager().GetPositionFromGridCoords(m_iXPosInGrid, m_iYPosInGrid);
@@ -236,9 +236,9 @@ public abstract class SystemBase : MonoBehaviour
     {
         for (int i = 0; i < 6; i++)
         {
-            if (m_xVertices[i] != null)
+            if (m_xEdgeices[i] != null)
             {
-                m_xVertices[i].Defend();
+                m_xEdgeices[i].Defend();
             }
         }
     }
@@ -252,7 +252,7 @@ public abstract class SystemBase : MonoBehaviour
             SystemBase xSys = GetConnectedSystem((Manager.GridDirection)i);
             if (xSys!=null && xSys.m_bHacked)
             {
-                m_xVertices[i].Hack();
+                m_xEdgeices[i].Hack();
             }
         }
     }
@@ -262,14 +262,14 @@ public abstract class SystemBase : MonoBehaviour
         m_bHacked = false;
         for (int i = 0; i < 6; i++)
         {
-            if (m_xVertices[i] != null)
+            if (m_xEdgeices[i] != null)
             {
-                m_xVertices[i].UnHack();
+                m_xEdgeices[i].UnHack();
             }
         }
     }
 
-    public static void SetUpVertices()
+    public static void SetUpEdges()
     {
         for(int i = 0; i<s_xAllSystems.Count; i++)
         {
@@ -278,26 +278,26 @@ public abstract class SystemBase : MonoBehaviour
             {
                 int iOpposite = (int)Manager.GetOppositeDirection((Manager.GridDirection)iDir);
                 SystemBase xSys2 = Manager.GetAdjacentSystem(xSys1.m_iXPosInGrid, xSys1.m_iYPosInGrid, (Manager.GridDirection)iDir);
-                Vertex xVert1 = xSys1 != null ? xSys1.m_xVertices[iDir] : null;
-                Vertex xVert2 = xSys2!=null ? xSys2.m_xVertices[iOpposite] : null;
-                if (xVert1 != null && !xVert1.Contains(xSys2))
+                Edge xEdge1 = xSys1 != null ? xSys1.m_xEdgeices[iDir] : null;
+                Edge xEdge2 = xSys2!=null ? xSys2.m_xEdgeices[iOpposite] : null;
+                if (xEdge1 != null && !xEdge1.Contains(xSys2))
                 {
 
-                    Debug.LogFormat("({0} {1}) ({2} {3}) {4} ", xVert1.GetStart().m_iXPosInGrid, xVert1.GetStart().m_iYPosInGrid, xVert1.GetEnd().m_iXPosInGrid, xVert1.GetEnd().m_iYPosInGrid, iDir);
-                    Destroy(xVert1.gameObject);
-                    xSys1.m_xVertices[iDir] = null;
+                    Debug.LogFormat("({0} {1}) ({2} {3}) {4} ", xEdge1.GetStart().m_iXPosInGrid, xEdge1.GetStart().m_iYPosInGrid, xEdge1.GetEnd().m_iXPosInGrid, xEdge1.GetEnd().m_iYPosInGrid, iDir);
+                    Destroy(xEdge1.gameObject);
+                    xSys1.m_xEdgeices[iDir] = null;
                 }
-                if((xVert2 != null && !xVert2.Contains(xSys1)))
+                if((xEdge2 != null && !xEdge2.Contains(xSys1)))
                 {
-                    Destroy(xVert2.gameObject);
-                    xSys2.m_xVertices[iOpposite] = null;
+                    Destroy(xEdge2.gameObject);
+                    xSys2.m_xEdgeices[iOpposite] = null;
                 }
-                if (xSys1!=null && xSys2!=null && xVert1==null && xVert2==null)
+                if (xSys1!=null && xSys2!=null && xEdge1==null && xEdge2==null)
                 {
-                    GameObject xGameObject = Instantiate(Manager.GetManager().GetVertexPrefabGameObject());
-                    xGameObject.GetComponent<Vertex>().SetEndPoints(xSys1, xSys2);
-                    xSys1.m_xVertices[iDir] = xGameObject.GetComponent<Vertex>();
-                    xSys2.m_xVertices[iOpposite] = xGameObject.GetComponent<Vertex>();
+                    GameObject xGameObject = Instantiate(Manager.GetManager().GetEdgePrefabGameObject());
+                    xGameObject.GetComponent<Edge>().SetEndPoints(xSys1, xSys2);
+                    xSys1.m_xEdgeices[iDir] = xGameObject.GetComponent<Edge>();
+                    xSys2.m_xEdgeices[iOpposite] = xGameObject.GetComponent<Edge>();
                 }          
             }
         }
@@ -315,13 +315,13 @@ public abstract class SystemBase : MonoBehaviour
         return false;
     }
 
-    public void RemoveVertexWithoutDestroy(Vertex xVert)
+    public void RemoveEdgeWithoutDestroy(Edge xEdge)
     {
         for (int i = 0; i < 6; i++)
         {
-            if (m_xVertices[i] == xVert)
+            if (m_xEdgeices[i] == xEdge)
             {
-                m_xVertices[i] = null;
+                m_xEdgeices[i] = null;
             }
         }
     }
@@ -362,10 +362,10 @@ public abstract class SystemBase : MonoBehaviour
 
     public SystemBase GetConnectedSystem(Manager.GridDirection eDir)
     {
-        Vertex xVert = m_xVertices[(int)eDir];
-        if (xVert != null)
+        Edge xEdge = m_xEdgeices[(int)eDir];
+        if (xEdge != null)
         {
-            return xVert.GetStart() == this ? xVert.GetEnd() : xVert.GetStart();
+            return xEdge.GetStart() == this ? xEdge.GetEnd() : xEdge.GetStart();
         }
         else
         {

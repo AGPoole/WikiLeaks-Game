@@ -4,9 +4,9 @@ using UnityEngine;
 
 // TODO: Rename this
 [RequireComponent(typeof(LineRenderer))]
-public class Vertex : MonoBehaviour
+public class Edge : MonoBehaviour
 {
-    static List<Vertex> s_xAllVertices;
+    static List<Edge> s_xAllEdges;
 
     [SerializeField]
     SystemBase m_xStart;
@@ -34,11 +34,11 @@ public class Vertex : MonoBehaviour
     void Start()
     {
         m_xRenderer = GetComponent<LineRenderer>();
-        if(s_xAllVertices==null)
+        if(s_xAllEdges==null)
         {
-            s_xAllVertices = new List<Vertex>();
+            s_xAllEdges = new List<Edge>();
         }
-        s_xAllVertices.Add(this);
+        s_xAllEdges.Add(this);
         UnHack();
      }
 
@@ -111,24 +111,19 @@ public class Vertex : MonoBehaviour
         return m_xStart == xSys || m_xEnd == xSys;
     }
 
-    public static Vertex GetConnection(SystemBase xSystem1, SystemBase xSystem2)
+    public static Edge GetConnection(SystemBase xSystem1, SystemBase xSystem2)
     {
-        if (s_xAllVertices == null)
+        if (s_xAllEdges == null)
         {
-            s_xAllVertices = new List<Vertex>();
+            s_xAllEdges = new List<Edge>();
         }
-        for(int i = s_xAllVertices.Count-1; i>=0; i--)
+        for(int i = s_xAllEdges.Count-1; i>=0; i--)
         {
-            Vertex xVert = s_xAllVertices[i];
-            if(xVert.Contains(xSystem1) && xVert.Contains(xSystem2))
+            Edge xEdge = s_xAllEdges[i];
+            if(xEdge.Contains(xSystem1) && xEdge.Contains(xSystem2))
             {
-                return xVert;
+                return xEdge;
             }
-            //if(!SystemBase.ShouldBeConnected(xVert.m_xStart, xVert.m_xEnd))
-            //{
-            //    s_xAllVertices.RemoveAt(i);
-            //    Destroy(xVert.gameObject);
-            //}
         }
         return null;
     }
@@ -194,14 +189,14 @@ public class Vertex : MonoBehaviour
 
     void OnDestroy()
     {
-        s_xAllVertices.Remove(this);
+        s_xAllEdges.Remove(this);
         if (m_xStart != null)
         {
-            m_xStart.RemoveVertexWithoutDestroy(this);
+            m_xStart.RemoveEdgeWithoutDestroy(this);
         }
         if (m_xEnd != null)
         {
-            m_xEnd.RemoveVertexWithoutDestroy(this);
+            m_xEnd.RemoveEdgeWithoutDestroy(this);
         }
     }
 }
