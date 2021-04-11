@@ -10078,7 +10078,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1386430395}
   m_HandleRect: {fileID: 1386430394}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -16886,14 +16886,17 @@ MonoBehaviour:
     - {fileID: 1587854577892866458, guid: 624cc080eb54a4b46abdba5602250640, type: 3}
     - {fileID: 1587854577892866458, guid: b8844e2b7a68f294286f5ef323a35899, type: 3}
     - {fileID: 1587854577892866458, guid: c7b4c25e86bd78746b5621c578a8d12b, type: 3}
-    m_iLaunchTime: 50
-    m_fDefenceGainPerLevel: 20
-    m_xMessagePrefab: {fileID: 1813745609784449481, guid: 239b98c9c9889f34e883cb86d37e9697, type: 3}
-    m_aiScoreBoundaries: 0a000000140000001e00000028000000
-    m_afTechDefenceGainBonuses:
-    - 0
-    - 0
-    - 50
+    m_afDefenceForSystemLevels:
+    - 10
+    m_afDefenceForTechLevels:
+    - 1
+    m_afDefenceMultiplierForDistances:
+    - 1
+    - 1
+    - 0.5
+    - 0.5
+    m_fAdditionalDefenceDegradationTime: 0.5
+    m_fDefenceRechargeTime: 0.5
 --- !u!114 &2130129002
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16938,7 +16941,7 @@ MonoBehaviour:
     - m_iCost: 5
       m_iLevelRequirement: 0
       m_iTechRequirement: 0
-    m_iBaseDefenceMax: 15
+    m_iBaseDefenceMax: 20
     m_fBaseDefenceRefreshTime: 0.5
     m_fAdditionalShielddeteriorationTime: 0.5
     m_xActions:

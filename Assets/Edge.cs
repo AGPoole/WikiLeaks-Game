@@ -49,6 +49,7 @@ public class Edge : MonoBehaviour
         m_xRenderer.SetPosition(0, m_xStart.transform.position);
         m_xRenderer.SetPosition(1, m_xEnd.transform.position);
         SetDefenceIconPositions();
+        transform.position = (xStart.transform.position + xEnd.transform.position) / 2;
     }
 
     void SetDefenceIconPositions()
@@ -69,6 +70,11 @@ public class Edge : MonoBehaviour
     void Update()
     {
         SetMainDefenceIconValues();
+    }
+
+    public static List<Edge> GetAllEdges()
+    {
+        return s_xAllEdges;
     }
 
     void SetMainDefenceIconValues()
@@ -160,6 +166,81 @@ public class Edge : MonoBehaviour
     public SystemBase GetEnd()
     {
         return m_xEnd;
+    }
+
+    public void RegisterCyberSec(CyberSecurity xSec)
+    {
+        // TODO: use a hash-map
+        foreach(DefenceIcon xIcon in m_xDefenceIconInstances)
+        {
+            if (xIcon.GetCyberSecurityOwner() == xSec)
+            {
+                return;
+            }
+        }
+        DefenceIcon xNew = Instantiate(m_xDefenceIconPrefab, transform).GetComponent<DefenceIcon>();
+        m_xDefenceIconInstances.Add(xNew);
+        xNew.SetOwner(this);
+        xNew.SetCyberSecurityOwner(xSec);
+        SetDefenceIconPositions();
+    }
+
+    public void RemoveDefenceIcon(DefenceIcon xIcon)
+    {
+        m_xDefenceIconInstances.Remove(xIcon);
+        Destroy(xIcon.gameObject);
+        SetDefenceIconPositions();
+    }
+
+    public Vector3 GetPosition()
+    {
+        return (m_xStart.transform.position + m_xEnd.transform.position) / 2; 
+    }
+
+    public bool IsReachable(DefenceIcon xIcon)
+    {
+        int iIndex = m_xDefenceIconInstances.IndexOf(xIcon);
+        if (iIndex == -1)
+        {
+            Debug.LogError("Attempting to find if defence icon is reachable in wrong edge");
+            return false;
+        }
+        if (m_xStart.IsHacked())
+        {
+            if (iIndex == 0)
+            {
+                return true;
+            }
+            bool bReachableFromStart = true;
+            for(int i=0; i < iIndex; i++)
+            {
+                if (m_xDefenceIconInstances[i].GetDefence() > 0)
+                {
+                    bReachableFromStart = false;
+                    break;
+                }
+            }
+            if (bReachableFromStart)
+            {
+                return true;
+            }
+        }
+        if (!m_xEnd.IsHacked())
+        {
+            return false;
+        }
+        if (iIndex == m_xDefenceIconInstances.Count-1)
+        {
+            return true;
+        }
+        for (int i = iIndex+1; i < m_xDefenceIconInstances.Count; i++)
+        {
+            if (m_xDefenceIconInstances[i].GetDefence() > 0)
+            {
+                return false;
+            }
+        }
+        return true;
     }
 
     void OnDestroy()

@@ -4,82 +4,68 @@ using UnityEngine;
 
 public class CyberSecurity : SystemBase
 {
-    List<SystemBase> m_xSystemQueue;
-    float m_fSystemTimer;
-    float m_fSystemTimerReset = 0.1f;
-
-    protected override void Start()
-    {
-        base.Start();
-        m_xSystemQueue = new List<SystemBase>();
-    }
-
     public override SystemValuesBase GetMyValues()
     {
         return CyberSecurityValuesContainer.GetCyberSecurityValues();
     }
 
-    int iApplyDefenceTimer = 0;
-    public override void OnNextTurn(int iLevel)
+    float m_fEdgeRecalculateTimer = 0f;
+    protected override void Update()
     {
-        base.OnNextTurn(iLevel);
-        if (!m_bDisabledByPlayer)
+        const float fEDGE_CALCULATION_TIME_GAP = 0.5f;
+        if (!Manager.GetIsPaused() && !m_bDisabledByPlayer)
         {
-            iApplyDefenceTimer -= 1;
+            m_fEdgeRecalculateTimer += Time.deltaTime;
+            if (m_fEdgeRecalculateTimer > fEDGE_CALCULATION_TIME_GAP)
+            {
+                m_fEdgeRecalculateTimer -= fEDGE_CALCULATION_TIME_GAP;
+                CalculateEdges();
+            }
         }
-        if (iApplyDefenceTimer <= 0)
-        {
-            var xSystemBases = GetAllSystems();
-            for(int i=xSystemBases.Count-1; i>=0; i--)
-            {
-                if(xSystemBases[i]==this || xSystemBases[i].GetLevel() == 0)
-                {
-                    xSystemBases.RemoveAt(i);
-                }
-            }
-            int iTotal = 0;
-            foreach(var xSys in xSystemBases)
-            {
-                iTotal += CyberSecurityValuesContainer.GetCyberSecurityValues().GetScoreAtDistance((xSys.transform.position - transform.position).magnitude);
-            }
+        base.Update();
+    }
 
-            for (int i=0; i<CyberSecurityValuesContainer.GetCyberSecurityValues().GetDefenceGainAtLevel(m_iLevel, Manager.GetManager().GetTechLevel()); i++)
+    void CalculateEdges()
+    {
+        foreach(Edge xEdge in Edge.GetAllEdges())
+        {
+            if((xEdge.GetPosition()-transform.position).magnitude < CyberSecurityValuesContainer.GetCyberSecurityValues().GetMaxLength())
             {
-                int iChoice = Random.Range(0, iTotal);
-                int iScoreSoFar = 0;
-                foreach (var xSys in xSystemBases)
-                {
-                    iScoreSoFar += CyberSecurityValuesContainer.GetCyberSecurityValues().GetScoreAtDistance((xSys.transform.position - transform.position).magnitude);
-                    if (iScoreSoFar > iChoice)
-                    {
-                        m_xSystemQueue.Add(xSys);
-                        break;
-                    }
-                }
+                xEdge.RegisterCyberSec(this);
             }
-            iApplyDefenceTimer = CyberSecurityValuesContainer.GetCyberSecurityValues().GetLaunchTime();
         }
     }
 
-    protected override void Update()
+    public int GetMaxDefenceForEdge(Edge xEdge)
     {
-        base.Update();
-        // TODO: suspend if paused
-        m_fSystemTimer -= Time.deltaTime;
-        if (m_xSystemQueue.Count > 0 && m_fSystemTimer<0)
+        if (m_bDisabledByPlayer)
         {
-            GameObject xMessage = Instantiate(CyberSecurityValuesContainer.GetCyberSecurityValues().GetMessagePrefab(), transform);
-            xMessage.GetComponent<MessageIcon>().SetCallBack(m_xSystemQueue[0].Defend);
-            xMessage.GetComponent<MessageIcon>().SetTarget(m_xSystemQueue[0].transform);
-            m_fSystemTimer = m_fSystemTimerReset;
-            m_xSystemQueue.RemoveAt(0);
+            return 0;
         }
+        return CyberSecurityValuesContainer.GetCyberSecurityValues().GetDefenceGainAtLevelForDistance(
+            GetLevel(), 
+            Manager.GetManager().GetTechLevel(),
+            (xEdge.GetPosition()-transform.position).magnitude);
+    }
+
+    public float GetAdditionalDefenceDegradationTime()
+    {
+        return CyberSecurityValuesContainer.GetCyberSecurityValues().GetAdditionalDefenceDegradationTime();
+    }
+    
+    public float GetDefenceRechargeTime()
+    {
+        return CyberSecurityValuesContainer.GetCyberSecurityValues().GetDefenceRechargeTime();
     }
 
     bool m_bDisabledByPlayer = false;
     public void SetDisabledByPlayer(bool bDisabled)
     {
         m_bDisabledByPlayer = bDisabled;
+        if (!m_bDisabledByPlayer)
+        {
+            CalculateEdges();
+        }
     }
 
     public bool IsDisabledByPlayer()

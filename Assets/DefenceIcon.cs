@@ -8,7 +8,6 @@ public class DefenceIcon : MonoBehaviour
     UnityEngine.UI.Text m_xDefenceText;
     Edge m_xOwner;
 
-    bool m_bCyberSecDriven = false;
     CyberSecurity m_xCyberSecurityOwner;
     [SerializeField]
     int m_iDefence = 10;
@@ -52,12 +51,22 @@ public class DefenceIcon : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (m_xCyberSecurityOwner != null)
+        {
+            SetDefenceDegradationTime(m_xCyberSecurityOwner.GetAdditionalDefenceDegradationTime());
+            SetDefenceRechargeTime(m_xCyberSecurityOwner.GetDefenceRechargeTime());
+            SetMaxDefense(m_xCyberSecurityOwner.GetMaxDefenceForEdge(m_xOwner));
+            if (m_iMaxDefence == 0)
+            {
+                m_xOwner.RemoveDefenceIcon(this);
+            }
+        }
         m_xDefenceText.text = m_iDefence.ToString();
         if (!Manager.GetIsPaused())
         {
-            //TODO: make Cybersecurity add more
             if (m_iDefence < m_iMaxDefence)
             {
+                // TODO: make recharges happen per turn
                 m_fRechargeTimer += Time.deltaTime;
                 if ((m_iDefence != 0 && m_fRechargeTimer > m_fDefenceRechargeTime)
                     || m_fRechargeTimer > m_fDefencePauseAtZero)
@@ -93,7 +102,7 @@ public class DefenceIcon : MonoBehaviour
 
     public void Attack()
     {
-        if (Manager.GetManager().GetHacksLeft() < 1)
+        if (Manager.GetManager().GetHacksLeft() < 1 || m_iDefence==0 || !m_xOwner.IsReachable(this))
         {
             return;
         }
@@ -103,7 +112,7 @@ public class DefenceIcon : MonoBehaviour
             Manager.GetManager().ChangeHacks(-1);
             m_iDefence--;
             m_fRechargeTimer = 0;
-            if (m_iDefence < 0)
+            if (m_iDefence <= 0)
             {
                 m_iDefence = 0;
                 m_xOwner.CheckDefences();
@@ -118,5 +127,16 @@ public class DefenceIcon : MonoBehaviour
         {
             m_iDefence++;
         }
+    }
+
+    public void SetCyberSecurityOwner(CyberSecurity xSec)
+    {
+        m_xCyberSecurityOwner = xSec;
+        SetMaxDefense(m_xCyberSecurityOwner.GetMaxDefenceForEdge(m_xOwner));
+    }
+
+    public CyberSecurity GetCyberSecurityOwner()
+    {
+        return m_xCyberSecurityOwner;
     }
 }

@@ -21,45 +21,50 @@ public class CyberSecurityValuesContainer : MonoBehaviour
 public class CyberSecurityValues : SystemValuesBase
 {
     [SerializeField]
-    int m_iLaunchTime;
+    float[] m_afDefenceForSystemLevels;
     [SerializeField]
-    float m_fDefenceGainPerLevel;
+    float[] m_afDefenceForTechLevels;
+    // Each multiplier is for the next hexagon along
+    // TODO: wrte a hexagon-distance function
     [SerializeField]
-    GameObject m_xMessagePrefab;
+    float[] m_afDefenceMultiplierForDistances;
+
     [SerializeField]
-    int[] m_aiScoreBoundaries;
+    float m_fAdditionalDefenceDegradationTime = 0.5f;
     [SerializeField]
-    float[] m_afTechDefenceGainBonuses;
+    float m_fDefenceRechargeTime = 0.5f;
 
-    public float GetDefenceGainAtLevel(int iLevel, int iTechLevel)
+    public int GetDefenceGainAtLevelForDistance(int iLevel, int iTechLevel, float fDistance)
     {
-        float fTechGain = iTechLevel < m_afTechDefenceGainBonuses.Length ?
-            m_afTechDefenceGainBonuses[iTechLevel] :
-            m_afTechDefenceGainBonuses[m_afTechDefenceGainBonuses.Length - 1];
-        return m_fDefenceGainPerLevel * iLevel + fTechGain;
-    }
-
-    public int GetLaunchTime()
-    {
-        return m_iLaunchTime;
-    }
-
-    public GameObject GetMessagePrefab()
-    {
-        return m_xMessagePrefab;
-    }
-
-    public int GetScoreAtDistance(float fDistance)
-    {
-        int iIndex = 0;
-        while (iIndex < m_aiScoreBoundaries.Length)
+        if (iLevel == 0)
         {
-            if (fDistance < m_aiScoreBoundaries[iIndex])
-            {
-                return m_aiScoreBoundaries.Length - iIndex;
-            }
-            iIndex++;
+            return 0;
         }
-        return 0;
+        int iNumHexes = (int)(fDistance / Manager.GetManager().GetHexagonEdgeSize());
+        float fDistanceMultiplier = iNumHexes < m_afDefenceMultiplierForDistances.Length ?
+            m_afDefenceMultiplierForDistances[iNumHexes] :
+            0;
+        float fTechMultiplier = iTechLevel < m_afDefenceForTechLevels.Length ?
+            m_afDefenceForTechLevels[iTechLevel] :
+            m_afDefenceForTechLevels[m_afDefenceForTechLevels.Length - 1];
+        float fStandard = iLevel < m_afDefenceForSystemLevels.Length ?
+            m_afDefenceForSystemLevels[iLevel] :
+            m_afDefenceForSystemLevels[m_afDefenceForSystemLevels.Length - 1];
+        return (int)(fDistanceMultiplier*fTechMultiplier*fStandard);
+    }
+
+    public float GetMaxLength()
+    {
+        return m_afDefenceMultiplierForDistances.Length * Manager.GetManager().GetHexagonEdgeSize();
+    }
+
+    public float GetAdditionalDefenceDegradationTime()
+    {
+        return m_fAdditionalDefenceDegradationTime;
+    }
+    
+    public float GetDefenceRechargeTime()
+    {
+        return m_fDefenceRechargeTime;
     }
 }
