@@ -23,7 +23,9 @@ public class Manager : MonoBehaviour
 
     // TODO: move to a better place
     [SerializeField]
-    GameObject m_xVertexPrefab;
+    GameObject m_xEdgePrefab;
+    [SerializeField]
+    GameObject m_xLineRendererPrefab;
     [SerializeField]
     float m_fConnectionRange;
 
@@ -39,6 +41,8 @@ public class Manager : MonoBehaviour
     UnityEngine.UI.Text m_xHacksText;
 
     [SerializeField]
+    bool m_bTechIncreaseEnabled = true;
+    [SerializeField]
     int m_iTechLevel = 0;
     [SerializeField]
     int m_iTechLevelUpPoints = 0;
@@ -49,6 +53,19 @@ public class Manager : MonoBehaviour
 
     [SerializeField]
     Country m_xCountry;
+
+    [SerializeField]
+    float m_fHexagonEdgeSize;
+
+    public enum GridDirection : int
+    {
+        UP,
+        UP_RIGHT,
+        DOWN_RIGHT,
+        DOWN,
+        DOWN_LEFT,
+        UP_LEFT
+    }
 
     // Start is called before the first frame update
     //void Awake()
@@ -95,18 +112,21 @@ public class Manager : MonoBehaviour
             fNextTime = Time.time + m_fTimeGap;
             m_xCountry.OnNextTurn();
             NotificationSystem.OnNextTurn();
-            SystemBase.SetUpVertices();
+            SystemBase.SetUpEdges();
             m_fHackRechargeValue += m_fHackRechargeRatePerTurn;
             if (m_fHackRechargeValue > 1)
             {
                 m_fHackRechargeValue--;
                 ChangeHacks(1);
             }
-            m_iTechLevelUpPoints += 1;
-            if(m_iTechLevel<m_aiTechScoreBoundaries.Length && m_iTechLevelUpPoints > m_aiTechScoreBoundaries[m_iTechLevel])
+            if (m_bTechIncreaseEnabled)
             {
-                m_iTechLevel++;
-                m_iTechLevelUpPoints = 0;
+                m_iTechLevelUpPoints += 1;
+                if (m_iTechLevel < m_aiTechScoreBoundaries.Length && m_iTechLevelUpPoints > m_aiTechScoreBoundaries[m_iTechLevel])
+                {
+                    m_iTechLevel++;
+                    m_iTechLevelUpPoints = 0;
+                }
             }
 
             m_iTurnNumber++;
@@ -260,9 +280,13 @@ public class Manager : MonoBehaviour
         return m_fPlayerMoney;
     }
 
-    public GameObject GetVertexPrefabGameObject()
+    public GameObject GetEdgePrefabGameObject()
     {
-        return m_xVertexPrefab;
+        return m_xEdgePrefab;
+    }
+    public GameObject GetLineRendererPrefabGameObject()
+    {
+        return m_xLineRendererPrefab;
     }
 
     public float GetConnectionRange()
@@ -297,6 +321,101 @@ public class Manager : MonoBehaviour
     public int GetNumTechLevels()
     {
         return m_aiTechScoreBoundaries.Length;
+    }
+
+    public Vector3 GetPositionFromGridCoords(int iX, int iY)
+    {
+        float fHexHeight = 0.86602540378f*m_fHexagonEdgeSize*2;
+        float fHexWidth = 2f*m_fHexagonEdgeSize;
+        float fOffset = ProjectMaths.Mod(iX, 2) == 0 ? 0 : -fHexHeight/2;
+        return new Vector3(iX * fHexWidth*0.75f, (iY * fHexHeight) + fOffset, 0f);
+    }
+
+    public float GetHexagonEdgeSize()
+    {
+        return m_fHexagonEdgeSize;
+    }
+
+    public static SystemBase GetAdjacentSystem(int iX, int iY, GridDirection eDir)
+    {
+        switch (eDir)
+        {
+            case GridDirection.UP:
+            {
+                return SystemBase.GetSystemWithCoords(iX, iY + 1);
+            }
+            case GridDirection.UP_LEFT:
+            {
+                if(ProjectMaths.Mod(iX, 2) == 0)
+                {
+                    return SystemBase.GetSystemWithCoords(iX - 1, iY+1);
+                }
+                else
+                {
+                    return SystemBase.GetSystemWithCoords(iX-1, iY);
+                }
+            }
+            case GridDirection.DOWN_LEFT:
+            {
+                if (ProjectMaths.Mod(iX, 2) == 0)
+                {
+                    return SystemBase.GetSystemWithCoords(iX - 1, iY);
+                }
+                else
+                {
+                    return SystemBase.GetSystemWithCoords(iX - 1, iY - 1);
+                }
+            }
+            case GridDirection.DOWN:
+            {
+                return SystemBase.GetSystemWithCoords(iX, iY - 1);
+            }
+            case GridDirection.DOWN_RIGHT:
+            {
+                if (ProjectMaths.Mod(iX, 2) == 0)
+                {
+                    return SystemBase.GetSystemWithCoords(iX + 1, iY);
+                }
+                else
+                {
+                    return SystemBase.GetSystemWithCoords(iX + 1, iY - 1);
+                }
+            }
+            case GridDirection.UP_RIGHT:
+            {
+                if (ProjectMaths.Mod(iX, 2) == 0)
+                {
+                    return SystemBase.GetSystemWithCoords(iX + 1, iY + 1);
+                }
+                else
+                {
+                    return SystemBase.GetSystemWithCoords(iX + 1, iY);
+                }
+            }
+        }
+        return null;
+    }
+
+    public static GridDirection GetOppositeDirection(GridDirection eDir)
+    {
+        switch (eDir)
+        {
+            case GridDirection.UP:
+                return GridDirection.DOWN;
+            case GridDirection.UP_RIGHT:
+                return GridDirection.DOWN_LEFT;
+            case GridDirection.DOWN_RIGHT:
+                return GridDirection.UP_LEFT;
+            case GridDirection.DOWN:
+                return GridDirection.UP;
+            case GridDirection.DOWN_LEFT:
+                return GridDirection.UP_RIGHT;
+            case GridDirection.UP_LEFT:
+                return GridDirection.DOWN_RIGHT;
+            default:
+                UnityEngine.Debug.LogError("Extra Grid Direction case");
+                return GridDirection.UP;
+        }
     }
 }
 

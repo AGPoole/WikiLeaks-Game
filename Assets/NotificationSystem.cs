@@ -22,6 +22,7 @@ public class NotificationSystem : MonoBehaviour
     {
         s_xNotificationSystem = this;
         m_xNotifications = new List<GameObject>();
+        gameObject.SetActive(false);
     }
 
     public static NotificationSystem GetNotificationSystem()

@@ -29,13 +29,11 @@ public class SystemValuesBase
     LevelRequirements[] m_xLevelRequirements;
 
     [SerializeField]
-    protected float m_fBaseDefenceMax = 10;
+    protected int m_iBaseDefenceMax = 10;
     [SerializeField]
-    protected float m_fBaseDefenceRefreshRate = 0.1f;
+    protected float m_fBaseDefenceRefreshTime = 0.1f;
     [SerializeField]
-    protected float m_fAdditionalShielddeteriorationRate = 0.1f;
-    [SerializeField]
-    protected float m_fAdditionalShieldsMax = 5;
+    protected float m_fAdditionalShielddeteriorationTime = 0.1f;
 
     [SerializeField]
     List<GameObject> m_xActions;
@@ -54,23 +52,18 @@ public class SystemValuesBase
         return m_xLevelRequirements.Length;
     }
 
-    public float GetBaseDefenceMax()
+    public int GetBaseDefenceMax()
     {
-        return m_fBaseDefenceMax;
+        return m_iBaseDefenceMax;
     }
-    public float GetBaseDefenceRefreshRate()
+    public float GetBaseDefenceRefreshTime()
     {
-        return m_fBaseDefenceRefreshRate;
+        return m_fBaseDefenceRefreshTime;
     }
-    public float GetAdditionalShielddeteriorationRate()
+    public float GetAdditionalShielddeteriorationTime()
     {
-        return m_fAdditionalShielddeteriorationRate;
+        return m_fAdditionalShielddeteriorationTime;
     }
-    public float GetAdditionalShieldsMax()
-    {
-        return m_fAdditionalShieldsMax;
-    }
-
     public void SetUpUIActions(SystemUI xUI)
     {
         foreach(var xAction in m_xActions)
