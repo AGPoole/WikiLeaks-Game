@@ -103,6 +103,7 @@ public class Manager : MonoBehaviour
         {
             fNextTime = Time.time + m_fTimeGap;
             m_xCountry.OnNextTurn();
+            PerkManager.GetPerkManager().OnNextTurn();
             NotificationSystem.OnNextTurn();
             SystemBase.SetUpEdges();
             if (m_bTechIncreaseEnabled)
