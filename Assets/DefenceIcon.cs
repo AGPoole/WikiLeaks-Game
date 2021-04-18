@@ -100,24 +100,20 @@ public class DefenceIcon : MonoBehaviour
         return m_iDefence;
     }
 
-    public void Attack()
+    public bool Attack(int iDamage)
     {
-        if (Manager.GetManager().GetHacksLeft() < 1 || m_iDefence==0 || !m_xOwner.IsReachable(this))
+        if (!m_xOwner.IsReachable(this))
         {
-            return;
+            return false;
         }
-        
-        if (m_xOwner.GetStart().IsHacked() || m_xOwner.GetEnd().IsHacked())
+        m_iDefence-=iDamage;
+        m_fRechargeTimer = 0;
+        if (m_iDefence <= 0)
         {
-            Manager.GetManager().ChangeHacks(-1);
-            m_iDefence--;
-            m_fRechargeTimer = 0;
-            if (m_iDefence <= 0)
-            {
-                m_iDefence = 0;
-                m_xOwner.CheckDefences();
-            }
+            m_iDefence = 0;
+            m_xOwner.CheckDefences();
         }
+        return true;
     }
 
     // TODO: remove this
@@ -138,5 +134,14 @@ public class DefenceIcon : MonoBehaviour
     public CyberSecurity GetCyberSecurityOwner()
     {
         return m_xCyberSecurityOwner;
+    }
+
+    public void OnClick()
+    {
+        var xWeapon = (WeaponBase<DefenceIcon>)Manager.GetSelectedWeapon();
+        if (xWeapon != null)
+        {
+            xWeapon.Use(this);
+        }
     }
 }

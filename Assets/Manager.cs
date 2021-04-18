@@ -30,14 +30,6 @@ public class Manager : MonoBehaviour
     float m_fConnectionRange;
 
     [SerializeField]
-    int m_iHacksLeft = 10;
-    [SerializeField]
-    int m_iMaxHacksLeft = 10;
-    [SerializeField]
-    float m_fHackRechargeRatePerTurn = 0.01f;
-    [SerializeField]
-    float m_fHackRechargeValue = 0;
-    [SerializeField]
     UnityEngine.UI.Text m_xHacksText;
 
     [SerializeField]
@@ -56,6 +48,8 @@ public class Manager : MonoBehaviour
 
     [SerializeField]
     float m_fHexagonEdgeSize;
+
+    static IWeapon s_xSelectedWeapon;
 
     public enum GridDirection : int
     {
@@ -113,12 +107,6 @@ public class Manager : MonoBehaviour
             m_xCountry.OnNextTurn();
             NotificationSystem.OnNextTurn();
             SystemBase.SetUpEdges();
-            m_fHackRechargeValue += m_fHackRechargeRatePerTurn;
-            if (m_fHackRechargeValue > 1)
-            {
-                m_fHackRechargeValue--;
-                ChangeHacks(1);
-            }
             if (m_bTechIncreaseEnabled)
             {
                 m_iTechLevelUpPoints += 1;
@@ -294,25 +282,6 @@ public class Manager : MonoBehaviour
         return m_fConnectionRange;
     }
 
-    public int GetHacksLeft()
-    {
-        return m_iHacksLeft;
-    }
-
-    public void ChangeHacks(int iChange)
-    {
-        m_iHacksLeft += iChange;
-        if(m_iHacksLeft < 0)
-        {
-            m_iHacksLeft = 0;
-        }
-        if (m_iHacksLeft > m_iMaxHacksLeft)
-        {
-            m_iHacksLeft = m_iMaxHacksLeft;
-        }
-        m_xHacksText.text = m_iHacksLeft.ToString();
-    }
-
     public int GetTechLevel()
     {
         return m_iTechLevel;
@@ -416,6 +385,16 @@ public class Manager : MonoBehaviour
                 UnityEngine.Debug.LogError("Extra Grid Direction case");
                 return GridDirection.UP;
         }
+    }
+
+    public static IWeapon GetSelectedWeapon()
+    {
+        return s_xSelectedWeapon;
+    }
+
+    public static void SetWeapon(IWeapon xSelected)
+    {
+        s_xSelectedWeapon = xSelected;
     }
 }
 
