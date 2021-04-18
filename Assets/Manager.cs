@@ -49,8 +49,6 @@ public class Manager : MonoBehaviour
     [SerializeField]
     float m_fHexagonEdgeSize;
 
-    static IWeapon s_xSelectedWeapon;
-
     public enum GridDirection : int
     {
         UP,
@@ -385,16 +383,6 @@ public class Manager : MonoBehaviour
                 UnityEngine.Debug.LogError("Extra Grid Direction case");
                 return GridDirection.UP;
         }
-    }
-
-    public static IWeapon GetSelectedWeapon()
-    {
-        return s_xSelectedWeapon;
-    }
-
-    public static void SetWeapon(IWeapon xSelected)
-    {
-        s_xSelectedWeapon = xSelected;
     }
 }
 

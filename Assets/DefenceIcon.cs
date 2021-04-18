@@ -138,7 +138,7 @@ public class DefenceIcon : MonoBehaviour
 
     public void OnClick()
     {
-        var xWeapon = (WeaponBase<DefenceIcon>)Manager.GetSelectedWeapon();
+        var xWeapon = (WeaponBase<DefenceIcon>)WeaponManager.GetWeaponManager().GetSelectedWeapon();
         if (xWeapon != null)
         {
             xWeapon.Use(this);

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -17,9 +18,9 @@ public abstract class WeaponBase<TargetType> : MonoBehaviour, IWeapon
 
     protected virtual void Start()
     {
-        if (Manager.GetSelectedWeapon()==null)
+        if (WeaponManager.GetWeaponManager().GetSelectedWeapon()==null)
         {
-            Manager.SetWeapon(this);
+            WeaponManager.GetWeaponManager().SetSelectedWeapon(gameObject);
         }
         m_xImage = GetComponent<UnityEngine.UI.Image>();
     }
@@ -29,7 +30,7 @@ public abstract class WeaponBase<TargetType> : MonoBehaviour, IWeapon
         // TODO: make continuous
         m_xSlider.value = Mathf.Clamp01(1 -((Manager.GetTurnNumber() - m_iLastUseTime) / (float)m_iRechargeTime));
 
-        if (Manager.GetSelectedWeapon() == this)
+        if (WeaponManager.GetWeaponManager().GetSelectedWeapon() == this)
         {
             m_xImage.sprite = m_xSelectedIcon;
         }
@@ -65,7 +66,7 @@ public abstract class WeaponBase<TargetType> : MonoBehaviour, IWeapon
 
     public void Select()
     {
-        Manager.SetWeapon(this);
+        WeaponManager.GetWeaponManager().SetSelectedWeapon(gameObject);
     }
 }
 
