@@ -1,10 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public abstract class ActionBase : MonoBehaviour
+public abstract class ActionBase : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     protected SystemBase m_xOwner;
+
+    [SerializeField]
+    GameObject m_xDescription;
 
     protected virtual void Start()
     {
@@ -20,5 +24,15 @@ public abstract class ActionBase : MonoBehaviour
     public virtual void Update()
     {
 
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        m_xDescription.SetActive(true);
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        m_xDescription.SetActive(false);
     }
 }

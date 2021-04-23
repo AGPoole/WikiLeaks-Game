@@ -8,6 +8,8 @@ public class DisableAction : ActionBase
     Sprite m_xOnSprite;
     [SerializeField]
     Sprite m_xOffSprite;
+    [SerializeField]
+    UnityEngine.UI.Image m_xIcon;
 
     protected override void Start()
     {
@@ -15,7 +17,7 @@ public class DisableAction : ActionBase
         var xSecOwner = m_xOwner.GetComponent<CyberSecurity>();
         if (xSecOwner != null)
         {
-            GetComponentInChildren<UnityEngine.UI.Button>().image.sprite = xSecOwner.IsDisabledByPlayer() ? m_xOnSprite : m_xOffSprite;
+            m_xIcon.sprite = xSecOwner.IsDisabledByPlayer() ? m_xOnSprite : m_xOffSprite;
         }
     }
     public override void OnClick()
@@ -24,7 +26,7 @@ public class DisableAction : ActionBase
             var xSecOwner = m_xOwner.GetComponent<CyberSecurity>();
             if (xSecOwner != null)
             {
-                GetComponentInChildren<UnityEngine.UI.Button>().image.sprite = xSecOwner.IsDisabledByPlayer() ? m_xOnSprite : m_xOffSprite;
+                m_xIcon.sprite = xSecOwner.IsDisabledByPlayer() ? m_xOnSprite : m_xOffSprite;
                 xSecOwner.SetDisabledByPlayer(!xSecOwner.IsDisabledByPlayer());
                 return;
             }
@@ -33,7 +35,7 @@ public class DisableAction : ActionBase
             var xAVOwner = m_xOwner.GetComponent<AntiVirusSystem>();
             if (xAVOwner != null)
             {
-                GetComponentInChildren<UnityEngine.UI.Button>().image.sprite = xAVOwner.IsDisabledByPlayer() ? m_xOnSprite : m_xOffSprite;
+                m_xIcon.sprite = xAVOwner.IsDisabledByPlayer() ? m_xOnSprite : m_xOffSprite;
                 xAVOwner.SetDisabledByPlayer(!xAVOwner.IsDisabledByPlayer());
                 return;
             }
