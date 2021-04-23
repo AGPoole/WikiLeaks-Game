@@ -24,7 +24,7 @@ public abstract class SystemBase : MonoBehaviour
 
     protected int m_iHackLevel = 0;
 
-    protected List<Edge> m_xEdgeices;
+    protected List<Edge> m_xEdges;
 
     List<GameObject> m_xHexagonLineRenderers;
 
@@ -45,16 +45,20 @@ public abstract class SystemBase : MonoBehaviour
         SetLevel(m_iLevel, GetDefaultTimer());
         if(m_xUI == null)
         {
-            Debug.LogError(string.Format("Missing UI object on {0}", gameObject.name));
-            return;
+            m_xUI = GetComponentInChildren<SystemUI>();
+            if (m_xUI == null)
+            {
+                Debug.LogError(string.Format("Missing UI object on {0}", gameObject.name));
+                return;
+            }
         }
         GetMyValues().SetUpUIActions(m_xUI);
         s_xAllSystems.Add(this);
 
-        m_xEdgeices = new List<Edge>();
+        m_xEdges = new List<Edge>();
         for(int i=0; i<6; i++)
         {
-            m_xEdgeices.Add(null);
+            m_xEdges.Add(null);
         }
 
         transform.position = Manager.GetManager().GetPositionFromGridCoords(m_iXPosInGrid, m_iYPosInGrid);
@@ -238,9 +242,9 @@ public abstract class SystemBase : MonoBehaviour
     {
         for (int i = 0; i < 6; i++)
         {
-            if (m_xEdgeices[i] != null)
+            if (m_xEdges[i] != null)
             {
-                m_xEdgeices[i].Defend();
+                m_xEdges[i].Defend();
             }
         }
     }
@@ -254,7 +258,7 @@ public abstract class SystemBase : MonoBehaviour
             SystemBase xSys = GetConnectedSystem((Manager.GridDirection)i);
             if (xSys!=null && xSys.m_bHacked)
             {
-                m_xEdgeices[i].Hack();
+                m_xEdges[i].Hack();
             }
         }
         foreach(PerkBase xPerk in m_xPerks)
@@ -268,9 +272,9 @@ public abstract class SystemBase : MonoBehaviour
         m_bHacked = false;
         for (int i = 0; i < 6; i++)
         {
-            if (m_xEdgeices[i] != null)
+            if (m_xEdges[i] != null)
             {
-                m_xEdgeices[i].UnHack();
+                m_xEdges[i].UnHack();
             }
         }
         foreach (PerkBase xPerk in m_xPerks)
@@ -288,26 +292,26 @@ public abstract class SystemBase : MonoBehaviour
             {
                 int iOpposite = (int)Manager.GetOppositeDirection((Manager.GridDirection)iDir);
                 SystemBase xSys2 = Manager.GetAdjacentSystem(xSys1.m_iXPosInGrid, xSys1.m_iYPosInGrid, (Manager.GridDirection)iDir);
-                Edge xEdge1 = xSys1 != null ? xSys1.m_xEdgeices[iDir] : null;
-                Edge xEdge2 = xSys2!=null ? xSys2.m_xEdgeices[iOpposite] : null;
+                Edge xEdge1 = xSys1 != null ? xSys1.m_xEdges[iDir] : null;
+                Edge xEdge2 = xSys2!=null ? xSys2.m_xEdges[iOpposite] : null;
                 if (xEdge1 != null && !xEdge1.Contains(xSys2))
                 {
 
                     Debug.LogFormat("({0} {1}) ({2} {3}) {4} ", xEdge1.GetStart().m_iXPosInGrid, xEdge1.GetStart().m_iYPosInGrid, xEdge1.GetEnd().m_iXPosInGrid, xEdge1.GetEnd().m_iYPosInGrid, iDir);
                     Destroy(xEdge1.gameObject);
-                    xSys1.m_xEdgeices[iDir] = null;
+                    xSys1.m_xEdges[iDir] = null;
                 }
                 if((xEdge2 != null && !xEdge2.Contains(xSys1)))
                 {
                     Destroy(xEdge2.gameObject);
-                    xSys2.m_xEdgeices[iOpposite] = null;
+                    xSys2.m_xEdges[iOpposite] = null;
                 }
                 if (xSys1!=null && xSys2!=null && xEdge1==null && xEdge2==null)
                 {
                     GameObject xGameObject = Instantiate(Manager.GetManager().GetEdgePrefabGameObject());
                     xGameObject.GetComponent<Edge>().SetEndPoints(xSys1, xSys2);
-                    xSys1.m_xEdgeices[iDir] = xGameObject.GetComponent<Edge>();
-                    xSys2.m_xEdgeices[iOpposite] = xGameObject.GetComponent<Edge>();
+                    xSys1.m_xEdges[iDir] = xGameObject.GetComponent<Edge>();
+                    xSys2.m_xEdges[iOpposite] = xGameObject.GetComponent<Edge>();
                 }          
             }
         }
@@ -329,9 +333,9 @@ public abstract class SystemBase : MonoBehaviour
     {
         for (int i = 0; i < 6; i++)
         {
-            if (m_xEdgeices[i] == xEdge)
+            if (m_xEdges[i] == xEdge)
             {
-                m_xEdgeices[i] = null;
+                m_xEdges[i] = null;
             }
         }
     }
@@ -372,7 +376,7 @@ public abstract class SystemBase : MonoBehaviour
 
     public SystemBase GetConnectedSystem(Manager.GridDirection eDir)
     {
-        Edge xEdge = m_xEdgeices[(int)eDir];
+        Edge xEdge = m_xEdges[(int)eDir];
         if (xEdge != null)
         {
             return xEdge.GetStart() == this ? xEdge.GetEnd() : xEdge.GetStart();
