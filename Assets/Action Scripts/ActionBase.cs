@@ -1,24 +1,37 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
-public abstract class ActionBase : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public abstract class ActionBase : MonoBehaviour
 {
-    protected SystemBase m_xOwner;
+    protected SystemBase m_xSystemOwner;
+
+    protected PerkUI m_xUI;
 
     [SerializeField]
-    GameObject m_xDescription;
+    string m_xName;
+    [SerializeField]
+    string m_xDescription;
+    [SerializeField]
+    protected Sprite m_xIcon;
+    [SerializeField]
+    bool m_bRequiresHack = true;
 
     protected virtual void Start()
     {
-        GetComponentInChildren<UnityEngine.UI.Button>().onClick.AddListener(delegate { OnClick(); });
+        
     }
-    public abstract void OnClick();
+    public virtual void OnClick()
+    { }
 
-    public void SetOwner(SystemBase xOwner)
+    public void SetSystemOwner(SystemBase xOwner)
     {
-        m_xOwner = xOwner;
+        m_xSystemOwner = xOwner;
+    }
+
+    public void SetUI(PerkUI xUI)
+    {
+        m_xUI = xUI;
     }
 
     public virtual void Update()
@@ -26,13 +39,26 @@ public abstract class ActionBase : MonoBehaviour, IPointerEnterHandler, IPointer
 
     }
 
-    public void OnPointerEnter(PointerEventData eventData)
+    public virtual void OnNextTurn() 
+    { }
+
+    public string GetName()
     {
-        m_xDescription.SetActive(true);
+        return m_xName;
     }
 
-    public void OnPointerExit(PointerEventData eventData)
+    public Sprite GetIcon()
     {
-        m_xDescription.SetActive(false);
+        return m_xIcon;
+    }
+
+    public string GetDescription()
+    {
+        return m_xDescription;
+    }
+
+    public  bool GetRequiresHack()
+    {
+        return m_bRequiresHack;
     }
 }

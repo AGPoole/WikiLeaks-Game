@@ -682,8 +682,7 @@ MonoBehaviour:
   m_bHacked: 0
   m_iXPosInGrid: 2
   m_iYPosInGrid: -1
-  m_xPerks:
-  - {fileID: 329232010}
+  m_xPerks: []
   m_xSharesText: {fileID: 0}
   iSharesBought: 0
 --- !u!1 &60525232
@@ -2846,17 +2845,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5371006946478455100, guid: 662f406a67b0402459d952f498952c64, type: 3}
   m_PrefabInstance: {fileID: 329232008}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &329232010 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8906191058490931491, guid: 662f406a67b0402459d952f498952c64, type: 3}
-  m_PrefabInstance: {fileID: 329232008}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a32f2e757329995439d5ab502a7ac0f0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &330430974
 GameObject:
   m_ObjectHideFlags: 0
@@ -7858,17 +7846,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5371006946478455100, guid: 662f406a67b0402459d952f498952c64, type: 3}
   m_PrefabInstance: {fileID: 1044607814}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1044607816 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8906191058490931491, guid: 662f406a67b0402459d952f498952c64, type: 3}
-  m_PrefabInstance: {fileID: 1044607814}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a32f2e757329995439d5ab502a7ac0f0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1049326456
 GameObject:
   m_ObjectHideFlags: 0
@@ -8997,8 +8974,7 @@ MonoBehaviour:
   m_bHacked: 0
   m_iXPosInGrid: 1
   m_iYPosInGrid: 0
-  m_xPerks:
-  - {fileID: 8906191058490931491, guid: 662f406a67b0402459d952f498952c64, type: 3}
+  m_xPerks: []
   m_xSharesText: {fileID: 0}
   iSharesBought: 0
 --- !u!1001 &1233761872
@@ -11692,11 +11668,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15194861ac4e8304e9ec1cc2ba3d9658, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_iRechargeTime: 100
+  m_iRechargeTime: 1
   m_xSlider: {fileID: 763643256}
   m_xSelectedIcon: {fileID: 21300000, guid: 42cdc690bd287a44483fd54114324637, type: 3}
   m_xUnselectedIcon: {fileID: 21300000, guid: 144c44f424cae3f45b436d8af44b901c, type: 3}
-  m_iDamage: 15
+  m_iDamage: 100
 --- !u!114 &1503327135
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15938,7 +15914,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -10.146957, y: 0}
+  m_AnchoredPosition: {x: -10.146957, y: 0.00015258789}
   m_SizeDelta: {x: -20.296127, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &2080925866
@@ -16568,6 +16544,7 @@ MonoBehaviour:
   m_xTechLevelText: {fileID: 1952836326}
   m_xCountry: {fileID: 1958554215}
   m_fHexagonEdgeSize: 3
+  m_xPerkUIPrefab: {fileID: 5577481770159635099, guid: 8acdda1afa962b343ab78de13ed454af, type: 3}
   dragSpeed: 2
   xMaxCam: {x: 25, y: 10}
   xMinCam: {x: -30, y: -15}
@@ -16717,8 +16694,8 @@ MonoBehaviour:
     m_fBaseDefenceRefreshTime: 0.5
     m_fAdditionalShielddeteriorationTime: 0.5
     m_xActions:
-    - {fileID: 5577481770159635099, guid: 3b28b3ed398cab64fa3df3118fb738ef, type: 3}
-    - {fileID: 5577481770159635099, guid: f2fa69d044d1bc64dbee7851b2b07fbb, type: 3}
+    - {fileID: 739956440285112850, guid: e0d2f90771baf2c419a208f31ad8d0b9, type: 3}
+    - {fileID: 739956440285112850, guid: f7792a1355f2fa543870a82e43615eb9, type: 3}
     m_iPropagandaLength: 50
     m_fPropangandaStrength: 0.1
     m_iCoolDownLength: 70
@@ -16759,8 +16736,8 @@ MonoBehaviour:
     m_fBaseDefenceRefreshTime: 0.5
     m_fAdditionalShielddeteriorationTime: 0.5
     m_xActions:
-    - {fileID: 5577481770159635099, guid: 3b28b3ed398cab64fa3df3118fb738ef, type: 3}
-    - {fileID: 5577481770159635099, guid: f2fa69d044d1bc64dbee7851b2b07fbb, type: 3}
+    - {fileID: 739956440285112850, guid: e0d2f90771baf2c419a208f31ad8d0b9, type: 3}
+    - {fileID: 739956440285112850, guid: f7792a1355f2fa543870a82e43615eb9, type: 3}
     m_iPropagandaLength: 50
     m_fPropangandaStrength: 0.1
     m_iCoolDownLength: 70
@@ -16943,8 +16920,8 @@ MonoBehaviour:
     m_fBaseDefenceRefreshTime: 0.5
     m_fAdditionalShielddeteriorationTime: 0.5
     m_xActions:
-    - {fileID: 5577481770159635099, guid: 3b28b3ed398cab64fa3df3118fb738ef, type: 3}
-    - {fileID: 5577481770159635099, guid: f2fa69d044d1bc64dbee7851b2b07fbb, type: 3}
+    - {fileID: 739956440285112850, guid: e0d2f90771baf2c419a208f31ad8d0b9, type: 3}
+    - {fileID: 739956440285112850, guid: f7792a1355f2fa543870a82e43615eb9, type: 3}
     m_fRatioRequirement: 0
     m_fMessageRate: 0
     m_xMessages: []
@@ -16969,9 +16946,9 @@ MonoBehaviour:
     m_fBaseDefenceRefreshTime: 0.5
     m_fAdditionalShielddeteriorationTime: 0.5
     m_xActions:
-    - {fileID: 5577481770159635099, guid: 3b28b3ed398cab64fa3df3118fb738ef, type: 3}
-    - {fileID: 5577481770159635099, guid: f2fa69d044d1bc64dbee7851b2b07fbb, type: 3}
-    - {fileID: 5577481770159635099, guid: ad6eeafc241b7b24d846871eae73bd89, type: 3}
+    - {fileID: 739956440285112850, guid: e0d2f90771baf2c419a208f31ad8d0b9, type: 3}
+    - {fileID: 739956440285112850, guid: f7792a1355f2fa543870a82e43615eb9, type: 3}
+    - {fileID: 739956440285112850, guid: 22d30b6de2e77164daf3fc21082ce4d0, type: 3}
     m_afDefenceForSystemLevels:
     - 10
     m_afDefenceForTechLevels:
@@ -17004,12 +16981,13 @@ MonoBehaviour:
     m_fBaseDefenceRefreshTime: 0.5
     m_fAdditionalShielddeteriorationTime: 0.5
     m_xActions:
-    - {fileID: 5577481770159635099, guid: 3b28b3ed398cab64fa3df3118fb738ef, type: 3}
-    - {fileID: 5577481770159635099, guid: f2fa69d044d1bc64dbee7851b2b07fbb, type: 3}
-    - {fileID: 5577481770159635099, guid: 2eb8bd6bcaada1e46879dfb1c3c92e79, type: 3}
-    - {fileID: 5577481770159635099, guid: f88c0415b3544334b950c1dea88edc52, type: 3}
-    - {fileID: 5577481770159635099, guid: 23474a79ef029a14491bef210667e903, type: 3}
-    - {fileID: 5577481770159635099, guid: 287c04bd9488bd94cb1d75d3f29a95d6, type: 3}
+    - {fileID: 739956440285112850, guid: e0d2f90771baf2c419a208f31ad8d0b9, type: 3}
+    - {fileID: 739956440285112850, guid: f7792a1355f2fa543870a82e43615eb9, type: 3}
+    - {fileID: 739956440285112850, guid: 523c12486bba63542ae0aee86c787bf1, type: 3}
+    - {fileID: 739956440285112850, guid: 2394d141b87d1784b9b3dac63d3efb39, type: 3}
+    - {fileID: 739956440285112850, guid: bb03897dfc4624749a1fb253d43bb955, type: 3}
+    - {fileID: 739956440285112850, guid: c2887f32448caea47994a12a9b18c47e, type: 3}
+    - {fileID: 739956440285112850, guid: d9e689bd5aa309943ba69cf66f54984a, type: 3}
 --- !u!114 &2130129003
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17031,9 +17009,9 @@ MonoBehaviour:
     m_fBaseDefenceRefreshTime: 0.5
     m_fAdditionalShielddeteriorationTime: 0.5
     m_xActions:
-    - {fileID: 5577481770159635099, guid: 3b28b3ed398cab64fa3df3118fb738ef, type: 3}
-    - {fileID: 5577481770159635099, guid: f2fa69d044d1bc64dbee7851b2b07fbb, type: 3}
-    - {fileID: 5577481770159635099, guid: ad6eeafc241b7b24d846871eae73bd89, type: 3}
+    - {fileID: 739956440285112850, guid: e0d2f90771baf2c419a208f31ad8d0b9, type: 3}
+    - {fileID: 739956440285112850, guid: f7792a1355f2fa543870a82e43615eb9, type: 3}
+    - {fileID: 739956440285112850, guid: 22d30b6de2e77164daf3fc21082ce4d0, type: 3}
     m_iLaunchTime: 50
     m_fDaamageGainPerLevel: 7
     m_xMessagePrefab: {fileID: 1813745609784449481, guid: ab05a90b7b17d564f8601b8313a4e77b, type: 3}
@@ -17245,8 +17223,7 @@ MonoBehaviour:
   m_bHacked: 0
   m_iXPosInGrid: 2
   m_iYPosInGrid: 1
-  m_xPerks:
-  - {fileID: 1044607816}
+  m_xPerks: []
   m_xSharesText: {fileID: 0}
   iSharesBought: 0
 --- !u!1001 &7000455101788696826

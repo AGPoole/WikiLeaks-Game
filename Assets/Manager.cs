@@ -48,6 +48,8 @@ public class Manager : MonoBehaviour
 
     [SerializeField]
     float m_fHexagonEdgeSize;
+    [SerializeField]
+    GameObject m_xPerkUIPrefab;
 
     public enum GridDirection : int
     {
@@ -384,6 +386,11 @@ public class Manager : MonoBehaviour
                 UnityEngine.Debug.LogError("Extra Grid Direction case");
                 return GridDirection.UP;
         }
+    }
+
+    public GameObject GetUIPrefab()
+    {
+        return m_xPerkUIPrefab;
     }
 }
 

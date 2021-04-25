@@ -95,7 +95,10 @@ public abstract class SystemBase : MonoBehaviour
     }
     public virtual void OnNextTurn(int iOwnerLevel)
     {
-        
+        if (m_bHacked)
+        {
+            m_xUI.ActivatePerks();
+        }
     }
 
     public bool IsHacked() { return m_bHacked; }

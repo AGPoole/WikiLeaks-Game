@@ -6,7 +6,7 @@ public class SellShareAction : ActionBase
 {
     public override void OnClick()
     {
-        var xFinanceOwner = m_xOwner.GetComponent<Finance>();
+        var xFinanceOwner = m_xSystemOwner.GetComponent<Finance>();
         if (xFinanceOwner != null)
         {
             xFinanceOwner.SellShare();

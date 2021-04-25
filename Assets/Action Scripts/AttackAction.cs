@@ -6,12 +6,6 @@ public class AttackAction : ActionBase
 {
     public override void OnClick()
     {
-        m_xOwner.Attack(true);
-    }
-
-    public override void Update()
-    {
-        base.Update();
-        gameObject.SetActive(m_xOwner.IsHackable());
+        m_xSystemOwner.Attack(true);
     }
 }

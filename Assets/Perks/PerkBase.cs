@@ -7,4 +7,6 @@ public abstract class PerkBase : MonoBehaviour
 {
     public virtual void OnNextTurn()
     { }
+    public virtual void OnClick() 
+    { }
 }
