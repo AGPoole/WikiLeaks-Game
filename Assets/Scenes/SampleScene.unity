@@ -2882,9 +2882,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a32f2e757329995439d5ab502a7ac0f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_iMoneyGain: 5
-  m_iTurnsBetweenMoneyGain: 100
-  m_iLastMoneyGain: 0
 --- !u!1 &330430974
 GameObject:
   m_ObjectHideFlags: 0
@@ -7922,9 +7919,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a32f2e757329995439d5ab502a7ac0f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_iMoneyGain: 5
-  m_iTurnsBetweenMoneyGain: 100
-  m_iLastMoneyGain: 0
 --- !u!1 &1049326456
 GameObject:
   m_ObjectHideFlags: 0
@@ -15991,7 +15985,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -10.146957, y: 0.00015258789}
+  m_AnchoredPosition: {x: -10.146957, y: -0.000030517578}
   m_SizeDelta: {x: -20.296127, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &2080925866
@@ -17106,7 +17100,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df79db411c0c4254e9b00178b33bd505, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_xPerks: []
 --- !u!1 &100020275625698245
 GameObject:
   m_ObjectHideFlags: 0
