@@ -10,9 +10,9 @@ public class SystemUI : MonoBehaviour
     [SerializeField]
     UnityEngine.UI.Text m_xLevelText;
     [SerializeField]
-    GameObject m_xActionsBase;
+    GameObject m_xPerksBase;
     [SerializeField]
-    List<GameObject> m_xActions;
+    List<GameObject> m_xPerkUIs;
 
     static SystemUI s_xSelected;
 
@@ -29,7 +29,7 @@ public class SystemUI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        m_xActionsBase.SetActive(s_xSelected == this && GetParent().GetLevel()>0);
+        m_xPerksBase.SetActive(s_xSelected == this && GetParent().GetLevel()>0);
         m_xLevelText.text = GetParent().GetLevel().ToString();
         if (GetParent().GetLevel() > 0f)
         {
@@ -38,17 +38,17 @@ public class SystemUI : MonoBehaviour
         Color c = m_xTitleText.color;
         m_xTitleText.color = new Color(c.r, c.g, c.b, GetParent().GetLevel() > 0 ? 1f : 0.4f);
 
-        foreach(GameObject xActionObject in m_xActions)
-        {
-            ActionBase xAction = xActionObject.GetComponent<ActionBase>();
-            xAction.Update();
-        }
         //Vector3 xTarget = new Vector3(transform.position.x, Camera.main.transform.position.y, Camera.main.transform.position.z);
         Vector3 xTarget = Camera.main.transform.position;
         Vector3 v = xTarget - transform.position;
         v.y = v.z = 0.0f;
         transform.LookAt(xTarget - v);
         transform.Rotate(0, 180, 0);
+
+        foreach(GameObject xGameObject in m_xPerkUIs)
+        {
+            xGameObject.GetComponent<PerkUI>().UpdateActive(GetParent().IsHacked());
+        }
     }
 
 
@@ -62,27 +62,27 @@ public class SystemUI : MonoBehaviour
         m_xLevelText.gameObject.SetActive(false);
     }
 
-    public void AddAction(GameObject xAction)
+    public void AddPerk(GameObject xPerk)
     {
-        foreach (GameObject xAction2 in m_xActions)
+        foreach (GameObject xPerk2 in m_xPerkUIs)
         {
-            var Type1 = xAction.GetComponent<ActionBase>().GetType();
-            var Type2 = xAction2.GetComponent<ActionBase>().GetType();
+            var Type1 = xPerk.GetComponent<PerkBase>().GetType();
+            var Type2 = xPerk2.GetComponent<PerkUI>().GetPerk().GetType();
             if(Type1 == Type2)
             {
                 return;
             }
         }
-        GameObject xNewAction = Instantiate(xAction, m_xActionsBase.transform);
-        m_xActions.Add(xNewAction);
-        var xNewActionComponent = xNewAction.GetComponent<ActionBase>();
-        xNewActionComponent.SetOwner(GetParent());
-        var axButtons = xNewActionComponent.GetComponentsInChildren<UnityEngine.UI.Button>();
-        foreach(var xButton in axButtons)
+        
+        m_xPerkUIs.Add(PerkUI.CreatePerkUI(xPerk, GetParent(), m_xPerksBase.transform));
+    }
+
+    // TODO: this should not be in the UI
+    public void ActivatePerks()
+    {
+        foreach(GameObject xPerkObject in m_xPerkUIs)
         {
-            var xNav = xButton.navigation;
-            xNav.mode = Navigation.Mode.None;
-            xButton.navigation = xNav;
+            xPerkObject.GetComponent<PerkUI>().GetPerk().OnNextTurn();
         }
     }
 
