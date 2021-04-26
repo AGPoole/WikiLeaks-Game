@@ -10,7 +10,7 @@ public class SystemUI : MonoBehaviour
     [SerializeField]
     UnityEngine.UI.Text m_xLevelText;
     [SerializeField]
-    GameObject m_xActionsBase;
+    GameObject m_xPerksBase;
     [SerializeField]
     List<GameObject> m_xPerkUIs;
 
@@ -29,7 +29,7 @@ public class SystemUI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        m_xActionsBase.SetActive(s_xSelected == this && GetParent().GetLevel()>0);
+        m_xPerksBase.SetActive(s_xSelected == this && GetParent().GetLevel()>0);
         m_xLevelText.text = GetParent().GetLevel().ToString();
         if (GetParent().GetLevel() > 0f)
         {
@@ -62,27 +62,27 @@ public class SystemUI : MonoBehaviour
         m_xLevelText.gameObject.SetActive(false);
     }
 
-    public void AddAction(GameObject xAction)
+    public void AddPerk(GameObject xPerk)
     {
-        foreach (GameObject xAction2 in m_xPerkUIs)
+        foreach (GameObject xPerk2 in m_xPerkUIs)
         {
-            var Type1 = xAction.GetComponent<ActionBase>().GetType();
-            var Type2 = xAction2.GetComponent<PerkUI>().GetAction().GetType();
+            var Type1 = xPerk.GetComponent<PerkBase>().GetType();
+            var Type2 = xPerk2.GetComponent<PerkUI>().GetPerk().GetType();
             if(Type1 == Type2)
             {
                 return;
             }
         }
         
-        m_xPerkUIs.Add(PerkUI.CreatePerkUI(xAction, GetParent(), m_xActionsBase.transform));
+        m_xPerkUIs.Add(PerkUI.CreatePerkUI(xPerk, GetParent(), m_xPerksBase.transform));
     }
 
     // TODO: this should not be in the UI
     public void ActivatePerks()
     {
-        foreach(GameObject xActionObject in m_xPerkUIs)
+        foreach(GameObject xPerkObject in m_xPerkUIs)
         {
-            xActionObject.GetComponent<PerkUI>().GetAction().OnNextTurn();
+            xPerkObject.GetComponent<PerkUI>().GetPerk().OnNextTurn();
         }
     }
 

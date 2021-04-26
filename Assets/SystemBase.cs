@@ -15,8 +15,6 @@ public abstract class SystemBase : MonoBehaviour
     int m_iXPosInGrid = 0;
     [SerializeField]
     int m_iYPosInGrid = 0;
-    [SerializeField]
-    List<PerkBase> m_xPerks;
 
     protected OrganisationBase m_xOwner;
 
@@ -52,7 +50,7 @@ public abstract class SystemBase : MonoBehaviour
                 return;
             }
         }
-        GetMyValues().SetUpUIActions(m_xUI);
+        GetMyValues().SetUpUIPerks(m_xUI);
         s_xAllSystems.Add(this);
 
         m_xEdges = new List<Edge>();
@@ -264,10 +262,6 @@ public abstract class SystemBase : MonoBehaviour
                 m_xEdges[i].Hack();
             }
         }
-        foreach(PerkBase xPerk in m_xPerks)
-        {
-            PerkManager.GetPerkManager().AddPerk(xPerk);
-        }
     }
 
     protected virtual void UnHack()
@@ -279,10 +273,6 @@ public abstract class SystemBase : MonoBehaviour
             {
                 m_xEdges[i].UnHack();
             }
-        }
-        foreach (PerkBase xPerk in m_xPerks)
-        {
-            PerkManager.GetPerkManager().RemovePerk(xPerk);
         }
     }
 

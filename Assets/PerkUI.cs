@@ -15,35 +15,35 @@ public class PerkUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     [SerializeField]
     UnityEngine.UI.Image m_xImage;
 
-    ActionBase m_xAction;
+    PerkBase m_xPerk;
 
-    public static GameObject CreatePerkUI(GameObject xActionGameObject, SystemBase xOwner, Transform xParent)
+    public static GameObject CreatePerkUI(GameObject xPerkGameObject, SystemBase xOwner, Transform xParent)
     {
         GameObject xUIGameObject =Instantiate(Manager.GetManager().GetUIPrefab(), xParent);
-        xUIGameObject.GetComponent<PerkUI>().SetUpAction(xActionGameObject, xOwner);
+        xUIGameObject.GetComponent<PerkUI>().SetUpPerk(xPerkGameObject, xOwner);
         return xUIGameObject;
     }
 
-    void SetUpAction(GameObject xActionObject, SystemBase xOwner)
+    void SetUpPerk(GameObject xPerkObject, SystemBase xOwner)
     {
-        if (m_xAction != null)
+        if (m_xPerk != null)
         {
-            Destroy(xActionObject);
+            Destroy(xPerkObject);
         }
-        m_xAction = Instantiate(xActionObject, transform).GetComponent<ActionBase>();
+        m_xPerk = Instantiate(xPerkObject, transform).GetComponent<PerkBase>();
 
-        m_xAction.SetSystemOwner(xOwner);
-        var axButtons = m_xAction.GetComponentsInChildren<UnityEngine.UI.Button>();
+        m_xPerk.SetSystemOwner(xOwner);
+        var axButtons = m_xPerk.GetComponentsInChildren<UnityEngine.UI.Button>();
         foreach (var xButton in axButtons)
         {
             var xNav = xButton.navigation;
             xNav.mode = Navigation.Mode.None;
             xButton.navigation = xNav;
         }
-        m_xDescriptionText.text = m_xAction.GetDescription();
-        m_xImage.sprite = m_xAction.GetIcon();
-        m_xNameText.text = m_xAction.GetName();
-        m_xAction.SetUI(this);
+        m_xDescriptionText.text = m_xPerk.GetDescription();
+        m_xImage.sprite = m_xPerk.GetIcon();
+        m_xNameText.text = m_xPerk.GetName();
+        m_xPerk.SetUI(this);
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -58,7 +58,7 @@ public class PerkUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
     public void UpdateActive(bool bHacked)
     {
-        gameObject.SetActive(!m_xAction.GetRequiresHack() || bHacked);
+        gameObject.SetActive(!m_xPerk.GetRequiresHack() || bHacked);
     }
 
     public void SetSprite(Sprite xSprite)
@@ -66,13 +66,13 @@ public class PerkUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         m_xImage.sprite = xSprite;
     }
 
-    public ActionBase GetAction()
+    public PerkBase GetPerk()
     {
-        return m_xAction;
+        return m_xPerk;
     }
 
     public void OnClick()
     {
-        m_xAction.OnClick();
+        m_xPerk.OnClick();
     }
 }

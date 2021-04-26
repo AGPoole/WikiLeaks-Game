@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SellShareAction : ActionBase
+public class SellSharePerk : PerkBase
 {
     public override void OnClick()
     {

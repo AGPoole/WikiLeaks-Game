@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DefendAction : ActionBase
+public class AttackPerk : PerkBase
 {
     public override void OnClick()
     {
-        m_xSystemOwner.Defend();
+        m_xSystemOwner.Attack(true);
     }
 }
-

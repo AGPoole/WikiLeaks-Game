@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GainMoneyAction : ActionBase
+public class GainMoneyPerk : PerkBase
 {
     [SerializeField]
     int m_iMoneyGain = 5;

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DisableAction : ActionBase
+public class DisablePerk : PerkBase
 {
     [SerializeField]
     Sprite m_xOnSprite;

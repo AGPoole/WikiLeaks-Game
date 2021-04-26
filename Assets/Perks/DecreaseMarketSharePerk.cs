@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DecreaseMarketShareAction : ActionBase
+public class DecreaseMarketSharePerk : PerkBase
 {
     public override void OnClick()
     {

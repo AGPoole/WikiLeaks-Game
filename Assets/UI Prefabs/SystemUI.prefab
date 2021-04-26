@@ -233,7 +233,7 @@ GameObject:
   - component: {fileID: 3949595529222038054}
   - component: {fileID: 8170630633158723263}
   m_Layer: 5
-  m_Name: Actions Canvas
+  m_Name: Perks Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -773,8 +773,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_xTitleText: {fileID: 3949595528727097154}
   m_xLevelText: {fileID: 3949595530170061504}
-  m_xActionsBase: {fileID: 3949595529222038050}
-  m_xActions: []
+  m_xPerksBase: {fileID: 3949595529222038050}
+  m_xPerkUIs: []
 --- !u!114 &7101749667520685246
 MonoBehaviour:
   m_ObjectHideFlags: 0

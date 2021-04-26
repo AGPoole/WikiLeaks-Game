@@ -36,7 +36,7 @@ public class SystemValuesBase
     protected float m_fAdditionalShielddeteriorationTime = 0.1f;
 
     [SerializeField]
-    List<GameObject> m_xActions;
+    List<GameObject> m_xPerks;
 
     public int GetLevelUpCost(int iCurrentLevel)
     {
@@ -64,11 +64,11 @@ public class SystemValuesBase
     {
         return m_fAdditionalShielddeteriorationTime;
     }
-    public void SetUpUIActions(SystemUI xUI)
+    public void SetUpUIPerks(SystemUI xUI)
     {
-        foreach(var xAction in m_xActions)
+        foreach(var xPerk in m_xPerks)
         {
-            xUI.AddAction(xAction);
+            xUI.AddPerk(xPerk);
         }
     }
 }
