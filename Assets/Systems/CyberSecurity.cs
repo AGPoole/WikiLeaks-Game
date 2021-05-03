@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CyberSecurity : SystemBase
+public class CyberSecurity : SystemBase, IDisablable
 {
     public override SystemValuesBase GetMyValues()
     {
@@ -13,7 +13,7 @@ public class CyberSecurity : SystemBase
     protected override void Update()
     {
         const float fEDGE_CALCULATION_TIME_GAP = 0.5f;
-        if (!Manager.GetIsPaused() && !m_bDisabledByPlayer)
+        if (!Manager.GetIsPaused() && !m_bDisabledByPlayer && !IsForceDisabled())
         {
             m_fEdgeRecalculateTimer += Time.deltaTime;
             if (m_fEdgeRecalculateTimer > fEDGE_CALCULATION_TIME_GAP)
@@ -38,7 +38,7 @@ public class CyberSecurity : SystemBase
 
     public int GetMaxDefenceForEdge(Edge xEdge)
     {
-        if (m_bDisabledByPlayer)
+        if (m_bDisabledByPlayer || IsForceDisabled())
         {
             return 0;
         }
@@ -71,5 +71,16 @@ public class CyberSecurity : SystemBase
     public bool IsDisabledByPlayer()
     {
         return m_bDisabledByPlayer;
+    }
+
+    int m_iNoLongerForceDisabled = 0;
+    public void ForceDisable(int iNumTurns)
+    {
+        m_iNoLongerForceDisabled = Manager.GetTurnNumber() + iNumTurns;
+    }
+
+    public bool IsForceDisabled()
+    {
+        return Manager.GetTurnNumber() < m_iNoLongerForceDisabled;
     }
 }

@@ -61,4 +61,14 @@ public abstract class PerkBase : MonoBehaviour
     {
         return m_bRequiresHack;
     }
+
+    public virtual void OnHacked()
+    {
+
+    }
+
+    public virtual void OnUnhacked()
+    {
+
+    }
 }

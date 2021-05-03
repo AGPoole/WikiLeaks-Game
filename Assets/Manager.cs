@@ -294,10 +294,10 @@ public class Manager : MonoBehaviour
 
     public Vector3 GetPositionFromGridCoords(int iX, int iY)
     {
-        float fHexHeight = 0.86602540378f*m_fHexagonEdgeSize*2;
-        float fHexWidth = 2f*m_fHexagonEdgeSize;
-        float fOffset = ProjectMaths.Mod(iX, 2) == 0 ? 0 : -fHexHeight/2;
-        return new Vector3(iX * fHexWidth*0.75f, (iY * fHexHeight) + fOffset, 0f);
+        float fHexHeight = 0.86602540378f * m_fHexagonEdgeSize * 2;
+        float fHexWidth = 2f * m_fHexagonEdgeSize;
+        float fOffset = ProjectMaths.Mod(iX, 2) == 0 ? 0 : -fHexHeight / 2;
+        return new Vector3(iX * fHexWidth * 0.75f, (iY * fHexHeight) + fOffset, 0f);
     }
 
     public float GetHexagonEdgeSize()
@@ -310,57 +310,57 @@ public class Manager : MonoBehaviour
         switch (eDir)
         {
             case GridDirection.UP:
-            {
-                return SystemBase.GetSystemWithCoords(iX, iY + 1);
-            }
+                {
+                    return SystemBase.GetSystemWithCoords(iX, iY + 1);
+                }
             case GridDirection.UP_LEFT:
-            {
-                if(ProjectMaths.Mod(iX, 2) == 0)
                 {
-                    return SystemBase.GetSystemWithCoords(iX - 1, iY+1);
+                    if (ProjectMaths.Mod(iX, 2) == 0)
+                    {
+                        return SystemBase.GetSystemWithCoords(iX - 1, iY + 1);
+                    }
+                    else
+                    {
+                        return SystemBase.GetSystemWithCoords(iX - 1, iY);
+                    }
                 }
-                else
-                {
-                    return SystemBase.GetSystemWithCoords(iX-1, iY);
-                }
-            }
             case GridDirection.DOWN_LEFT:
-            {
-                if (ProjectMaths.Mod(iX, 2) == 0)
                 {
-                    return SystemBase.GetSystemWithCoords(iX - 1, iY);
+                    if (ProjectMaths.Mod(iX, 2) == 0)
+                    {
+                        return SystemBase.GetSystemWithCoords(iX - 1, iY);
+                    }
+                    else
+                    {
+                        return SystemBase.GetSystemWithCoords(iX - 1, iY - 1);
+                    }
                 }
-                else
-                {
-                    return SystemBase.GetSystemWithCoords(iX - 1, iY - 1);
-                }
-            }
             case GridDirection.DOWN:
-            {
-                return SystemBase.GetSystemWithCoords(iX, iY - 1);
-            }
+                {
+                    return SystemBase.GetSystemWithCoords(iX, iY - 1);
+                }
             case GridDirection.DOWN_RIGHT:
-            {
-                if (ProjectMaths.Mod(iX, 2) == 0)
                 {
-                    return SystemBase.GetSystemWithCoords(iX + 1, iY);
+                    if (ProjectMaths.Mod(iX, 2) == 0)
+                    {
+                        return SystemBase.GetSystemWithCoords(iX + 1, iY);
+                    }
+                    else
+                    {
+                        return SystemBase.GetSystemWithCoords(iX + 1, iY - 1);
+                    }
                 }
-                else
-                {
-                    return SystemBase.GetSystemWithCoords(iX + 1, iY - 1);
-                }
-            }
             case GridDirection.UP_RIGHT:
-            {
-                if (ProjectMaths.Mod(iX, 2) == 0)
                 {
-                    return SystemBase.GetSystemWithCoords(iX + 1, iY + 1);
+                    if (ProjectMaths.Mod(iX, 2) == 0)
+                    {
+                        return SystemBase.GetSystemWithCoords(iX + 1, iY + 1);
+                    }
+                    else
+                    {
+                        return SystemBase.GetSystemWithCoords(iX + 1, iY);
+                    }
                 }
-                else
-                {
-                    return SystemBase.GetSystemWithCoords(iX + 1, iY);
-                }
-            }
         }
         return null;
     }
@@ -391,6 +391,21 @@ public class Manager : MonoBehaviour
     {
         return m_xPerkUIPrefab;
     }
+
+#if (UNITY_EDITOR)
+    [ContextMenu("Correct Positions")]
+    void CorrectPositions()
+    {
+        foreach (OrganisationBase xOrg in FindObjectsOfType<OrganisationBase>())
+        {
+            xOrg.CorrectPosition();
+        }
+        foreach (SystemBase xSys in FindObjectsOfType<SystemBase>())
+        {
+            xSys.CorrectPosition();
+        }
+    }
+#endif
 }
 
 [System.Serializable]

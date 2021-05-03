@@ -59,7 +59,7 @@ public abstract class SystemBase : MonoBehaviour
             m_xEdges.Add(null);
         }
 
-        transform.position = Manager.GetManager().GetPositionFromGridCoords(m_iXPosInGrid, m_iYPosInGrid);
+        CorrectPosition();
 
         m_xHexagonLineRenderers = new List<GameObject>();
         // Use 7 to loop to start
@@ -80,9 +80,17 @@ public abstract class SystemBase : MonoBehaviour
         }
     }
 
-    protected virtual void Update()
+    #if (UNITY_EDITOR)
+    [ContextMenu("Correct Position")]
+    #endif
+    public void CorrectPosition()
     {
         transform.position = Manager.GetManager().GetPositionFromGridCoords(m_iXPosInGrid, m_iYPosInGrid);
+    }
+
+    protected virtual void Update()
+    {
+        CorrectPosition();
 
         for(int i=0; i<6; i++)
         {
@@ -249,8 +257,10 @@ public abstract class SystemBase : MonoBehaviour
             }
         }
     }
-    
-    // TODO: make private
+
+    #if (UNITY_EDITOR)
+    [ContextMenu("Hack")]
+    #endif
     public virtual void Hack()
     {
         m_bHacked = true;
@@ -262,8 +272,12 @@ public abstract class SystemBase : MonoBehaviour
                 m_xEdges[i].Hack();
             }
         }
+        m_xUI.OnHacked();
     }
 
+    #if (UNITY_EDITOR)
+    [ContextMenu("Unhack")]
+    #endif
     protected virtual void UnHack()
     {
         m_bHacked = false;
@@ -274,6 +288,7 @@ public abstract class SystemBase : MonoBehaviour
                 m_xEdges[i].UnHack();
             }
         }
+        m_xUI.OnUnhacked();
     }
 
     public static void SetUpEdges()
@@ -387,4 +402,13 @@ public abstract class SystemBase : MonoBehaviour
             xOut[i] = GetConnectedSystem((Manager.GridDirection)i);
         }
     }
+}
+
+// TODO: think of a better name
+public interface IDisablable
+{
+    void SetDisabledByPlayer(bool bDisabled);
+    bool IsDisabledByPlayer();
+    void ForceDisable(int iNumTurns);
+    bool IsForceDisabled();
 }

@@ -20,24 +20,16 @@ public class DisablePerk : PerkBase
     }
     public override void OnClick()
     {
+        var xDisableOwner = m_xSystemOwner.GetComponent<IDisablable>();
+        if (xDisableOwner != null)
         {
-            var xSecOwner = m_xSystemOwner.GetComponent<CyberSecurity>();
-            if (xSecOwner != null)
-            {
-                m_xUI.SetSprite(xSecOwner.IsDisabledByPlayer() ? m_xOnSprite : m_xOffSprite);
-                xSecOwner.SetDisabledByPlayer(!xSecOwner.IsDisabledByPlayer());
-                return;
-            }
+            m_xUI.SetSprite(xDisableOwner.IsDisabledByPlayer() ? m_xOnSprite : m_xOffSprite);
+            xDisableOwner.SetDisabledByPlayer(!xDisableOwner.IsDisabledByPlayer());
+            return;
         }
+        else
         {
-            var xAVOwner = m_xSystemOwner.GetComponent<AntiVirusSystem>();
-            if (xAVOwner != null)
-            {
-                m_xUI.SetSprite(xAVOwner.IsDisabledByPlayer() ? m_xOnSprite : m_xOffSprite);
-                xAVOwner.SetDisabledByPlayer(!xAVOwner.IsDisabledByPlayer());
-                return;
-            }
+            Debug.LogError("Wrong type to disable");
         }
-        Debug.LogError("Wrong type to disable");
     }
 }

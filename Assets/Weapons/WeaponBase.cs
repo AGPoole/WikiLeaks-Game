@@ -18,10 +18,6 @@ public abstract class WeaponBase<TargetType> : MonoBehaviour, IWeapon
 
     protected virtual void Start()
     {
-        if (WeaponManager.GetWeaponManager().GetSelectedWeapon()==null)
-        {
-            WeaponManager.GetWeaponManager().SetSelectedWeapon(gameObject);
-        }
         m_xImage = GetComponent<UnityEngine.UI.Image>();
     }
 
