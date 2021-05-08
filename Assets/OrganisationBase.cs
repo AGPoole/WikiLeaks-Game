@@ -47,6 +47,14 @@ public abstract class OrganisationBase : MonoBehaviour
     // Update is called once per frame
     protected virtual void Update()
     {
+        CorrectPosition();
+    }
+
+    #if (UNITY_EDITOR)
+    [ContextMenu("Correct Position")]
+    #endif
+    public void CorrectPosition()
+    {
         transform.position = Manager.GetManager().GetPositionFromGridCoords(m_iXPosInGrid, m_iYPosInGrid);
     }
 

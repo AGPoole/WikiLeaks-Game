@@ -13,6 +13,8 @@ public class SystemUI : MonoBehaviour
     GameObject m_xPerksBase;
     [SerializeField]
     List<GameObject> m_xPerkUIs;
+    [SerializeField]
+    Color m_xDisabledColor;
 
     static SystemUI s_xSelected;
 
@@ -23,7 +25,15 @@ public class SystemUI : MonoBehaviour
 
     public void Select()
     {
-        s_xSelected = s_xSelected == this ? null : this;
+        if(WeaponManager.GetWeaponManager().GetSelectedWeapon() is WeaponBase<SystemBase>) 
+        { 
+            var xWeapon = (WeaponBase<SystemBase>)WeaponManager.GetWeaponManager().GetSelectedWeapon();
+            xWeapon.Use(GetParent());
+        }
+        else
+        {
+            s_xSelected = s_xSelected == this ? null : this;
+        }
     }
 
     // Update is called once per frame
@@ -34,9 +44,15 @@ public class SystemUI : MonoBehaviour
         if (GetParent().GetLevel() > 0f)
         {
             m_xTitleText.color = GetParent().IsHacked() ? Color.green : Color.white;
+            if (GetParent().GetComponent<IDisablable>() != null
+                && GetParent().GetComponent<IDisablable>().IsForceDisabled())
+            {
+                m_xTitleText.color = m_xDisabledColor;
+            }
         }
         Color c = m_xTitleText.color;
         m_xTitleText.color = new Color(c.r, c.g, c.b, GetParent().GetLevel() > 0 ? 1f : 0.4f);
+        m_xLevelText.color = m_xTitleText.color;
 
         //Vector3 xTarget = new Vector3(transform.position.x, Camera.main.transform.position.y, Camera.main.transform.position.z);
         Vector3 xTarget = Camera.main.transform.position;
@@ -83,6 +99,21 @@ public class SystemUI : MonoBehaviour
         foreach(GameObject xPerkObject in m_xPerkUIs)
         {
             xPerkObject.GetComponent<PerkUI>().GetPerk().OnNextTurn();
+        }
+    }
+
+    public void OnHacked()
+    {
+        foreach (GameObject xPerkObject in m_xPerkUIs)
+        {
+            xPerkObject.GetComponent<PerkUI>().GetPerk().OnHacked();
+        }
+    }
+    public void OnUnhacked()
+    {
+        foreach (GameObject xPerkObject in m_xPerkUIs)
+        {
+            xPerkObject.GetComponent<PerkUI>().GetPerk().OnUnhacked();
         }
     }
 

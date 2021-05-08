@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AntiVirusSystem : SystemBase
+public class AntiVirusSystem : SystemBase, IDisablable
 {
     SystemBase m_xSystemTarget;
     float m_fSystemTimer;
@@ -17,7 +17,7 @@ public class AntiVirusSystem : SystemBase
     public override void OnNextTurn(int iLevel)
     {
         base.OnNextTurn(iLevel);
-        if (!m_bDisabledByPlayer)
+        if (!m_bDisabledByPlayer && !IsForceDisabled())
         {
             iApplyDefenceTimer -= 1;
         }
@@ -89,5 +89,16 @@ public class AntiVirusSystem : SystemBase
     public bool IsDisabledByPlayer()
     {
         return m_bDisabledByPlayer;
+    }
+
+    int m_iNoLongerForceDisabled = 0;
+    public void ForceDisable(int iNumTurns)
+    {
+        m_iNoLongerForceDisabled = Manager.GetTurnNumber() + iNumTurns;
+    }
+
+    public bool IsForceDisabled()
+    {
+        return Manager.GetTurnNumber() < m_iNoLongerForceDisabled;
     }
 }

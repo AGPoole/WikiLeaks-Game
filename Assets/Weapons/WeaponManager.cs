@@ -57,4 +57,21 @@ public class WeaponManager : MonoBehaviour
         }
         m_xSelected = xWeapon.GetComponent<IWeapon>();
     }
+
+    public GameObject AddWeapon(GameObject xWeapon)
+    {
+        GameObject xNew = Instantiate(xWeapon, transform);
+        m_xWeapons.Add(xNew);
+        return xNew;
+    }
+
+    public void RemoveAndDestroyWeapon(GameObject xWeapon)
+    {
+        if (m_xSelected == xWeapon.GetComponent<IWeapon>())
+        {
+            m_xSelected = null;
+        }
+        m_xWeapons.Remove(xWeapon);
+        Destroy(xWeapon);
+    }
 }

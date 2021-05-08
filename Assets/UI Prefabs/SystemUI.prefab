@@ -775,6 +775,7 @@ MonoBehaviour:
   m_xLevelText: {fileID: 3949595530170061504}
   m_xPerksBase: {fileID: 3949595529222038050}
   m_xPerkUIs: []
+  m_xDisabledColor: {r: 0.9811321, g: 0.5782721, b: 0.06849409, a: 0}
 --- !u!114 &7101749667520685246
 MonoBehaviour:
   m_ObjectHideFlags: 0
