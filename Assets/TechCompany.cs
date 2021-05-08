@@ -54,6 +54,11 @@ public class TechCompany : OrganisationBase
             m_xMyData = new TechCompanyData();
         }
     }
+
+    public void ChangeMarketShare(float fChange)
+    {
+        ((TechCompanyData)GetData()).ChangeMarketShare(fChange);
+    }
 }
 
 [System.Serializable]

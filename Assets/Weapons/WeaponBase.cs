@@ -13,6 +13,7 @@ public abstract class WeaponBase<TargetType> : MonoBehaviour, IWeapon
     Sprite m_xSelectedIcon;
     [SerializeField]
     Sprite m_xUnselectedIcon;
+
     UnityEngine.UI.Image m_xImage;
     int m_iLastUseTime;
 
@@ -63,6 +64,10 @@ public abstract class WeaponBase<TargetType> : MonoBehaviour, IWeapon
     public void Select()
     {
         WeaponManager.GetWeaponManager().SetSelectedWeapon(gameObject);
+    }
+
+    public virtual void OnPointerOver(TargetType tType)
+    {
     }
 }
 

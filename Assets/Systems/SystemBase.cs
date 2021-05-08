@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public abstract class SystemBase : MonoBehaviour
+public abstract class SystemBase : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     static List<SystemBase> s_xAllSystems;
     [SerializeField]
@@ -25,6 +26,8 @@ public abstract class SystemBase : MonoBehaviour
     protected List<Edge> m_xEdges;
 
     List<GameObject> m_xHexagonLineRenderers;
+
+    bool m_bPointerOver = false;
 
     protected virtual void Start()
     {
@@ -97,6 +100,16 @@ public abstract class SystemBase : MonoBehaviour
             SystemBase xSys = Manager.GetAdjacentSystem(m_iXPosInGrid, m_iYPosInGrid, (Manager.GridDirection)i);
             bool bEnabled = xSys==null || xSys.m_xOwner!=m_xOwner;
             m_xHexagonLineRenderers[i].SetActive(bEnabled);
+        }
+
+        if (m_bPointerOver)
+        {
+            IWeapon xWeapon = WeaponManager.GetWeaponManager().GetSelectedWeapon();
+            if (xWeapon is WeaponBase<SystemBase>)
+            {
+                WeaponBase<SystemBase> xSystemWeapon = xWeapon as WeaponBase<SystemBase>;
+                xSystemWeapon.OnPointerOver(this);
+            }
         }
     }
     public virtual void OnNextTurn(int iOwnerLevel)
@@ -401,6 +414,17 @@ public abstract class SystemBase : MonoBehaviour
         {
             xOut[i] = GetConnectedSystem((Manager.GridDirection)i);
         }
+    }
+
+    // TODO: is this robust? If the pointer leaves in an unexpected way, the pointer over variable will be wrong
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        m_bPointerOver = false;
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        m_bPointerOver = true;
     }
 }
 
