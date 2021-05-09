@@ -149,6 +149,7 @@ public class TechCompanyData : OrganisationData
 
     public void ChangeMarketShare(float fChange)
     {
+        // TODO: make this normalise better
         m_fMarketShare = Mathf.Clamp(m_fMarketShare + fChange, GetTechValues().GetShareMin(), GetTechValues().GetShareMax());
     }
 }
