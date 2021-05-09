@@ -17,13 +17,17 @@ public class StealWeapon : WeaponBase<SystemBase>
             Manager.GetManager().ChangeMoney(GetMoney(xSys));
             TechCompany xTechCompanyOwner = xSys.GetOwner() as TechCompany;
             xTechCompanyOwner.ChangeMarketShare(m_fMarketShareChange);
+            return true;
         }
-        return true;
+        return false;
     }
 
-    public override void OnPointerOver(SystemBase tType)
+    public override void OnPointerOver(SystemBase xTarget)
     {
-        MouseTextBox.AddText(string.Format("${0}", GetMoney(tType)));
+        if (xTarget.GetOwner() is TechCompany)
+        {
+            MouseTextBox.AddText(string.Format("${0}", GetMoney(xTarget)));
+        }
     }
 
     int GetMoney(SystemBase xTarget)
