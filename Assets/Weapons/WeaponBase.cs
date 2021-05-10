@@ -28,7 +28,7 @@ public abstract class WeaponBase<TargetType> : MonoBehaviour, IWeapon
     protected virtual void Update()
     {
         // TODO: make continuous
-        m_xSlider.value = Mathf.Clamp01(1 -((Manager.GetTurnNumber() - m_iLastUseTime) / (float)m_iRechargeTime));
+        m_xSlider.value = Mathf.Clamp01(1 -((Manager.GetTurnNumber() - m_iLastUseTime) / (float)WeaponManager.GetWeaponManager().GetModifiedRechargeTime(m_iRechargeTime)));
 
         if (WeaponManager.GetWeaponManager().GetSelectedWeapon() == this)
         {
@@ -42,7 +42,7 @@ public abstract class WeaponBase<TargetType> : MonoBehaviour, IWeapon
 
     public bool IsReady()
     {
-        return Manager.GetTurnNumber() > m_iLastUseTime + m_iRechargeTime;
+        return Manager.GetTurnNumber() > m_iLastUseTime + WeaponManager.GetWeaponManager().GetModifiedRechargeTime(m_iRechargeTime);
     }
 
     public bool Use(TargetType tType)

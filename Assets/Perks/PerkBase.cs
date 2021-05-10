@@ -42,6 +42,11 @@ public abstract class PerkBase : MonoBehaviour
     public virtual void OnNextTurn() 
     { }
 
+    public bool IsUnlocked()
+    {
+        return m_xSystemOwner.IsHacked();
+    }
+
     public string GetName()
     {
         return m_xName;

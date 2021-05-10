@@ -8,6 +8,6 @@ public class ShieldsWeapon : WeaponBase<DefenceIcon>
     int m_iDamage = 10;
     protected override bool UseInternal(DefenceIcon xIcon)
     {
-        return xIcon.Attack(m_iDamage);
+        return xIcon.Attack(WeaponManager.GetWeaponManager().GetModifiedDamage(m_iDamage));
     }
 }
