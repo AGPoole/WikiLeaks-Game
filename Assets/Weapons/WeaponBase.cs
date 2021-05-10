@@ -14,6 +14,9 @@ public abstract class WeaponBase<TargetType> : MonoBehaviour, IWeapon
     [SerializeField]
     Sprite m_xUnselectedIcon;
 
+    [SerializeField]
+    protected SystemBase m_xOwner;
+
     UnityEngine.UI.Image m_xImage;
     int m_iLastUseTime;
 
@@ -69,8 +72,20 @@ public abstract class WeaponBase<TargetType> : MonoBehaviour, IWeapon
     public virtual void OnPointerOver(TargetType tType)
     {
     }
+
+    public void SetOwner(SystemBase xOwner)
+    {
+        m_xOwner = xOwner;
+    }
+
+    public SystemBase GetOwner()
+    {
+        return m_xOwner;
+    }
 }
 
 public interface IWeapon 
 {
+    void SetOwner(SystemBase xOwner);
+   SystemBase GetOwner();
 }

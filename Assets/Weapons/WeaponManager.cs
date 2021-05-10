@@ -58,10 +58,11 @@ public class WeaponManager : MonoBehaviour
         m_xSelected = xWeapon.GetComponent<IWeapon>();
     }
 
-    public GameObject AddWeapon(GameObject xWeapon)
+    public GameObject AddWeapon(GameObject xWeapon, SystemBase xOwner=null)
     {
         GameObject xNew = Instantiate(xWeapon, transform);
         m_xWeapons.Add(xNew);
+        xNew.GetComponent<IWeapon>().SetOwner(xOwner);
         return xNew;
     }
 

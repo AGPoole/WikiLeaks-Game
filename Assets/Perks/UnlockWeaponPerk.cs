@@ -25,7 +25,7 @@ public class UnlockWeaponPerk : PerkBase
             }
             if (Manager.GetManager().GetMoney() > m_iCost && m_xWeaponInstance==null)
             {
-                m_xWeaponInstance = WeaponManager.GetWeaponManager().AddWeapon(m_xWeaponPrefab);
+                m_xWeaponInstance = WeaponManager.GetWeaponManager().AddWeapon(m_xWeaponPrefab, m_xSystemOwner);
                 Manager.GetManager().ChangeMoney(-m_iCost);
                 // TODO: remove this perk so you can only buy once. Currently this is done by checking the instance is null,
                 // but it shouldn't show the perk anymore
@@ -38,7 +38,7 @@ public class UnlockWeaponPerk : PerkBase
         base.OnHacked();
         if (m_iCost == 0)
         {
-            m_xWeaponInstance = WeaponManager.GetWeaponManager().AddWeapon(m_xWeaponPrefab);
+            m_xWeaponInstance = WeaponManager.GetWeaponManager().AddWeapon(m_xWeaponPrefab, m_xSystemOwner);
         }
     }
     public override void OnUnhacked()

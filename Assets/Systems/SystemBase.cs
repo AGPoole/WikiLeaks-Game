@@ -291,7 +291,7 @@ public abstract class SystemBase : MonoBehaviour, IPointerEnterHandler, IPointer
     #if (UNITY_EDITOR)
     [ContextMenu("Unhack")]
     #endif
-    protected virtual void UnHack()
+    public virtual void UnHack()
     {
         m_bHacked = false;
         for (int i = 0; i < 6; i++)
