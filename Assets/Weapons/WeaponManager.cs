@@ -122,6 +122,7 @@ public class WeaponManager : MonoBehaviour
         return (int) fValue;
     }
 
+    // TODO: find another way to do this that enforces damage being applied through this
     public int GetModifiedDamage(int iDamage)
     {
         float fValue = iDamage;

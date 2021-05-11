@@ -18,8 +18,9 @@ public class Manager : MonoBehaviour
     //TODO: move to PLAYER class
     [SerializeField]
     UnityEngine.UI.Text m_xMoneyText;
+    // TODO: make this an int
     [SerializeField]
-    float m_fPlayerMoney;
+    int m_iPlayerMoney;
 
     // TODO: move to a better place
     [SerializeField]
@@ -128,7 +129,7 @@ public class Manager : MonoBehaviour
             fNextTime = Time.time + m_fTimeGap;
         }
         HandleCameraMovement();
-        m_xMoneyText.text = "$" + m_fPlayerMoney.ToString("0.00");
+        m_xMoneyText.text = "$" + m_iPlayerMoney.ToString("0.00");
         m_xTechLevelText.text = "Tech Level: " + GetTechLevel().ToString();
     }
 
@@ -254,18 +255,18 @@ public class Manager : MonoBehaviour
         return fReturn;
     }
 
-    public void ChangeMoney(float fAddition)
+    public void ChangeMoney(int iAddition)
     {
-        m_fPlayerMoney += fAddition;
-        if (m_fPlayerMoney < 0f)
+        m_iPlayerMoney += iAddition;
+        if (m_iPlayerMoney < 0)
         {
-            m_fPlayerMoney = 0f;
+            m_iPlayerMoney = 0;
         }
     }
 
-    public float GetMoney()
+    public int GetMoney()
     {
-        return m_fPlayerMoney;
+        return m_iPlayerMoney;
     }
 
     public GameObject GetEdgePrefabGameObject()
