@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class SystemValuesBase
 {
@@ -36,7 +37,12 @@ public class SystemValuesBase
     protected float m_fAdditionalShielddeteriorationTime = 0.1f;
 
     [SerializeField]
-    List<GameObject> m_xPerks;
+    List<GameObject> m_xMandatoryPerks;
+
+    [SerializeField]
+    List<GameObject> m_xOptionalPerks;
+    [SerializeField]
+    int m_iNumOptional = 1;
 
     public int GetLevelUpCost(int iCurrentLevel)
     {
@@ -66,9 +72,21 @@ public class SystemValuesBase
     }
     public void SetUpUIPerks(SystemUI xUI)
     {
-        foreach(var xPerk in m_xPerks)
+        foreach(var xPerk in m_xMandatoryPerks)
         {
             xUI.AddPerk(xPerk);
+        }
+
+        // Reservoir sampling
+        // TODO: do this in O(subset) rather than O(whole-list)
+        int iNumToAdd = m_iNumOptional;
+        for(int iNumLeft=m_xOptionalPerks.Count; iNumLeft>0; iNumLeft--)
+        {
+            if (Random.Range(0f, 1f) < (float)iNumToAdd / (float)iNumLeft)
+            {
+                iNumToAdd--;
+                xUI.AddPerk(m_xOptionalPerks[iNumLeft - 1]);
+            }
         }
     }
 }

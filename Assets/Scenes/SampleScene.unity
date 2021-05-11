@@ -15542,7 +15542,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -10.146957, y: -0.0004272461}
+  m_AnchoredPosition: {x: -10.146957, y: -0.000091552734}
   m_SizeDelta: {x: -20.296127, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &2080925866
@@ -16321,9 +16321,11 @@ MonoBehaviour:
     m_iBaseDefenceMax: 10
     m_fBaseDefenceRefreshTime: 0.5
     m_fAdditionalShielddeteriorationTime: 0.5
-    m_xPerks:
+    m_xMandatoryPerks:
     - {fileID: 739956440285112850, guid: e0d2f90771baf2c419a208f31ad8d0b9, type: 3}
     - {fileID: 739956440285112850, guid: f7792a1355f2fa543870a82e43615eb9, type: 3}
+    m_xOptionalPerks: []
+    m_iNumOptional: 1
     m_iPropagandaLength: 50
     m_fPropangandaStrength: 0.1
     m_iCoolDownLength: 70
@@ -16363,9 +16365,11 @@ MonoBehaviour:
     m_iBaseDefenceMax: 10
     m_fBaseDefenceRefreshTime: 0.5
     m_fAdditionalShielddeteriorationTime: 0.5
-    m_xPerks:
+    m_xMandatoryPerks:
     - {fileID: 739956440285112850, guid: e0d2f90771baf2c419a208f31ad8d0b9, type: 3}
     - {fileID: 739956440285112850, guid: f7792a1355f2fa543870a82e43615eb9, type: 3}
+    m_xOptionalPerks: []
+    m_iNumOptional: 1
     m_iPropagandaLength: 50
     m_fPropangandaStrength: 0.1
     m_iCoolDownLength: 70
@@ -16547,9 +16551,11 @@ MonoBehaviour:
     m_iBaseDefenceMax: 10
     m_fBaseDefenceRefreshTime: 0.5
     m_fAdditionalShielddeteriorationTime: 0.5
-    m_xPerks:
+    m_xMandatoryPerks:
     - {fileID: 739956440285112850, guid: e0d2f90771baf2c419a208f31ad8d0b9, type: 3}
     - {fileID: 739956440285112850, guid: f7792a1355f2fa543870a82e43615eb9, type: 3}
+    m_xOptionalPerks: []
+    m_iNumOptional: 1
     m_fRatioRequirement: 0
     m_fMessageRate: 0
     m_xMessages: []
@@ -16573,10 +16579,12 @@ MonoBehaviour:
     m_iBaseDefenceMax: 10
     m_fBaseDefenceRefreshTime: 0.5
     m_fAdditionalShielddeteriorationTime: 0.5
-    m_xPerks:
+    m_xMandatoryPerks:
     - {fileID: 739956440285112850, guid: e0d2f90771baf2c419a208f31ad8d0b9, type: 3}
     - {fileID: 739956440285112850, guid: f7792a1355f2fa543870a82e43615eb9, type: 3}
     - {fileID: 739956440285112850, guid: 22d30b6de2e77164daf3fc21082ce4d0, type: 3}
+    m_xOptionalPerks: []
+    m_iNumOptional: 1
     m_afDefenceForSystemLevels:
     - 10
     m_afDefenceForTechLevels:
@@ -16608,7 +16616,7 @@ MonoBehaviour:
     m_iBaseDefenceMax: 10
     m_fBaseDefenceRefreshTime: 0.5
     m_fAdditionalShielddeteriorationTime: 0.5
-    m_xPerks:
+    m_xMandatoryPerks:
     - {fileID: 739956440285112850, guid: e0d2f90771baf2c419a208f31ad8d0b9, type: 3}
     - {fileID: 739956440285112850, guid: f7792a1355f2fa543870a82e43615eb9, type: 3}
     - {fileID: 739956440285112850, guid: 523c12486bba63542ae0aee86c787bf1, type: 3}
@@ -16616,6 +16624,8 @@ MonoBehaviour:
     - {fileID: 739956440285112850, guid: c2887f32448caea47994a12a9b18c47e, type: 3}
     - {fileID: 739956440285112850, guid: d9e689bd5aa309943ba69cf66f54984a, type: 3}
     - {fileID: 739956440285112850, guid: f88141a5421657f4e9fee2d404bd0b6b, type: 3}
+    m_xOptionalPerks: []
+    m_iNumOptional: 1
 --- !u!114 &2130129003
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16636,12 +16646,14 @@ MonoBehaviour:
     m_iBaseDefenceMax: 20
     m_fBaseDefenceRefreshTime: 0.5
     m_fAdditionalShielddeteriorationTime: 0.5
-    m_xPerks:
+    m_xMandatoryPerks:
     - {fileID: 739956440285112850, guid: e0d2f90771baf2c419a208f31ad8d0b9, type: 3}
     - {fileID: 739956440285112850, guid: f7792a1355f2fa543870a82e43615eb9, type: 3}
     - {fileID: 739956440285112850, guid: 22d30b6de2e77164daf3fc21082ce4d0, type: 3}
+    m_xOptionalPerks:
     - {fileID: 739956440285112850, guid: eaa8bca7bd7c4284092264f8213a47b4, type: 3}
     - {fileID: 739956440285112850, guid: 78304534cb1231e4b98830f327b94bba, type: 3}
+    m_iNumOptional: 1
     m_iLaunchTime: 50
     m_fDaamageGainPerLevel: 7
     m_xMessagePrefab: {fileID: 1813745609784449481, guid: ab05a90b7b17d564f8601b8313a4e77b, type: 3}
@@ -16668,8 +16680,10 @@ MonoBehaviour:
     m_iBaseDefenceMax: 10
     m_fBaseDefenceRefreshTime: 0.1
     m_fAdditionalShielddeteriorationTime: 0.1
-    m_xPerks:
+    m_xMandatoryPerks:
     - {fileID: 739956440285112850, guid: 1f11b9c3d47633343ba3e2af20a5e95c, type: 3}
+    m_xOptionalPerks: []
+    m_iNumOptional: 1
 --- !u!1 &100020275625698245
 GameObject:
   m_ObjectHideFlags: 0
