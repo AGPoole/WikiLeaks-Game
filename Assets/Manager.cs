@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Timers;
 using UnityEngine;
 
+// TODO: split this class up
 public class Manager : MonoBehaviour
 {
     static Manager s_xInstance;
@@ -18,9 +19,24 @@ public class Manager : MonoBehaviour
     //TODO: move to PLAYER class
     [SerializeField]
     UnityEngine.UI.Text m_xMoneyText;
-    // TODO: make this an int
     [SerializeField]
     int m_iPlayerMoney;
+
+    [SerializeField]
+    UnityEngine.UI.Text m_xDataText;
+    [SerializeField]
+    int m_iData;
+
+    [SerializeField]
+    UnityEngine.UI.Text m_xAlertText;
+    [SerializeField]
+    UnityEngine.UI.Image m_xAlertImage;
+    [SerializeField]
+    List<Sprite> m_xAlertSprites;
+    [SerializeField]
+    int m_iAlert;
+    [SerializeField]
+    int m_iMaxAlert;
 
     // TODO: move to a better place
     [SerializeField]
@@ -87,6 +103,12 @@ public class Manager : MonoBehaviour
     Vector2 xMaxCam;
     [SerializeField]
     Vector2 xMinCam;
+
+    void Start()
+    {
+        m_iAlert = m_iMaxAlert;
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -131,6 +153,8 @@ public class Manager : MonoBehaviour
         HandleCameraMovement();
         m_xMoneyText.text = "$" + m_iPlayerMoney.ToString("0.00");
         m_xTechLevelText.text = "Tech Level: " + GetTechLevel().ToString();
+        m_xDataText.text = m_iData.ToString();
+        m_xAlertText.text = m_iAlert.ToString();
     }
 
     void HandleCameraMovement()
@@ -267,6 +291,40 @@ public class Manager : MonoBehaviour
     public int GetMoney()
     {
         return m_iPlayerMoney;
+    }
+
+    public void ChangeData(int iAddition)
+    {
+        m_iData += iAddition;
+        if (m_iData < 0)
+        {
+            m_iData = 0;
+        }
+    }
+
+    public int GetData()
+    {
+        return m_iData;
+    }
+
+    public void ChangeAlert(int iAddition)
+    {
+        m_iAlert += iAddition;
+        if (m_iAlert > m_iMaxAlert)
+        {
+            m_iAlert = m_iMaxAlert;
+        }else if (m_iAlert < 0)
+        {
+            m_iAlert = 0;
+        }
+        float fValue = (float)m_iAlert / m_iMaxAlert;
+        fValue *= m_xAlertSprites.Count;
+        m_xAlertImage.sprite = m_xAlertSprites[(int)fValue];
+    }
+
+    public int GetAlert()
+    {
+        return m_iAlert;
     }
 
     public GameObject GetEdgePrefabGameObject()
