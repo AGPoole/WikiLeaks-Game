@@ -29,6 +29,8 @@ public abstract class SystemBase : MonoBehaviour, IPointerEnterHandler, IPointer
 
     bool m_bPointerOver = false;
 
+    int m_iNextTimeToUpdateTripWires;
+
     protected virtual void Start()
     {
         if (s_xAllSystems == null)
@@ -117,6 +119,11 @@ public abstract class SystemBase : MonoBehaviour, IPointerEnterHandler, IPointer
         if (m_bHacked)
         {
             m_xUI.ActivatePerks();
+        }
+        if (Manager.GetTurnNumber() > m_iNextTimeToUpdateTripWires)
+        {
+            AddNewTripWire();
+            m_iNextTimeToUpdateTripWires += GetMyValues().GetTripWireUpdateTime();
         }
     }
 
@@ -425,6 +432,35 @@ public abstract class SystemBase : MonoBehaviour, IPointerEnterHandler, IPointer
     public void OnPointerEnter(PointerEventData eventData)
     {
         m_bPointerOver = true;
+    }
+
+    void AddNewTripWire()
+    {
+        List<DefenceIcon> xDefenceIcons = GetDefenceIcons();
+        int iDesiredTripWires = (int)(GetMyValues().GetTripWireExistanceProbability()*xDefenceIcons.Count);
+        int iTotalTripWires = 0;
+        foreach(DefenceIcon xIcon in xDefenceIcons)
+        {
+            iTotalTripWires += xIcon.HasTripWire() ? 1 : 0;
+        }
+        if (iTotalTripWires < iDesiredTripWires)
+        {
+            xDefenceIcons[Random.Range(0, xDefenceIcons.Count)].AddTripWire(GetMyValues().GetTripWireCatchProbability(), GetMyValues().GetTripWireDamage());
+        }
+    }
+
+    // TODO: Could be done with reference to prevent unnecessary copying and instantiation
+    protected List<DefenceIcon> GetDefenceIcons()
+    {
+        List<DefenceIcon> xDefenceIcons = new List<DefenceIcon>();
+        foreach(Edge xEdge in m_xEdges)
+        {
+            if (xEdge != null)
+            {
+                xDefenceIcons.AddRange(xEdge.GetDefenceIcons());
+            }
+        }
+        return xDefenceIcons;
     }
 }
 

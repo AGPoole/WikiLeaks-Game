@@ -243,6 +243,11 @@ public class Edge : MonoBehaviour
         return true;
     }
 
+    public List<DefenceIcon> GetDefenceIcons()
+    {
+        return m_xDefenceIconInstances;
+    }
+
     void OnDestroy()
     {
         s_xAllEdges.Remove(this);

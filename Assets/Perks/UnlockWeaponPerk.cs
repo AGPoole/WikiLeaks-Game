@@ -14,6 +14,12 @@ public class UnlockWeaponPerk : PerkBase
     [SerializeField]
     int m_iCost = 0;
 
+    protected override void Start()
+    {
+        base.Start();
+        m_xIcon = m_xWeaponPrefab.GetComponent<IWeapon>().GetUnselectedIcon();
+    }
+
     public override void OnClick()
     {
         base.OnClick();

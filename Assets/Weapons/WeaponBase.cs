@@ -82,10 +82,16 @@ public abstract class WeaponBase<TargetType> : MonoBehaviour, IWeapon
     {
         return m_xOwner;
     }
+
+    public Sprite GetUnselectedIcon()
+    {
+        return m_xUnselectedIcon;
+    }
 }
 
 public interface IWeapon 
 {
     void SetOwner(SystemBase xOwner);
    SystemBase GetOwner();
+    Sprite GetUnselectedIcon();
 }

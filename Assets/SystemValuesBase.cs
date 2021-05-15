@@ -44,6 +44,17 @@ public class SystemValuesBase
     [SerializeField]
     int m_iNumOptional = 1;
 
+    [Range(0, 1)]
+    [SerializeField]
+    float m_fTripWireExistanceProbability = 0.1f;
+    [SerializeField]
+    float m_fTripWireCatchProbability = 0.25f;
+    [SerializeField]
+    int m_iTripWireDamage = 25;
+
+    [SerializeField]
+    int m_iTripWireUpdateTime = 50;
+
     public int GetLevelUpCost(int iCurrentLevel)
     {
         return m_xLevelRequirements[iCurrentLevel].GetCost();
@@ -88,5 +99,23 @@ public class SystemValuesBase
                 xUI.AddPerk(m_xOptionalPerks[iNumLeft - 1]);
             }
         }
+    }
+
+    public float GetTripWireExistanceProbability()
+    {
+        return m_fTripWireExistanceProbability;
+    }
+    public float GetTripWireCatchProbability()
+    {
+        return m_fTripWireCatchProbability;
+    }
+    public int GetTripWireDamage()
+    {
+        return m_iTripWireDamage;
+    }
+
+    public int GetTripWireUpdateTime()
+    {
+        return m_iTripWireUpdateTime;
     }
 }

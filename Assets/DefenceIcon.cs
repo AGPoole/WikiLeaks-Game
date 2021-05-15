@@ -21,8 +21,24 @@ public class DefenceIcon : MonoBehaviour
     [SerializeField]
     float m_fDefencePauseAtZero = 10f;
 
+    [SerializeField]
+    GameObject m_xTripWireContainer;
+    [SerializeField]
+    UnityEngine.UI.Text m_xTripWireProbability;
+    [SerializeField]
+    UnityEngine.UI.Text m_xTripWireDamage;
+
+    [SerializeField]
+    bool m_bHasTripWire;
+    [Range(0, 1)]
+    [SerializeField]
+    float m_fTripWireProbability;
+    [SerializeField]
+    int m_iTripWireDamage;
+
     float m_fRechargeTimer = 0;
     float m_fDeteriorationTimer = 0;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -61,7 +77,6 @@ public class DefenceIcon : MonoBehaviour
                 m_xOwner.RemoveDefenceIcon(this);
             }
         }
-        m_xDefenceText.text = m_iDefence.ToString();
         if (!Manager.GetIsPaused())
         {
             if (m_iDefence < m_iMaxDefence)
@@ -93,6 +108,13 @@ public class DefenceIcon : MonoBehaviour
                 m_fDeteriorationTimer = 0;
             }
         }
+        m_xDefenceText.text = m_iDefence.ToString();
+        m_xTripWireContainer.SetActive(m_bHasTripWire);
+        if (m_bHasTripWire)
+        {
+            m_xTripWireDamage.text = string.Format("-{0}", m_iTripWireDamage);
+            m_xTripWireProbability.text = string.Format("{0}%", (m_fTripWireProbability*100).ToString("0"));
+        }
     }
 
     public int GetDefence()
@@ -108,6 +130,11 @@ public class DefenceIcon : MonoBehaviour
         }
         m_iDefence-=iDamage;
         m_fRechargeTimer = 0;
+        if (m_bHasTripWire && Random.Range(0f, 1f)<m_fTripWireProbability)
+        {
+            Manager.GetManager().ChangeAlert(-m_iTripWireDamage);
+            m_bHasTripWire = false;
+        }
         if (m_iDefence <= 0)
         {
             m_iDefence = 0;
@@ -142,6 +169,35 @@ public class DefenceIcon : MonoBehaviour
         { 
             var xWeapon = (WeaponBase<DefenceIcon>)WeaponManager.GetWeaponManager().GetSelectedWeapon();
             xWeapon.Use(this);
+        }
+    }
+
+    public void AddTripWire(float fProb, int iDamage)
+    {
+        m_bHasTripWire = true;
+        m_fTripWireProbability = fProb;
+        m_iTripWireDamage = iDamage;
+    }
+
+    public bool HasTripWire()
+    {
+        return m_bHasTripWire;
+    }
+
+    public void DisarmTripWire(float fProbDecrease, int iDamageDecrease)
+    {
+        if(fProbDecrease<0f || iDamageDecrease < 0)
+        {
+            Debug.LogError("Incorrect values put into disarm");
+        }
+        if (m_bHasTripWire)
+        {
+            m_fTripWireProbability -= fProbDecrease;
+            m_iTripWireDamage -= iDamageDecrease;
+            if(m_iTripWireDamage<=0 || m_fTripWireProbability <= 0)
+            {
+                m_bHasTripWire = false;
+            }
         }
     }
 }
