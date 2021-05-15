@@ -281,9 +281,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3660571097855331972}
-        m_TargetAssemblyTypeName: WeaponBase`1[[SystemBase, Assembly-CSharp
-        m_MethodName: 
+      - m_Target: {fileID: 3611921457784371984}
+        m_TargetAssemblyTypeName: WeaponBase`1[[DefenceIcon, Assembly-CSharp
+        m_MethodName: Select
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -310,6 +310,7 @@ MonoBehaviour:
   m_xSelectedIcon: {fileID: 21300000, guid: 42cdc690bd287a44483fd54114324637, type: 3}
   m_xUnselectedIcon: {fileID: 21300000, guid: 144c44f424cae3f45b436d8af44b901c, type: 3}
   m_xOwner: {fileID: 0}
+  m_bDetectable: 1
   m_xDamageData:
   - m_iRequiredMoney: 0
     m_iDamage: 0
