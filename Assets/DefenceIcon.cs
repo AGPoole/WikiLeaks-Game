@@ -122,7 +122,7 @@ public class DefenceIcon : MonoBehaviour
         return m_iDefence;
     }
 
-    public bool Attack(int iDamage)
+    public bool Attack(int iDamage, bool bDetectable)
     {
         if (!m_xOwner.IsReachable(this))
         {
@@ -130,7 +130,7 @@ public class DefenceIcon : MonoBehaviour
         }
         m_iDefence-=iDamage;
         m_fRechargeTimer = 0;
-        if (m_bHasTripWire && Random.Range(0f, 1f)<m_fTripWireProbability)
+        if (bDetectable && m_bHasTripWire && Random.Range(0f, 1f)<m_fTripWireProbability)
         {
             Manager.GetManager().ChangeAlert(-m_iTripWireDamage);
             m_bHasTripWire = false;

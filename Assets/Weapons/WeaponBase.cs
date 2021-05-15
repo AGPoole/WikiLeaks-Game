@@ -16,6 +16,8 @@ public abstract class WeaponBase<TargetType> : MonoBehaviour, IWeapon
 
     [SerializeField]
     protected SystemBase m_xOwner;
+    [SerializeField]
+    bool m_bDetectable = true;
 
     UnityEngine.UI.Image m_xImage;
     int m_iLastUseTime;
@@ -87,6 +89,8 @@ public abstract class WeaponBase<TargetType> : MonoBehaviour, IWeapon
     {
         return m_xUnselectedIcon;
     }
+
+    public bool IsDetectable() { return m_bDetectable; }
 }
 
 public interface IWeapon 
@@ -94,4 +98,6 @@ public interface IWeapon
     void SetOwner(SystemBase xOwner);
    SystemBase GetOwner();
     Sprite GetUnselectedIcon();
+
+    bool IsDetectable();
 }

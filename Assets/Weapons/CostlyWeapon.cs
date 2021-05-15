@@ -16,7 +16,7 @@ public class CostlyWeapon : WeaponBase<DefenceIcon>
     List<DamageData> m_xDamageData; 
     protected override bool UseInternal(DefenceIcon xIcon)
     {
-        return xIcon.Attack(WeaponManager.GetWeaponManager().GetModifiedDamage(CalculateDamage()));
+        return xIcon.Attack(WeaponManager.GetWeaponManager().GetModifiedDamage(CalculateDamage()), IsDetectable());
     }
 
     int CalculateDamage()
