@@ -19,4 +19,9 @@ public class DisarmWeapon : WeaponBase<DefenceIcon>
         }
         return false;
     }
+
+    public override string GetDescription()
+    {
+        return string.Format("Probability Reduction: {0}%\nDamage Reduction: {1}\n", (m_fProbDecrease*100).ToString("0"), m_iDamageDecrease) + base.GetDescription();
+    }
 }

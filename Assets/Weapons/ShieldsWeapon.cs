@@ -10,4 +10,9 @@ public class ShieldsWeapon : WeaponBase<DefenceIcon>
     {
         return xIcon.Attack(WeaponManager.GetWeaponManager().GetModifiedDamage(m_iDamage), IsDetectable());
     }
+
+    public override string GetDescription()
+    {
+        return string.Format("Damage: {0}\n", m_iDamage) + base.GetDescription();
+    }
 }

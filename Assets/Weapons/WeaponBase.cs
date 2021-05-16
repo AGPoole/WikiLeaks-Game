@@ -2,8 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public abstract class WeaponBase<TargetType> : MonoBehaviour, IWeapon
+public abstract class WeaponBase<TargetType> : MonoBehaviour, IWeapon, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField]
     protected int m_iRechargeTime;
@@ -13,6 +14,10 @@ public abstract class WeaponBase<TargetType> : MonoBehaviour, IWeapon
     Sprite m_xSelectedIcon;
     [SerializeField]
     Sprite m_xUnselectedIcon;
+    [SerializeField]
+    UnityEngine.UI.Text m_xDescriptionText;
+    [SerializeField]
+    string m_xDescription;
 
     [SerializeField]
     protected SystemBase m_xOwner;
@@ -91,6 +96,22 @@ public abstract class WeaponBase<TargetType> : MonoBehaviour, IWeapon
     }
 
     public bool IsDetectable() { return m_bDetectable; }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        m_xDescriptionText.transform.parent.gameObject.SetActive(false);
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        m_xDescriptionText.transform.parent.gameObject.SetActive(true);
+        m_xDescriptionText.text = GetDescription();
+    }
+
+    public virtual string GetDescription()
+    {
+        return string.Format("Recovery Time: {0}\n", m_iRechargeTime)+m_xDescription;
+    }
 }
 
 public interface IWeapon 
