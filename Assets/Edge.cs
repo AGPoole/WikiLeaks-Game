@@ -80,7 +80,7 @@ public class Edge : MonoBehaviour
     void SetMainDefenceIconValues()
     {
         m_xMainDefenceIcon.SetOwner(this);
-        m_xMainDefenceIcon.SetMaxDefense(ProjectMaths.Max(
+        m_xMainDefenceIcon.SetBaseMaxDefense(ProjectMaths.Max(
             m_xStart.GetMyValues().GetBaseDefenceMax(),
             m_xEnd.GetMyValues().GetBaseDefenceMax()));
         m_xMainDefenceIcon.SetDefenceDegradationTime(Mathf.Max(
