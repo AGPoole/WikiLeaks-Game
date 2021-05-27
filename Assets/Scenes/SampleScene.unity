@@ -5962,7 +5962,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -252.09998}
+  m_AnchoredPosition: {x: 0, y: -252.1}
   m_SizeDelta: {x: 0, y: -601.7447}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &751636270
@@ -6612,7 +6612,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 492.35422, y: 0}
+  m_AnchoredPosition: {x: 492.3542, y: 0}
   m_SizeDelta: {x: 100, y: 40.00003}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &822752050
@@ -10578,7 +10578,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1386430395}
   m_HandleRect: {fileID: 1386430394}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -10793,7 +10793,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 602.3541, y: 0}
+  m_AnchoredPosition: {x: 602.3542, y: 0}
   m_SizeDelta: {x: 100, y: 40.00003}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1362524518
@@ -11642,7 +11642,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -20.024017}
+  m_AnchoredPosition: {x: 0, y: -20.023926}
   m_SizeDelta: {x: 493.75607, y: -40.04724}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!114 &1452219737
@@ -13332,7 +13332,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -245.09998, y: 0}
+  m_AnchoredPosition: {x: -245.09964, y: 0}
   m_SizeDelta: {x: -490.30725, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1623121599
@@ -16564,7 +16564,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -10.146957, y: 0.000030517578}
+  m_AnchoredPosition: {x: -10.146957, y: 0}
   m_SizeDelta: {x: -20.296127, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &2080925866
@@ -17183,7 +17183,7 @@ MonoBehaviour:
   m_xMoneyText: {fileID: 2053656420}
   m_iPlayerMoney: 100
   m_xDataText: {fileID: 1900235579}
-  m_iData: 0
+  m_iData: 100
   m_xAlertText: {fileID: 1028763778}
   m_xAlertImage: {fileID: 1197750370}
   m_xAlertSprites:
@@ -17361,6 +17361,14 @@ MonoBehaviour:
     m_fTripWireCatchProbability: 0.25
     m_iTripWireDamage: 25
     m_iTripWireUpdateTime: 50
+    m_fMoneyRequirementProbability: 0.2
+    m_iMoneyRequirementAddition: 10
+    m_iMoneyRequirementInitialDecrease: 5
+    m_iMoneyRequirementCost: 10
+    m_fDataRequirementProbability: 0.2
+    m_iDataRequirementAddition: 10
+    m_iDataRequirementInitialDecrease: 5
+    m_iDataRequirementCost: 10
     m_iPropagandaLength: 50
     m_fPropangandaStrength: 0.1
     m_iCoolDownLength: 70
@@ -17409,6 +17417,14 @@ MonoBehaviour:
     m_fTripWireCatchProbability: 0.25
     m_iTripWireDamage: 25
     m_iTripWireUpdateTime: 50
+    m_fMoneyRequirementProbability: 0.2
+    m_iMoneyRequirementAddition: 10
+    m_iMoneyRequirementInitialDecrease: 5
+    m_iMoneyRequirementCost: 10
+    m_fDataRequirementProbability: 0.2
+    m_iDataRequirementAddition: 10
+    m_iDataRequirementInitialDecrease: 5
+    m_iDataRequirementCost: 10
     m_iPropagandaLength: 50
     m_fPropangandaStrength: 0.1
     m_iCoolDownLength: 70
@@ -17599,6 +17615,14 @@ MonoBehaviour:
     m_fTripWireCatchProbability: 0.25
     m_iTripWireDamage: 25
     m_iTripWireUpdateTime: 50
+    m_fMoneyRequirementProbability: 0.2
+    m_iMoneyRequirementAddition: 10
+    m_iMoneyRequirementInitialDecrease: 5
+    m_iMoneyRequirementCost: 10
+    m_fDataRequirementProbability: 0.2
+    m_iDataRequirementAddition: 10
+    m_iDataRequirementInitialDecrease: 5
+    m_iDataRequirementCost: 10
     m_fRatioRequirement: 0
     m_fMessageRate: 0
     m_xMessages: []
@@ -17628,10 +17652,18 @@ MonoBehaviour:
     - {fileID: 739956440285112850, guid: 22d30b6de2e77164daf3fc21082ce4d0, type: 3}
     m_xOptionalPerks: []
     m_iNumOptional: 1
-    m_fTripWireExistanceProbability: 0.1
+    m_fTripWireExistanceProbability: 0.3
     m_fTripWireCatchProbability: 0.25
     m_iTripWireDamage: 25
     m_iTripWireUpdateTime: 50
+    m_fMoneyRequirementProbability: 0.2
+    m_iMoneyRequirementAddition: 10
+    m_iMoneyRequirementInitialDecrease: 5
+    m_iMoneyRequirementCost: 10
+    m_fDataRequirementProbability: 0.2
+    m_iDataRequirementAddition: 10
+    m_iDataRequirementInitialDecrease: 5
+    m_iDataRequirementCost: 10
     m_afDefenceForSystemLevels:
     - 10
     m_afDefenceForTechLevels:
@@ -17675,10 +17707,18 @@ MonoBehaviour:
     - {fileID: 739956440285112850, guid: 31214c2a4f7e42f4ebb93ec04682e86f, type: 3}
     - {fileID: 739956440285112850, guid: bb03897dfc4624749a1fb253d43bb955, type: 3}
     m_iNumOptional: 1
-    m_fTripWireExistanceProbability: 0.5
+    m_fTripWireExistanceProbability: 0.3
     m_fTripWireCatchProbability: 0.25
     m_iTripWireDamage: 25
     m_iTripWireUpdateTime: 50
+    m_fMoneyRequirementProbability: 0.2
+    m_iMoneyRequirementAddition: 10
+    m_iMoneyRequirementInitialDecrease: 5
+    m_iMoneyRequirementCost: 10
+    m_fDataRequirementProbability: 0.2
+    m_iDataRequirementAddition: 10
+    m_iDataRequirementInitialDecrease: 5
+    m_iDataRequirementCost: 10
 --- !u!114 &2130129003
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17711,6 +17751,14 @@ MonoBehaviour:
     m_fTripWireCatchProbability: 0.25
     m_iTripWireDamage: 25
     m_iTripWireUpdateTime: 50
+    m_fMoneyRequirementProbability: 0.2
+    m_iMoneyRequirementAddition: 10
+    m_iMoneyRequirementInitialDecrease: 5
+    m_iMoneyRequirementCost: 10
+    m_fDataRequirementProbability: 0.2
+    m_iDataRequirementAddition: 10
+    m_iDataRequirementInitialDecrease: 5
+    m_iDataRequirementCost: 10
     m_iLaunchTime: 50
     m_fDaamageGainPerLevel: 7
     m_xMessagePrefab: {fileID: 1813745609784449481, guid: ab05a90b7b17d564f8601b8313a4e77b, type: 3}
@@ -17745,6 +17793,14 @@ MonoBehaviour:
     m_fTripWireCatchProbability: 0.25
     m_iTripWireDamage: 25
     m_iTripWireUpdateTime: 50
+    m_fMoneyRequirementProbability: 0.2
+    m_iMoneyRequirementAddition: 10
+    m_iMoneyRequirementInitialDecrease: 5
+    m_iMoneyRequirementCost: 10
+    m_fDataRequirementProbability: 0.2
+    m_iDataRequirementAddition: 10
+    m_iDataRequirementInitialDecrease: 5
+    m_iDataRequirementCost: 10
 --- !u!114 &2130129005
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17773,6 +17829,14 @@ MonoBehaviour:
     m_fTripWireCatchProbability: 0.25
     m_iTripWireDamage: 25
     m_iTripWireUpdateTime: 50
+    m_fMoneyRequirementProbability: 0.2
+    m_iMoneyRequirementAddition: 10
+    m_iMoneyRequirementInitialDecrease: 5
+    m_iMoneyRequirementCost: 10
+    m_fDataRequirementProbability: 0.2
+    m_iDataRequirementAddition: 10
+    m_iDataRequirementInitialDecrease: 5
+    m_iDataRequirementCost: 10
 --- !u!1 &100020275625698245
 GameObject:
   m_ObjectHideFlags: 0

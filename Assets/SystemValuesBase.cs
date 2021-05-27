@@ -55,6 +55,25 @@ public class SystemValuesBase
     [SerializeField]
     int m_iTripWireUpdateTime = 50;
 
+    [Range(0f, 1f)]
+    [SerializeField]
+    float m_fMoneyRequirementProbability = 0.2f;
+    [SerializeField]
+    int m_iMoneyRequirementAddition = 10;
+    [SerializeField]
+    int m_iMoneyRequirementInitialDecrease = 5;
+    [SerializeField]
+    int m_iMoneyRequirementCost = 10;
+    [Range(0f, 1f)]
+    [SerializeField]
+    float m_fDataRequirementProbability = 0.2f;
+    [SerializeField]
+    int m_iDataRequirementAddition = 10;
+    [SerializeField]
+    int m_iDataRequirementInitialDecrease = 5;
+    [SerializeField]
+    int m_iDataRequirementCost = 10;
+
     public int GetLevelUpCost(int iCurrentLevel)
     {
         return m_xLevelRequirements[iCurrentLevel].GetCost();
@@ -117,5 +136,44 @@ public class SystemValuesBase
     public int GetTripWireUpdateTime()
     {
         return m_iTripWireUpdateTime;
+    }
+
+    public float GetMoneyRequirementProbability()
+    {
+        return m_fMoneyRequirementProbability;
+    }
+
+    public int GetMoneyRequirementAddition()
+    {
+        return m_iMoneyRequirementAddition;
+    }
+
+    public int GetMoneyRequirementInitialDecrease()
+    {
+        return m_iMoneyRequirementInitialDecrease;
+    }
+
+    public int GetMoneyRequirementCost()
+    {
+        return m_iMoneyRequirementCost;
+    }
+    public float GetDataRequirementProbability()
+    {
+        return m_fDataRequirementProbability;
+    }
+
+    public int GetDataRequirementAddition()
+    {
+        return m_iDataRequirementAddition;
+    }
+
+    public int GetDataRequirementInitialDecrease()
+    {
+        return m_iDataRequirementInitialDecrease;
+    }
+
+    public int GetDataRequirementCost()
+    {
+        return m_iDataRequirementCost;
     }
 }

@@ -130,6 +130,7 @@ public class Manager : MonoBehaviour
             m_xCountry.OnNextTurn();
             NotificationSystem.OnNextTurn();
             SystemBase.SetUpEdges();
+            DefenceIcon.OnNextTurnAll();
             if (m_bTechIncreaseEnabled)
             {
                 m_iTechLevelUpPoints += 1;

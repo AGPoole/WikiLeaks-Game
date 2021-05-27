@@ -122,7 +122,6 @@ public abstract class SystemBase : MonoBehaviour, IPointerEnterHandler, IPointer
         }
         if (Manager.GetTurnNumber() > m_iNextTimeToUpdateTripWires)
         {
-            AddNewTripWire();
             m_iNextTimeToUpdateTripWires += GetMyValues().GetTripWireUpdateTime();
         }
     }
@@ -432,21 +431,6 @@ public abstract class SystemBase : MonoBehaviour, IPointerEnterHandler, IPointer
     public void OnPointerEnter(PointerEventData eventData)
     {
         m_bPointerOver = true;
-    }
-
-    void AddNewTripWire()
-    {
-        List<DefenceIcon> xDefenceIcons = GetDefenceIcons();
-        int iDesiredTripWires = (int)(GetMyValues().GetTripWireExistanceProbability()*xDefenceIcons.Count);
-        int iTotalTripWires = 0;
-        foreach(DefenceIcon xIcon in xDefenceIcons)
-        {
-            iTotalTripWires += xIcon.HasTripWire() ? 1 : 0;
-        }
-        if (iTotalTripWires < iDesiredTripWires)
-        {
-            xDefenceIcons[Random.Range(0, xDefenceIcons.Count)].AddTripWire(GetMyValues().GetTripWireCatchProbability(), GetMyValues().GetTripWireDamage());
-        }
     }
 
     // TODO: Could be done with reference to prevent unnecessary copying and instantiation

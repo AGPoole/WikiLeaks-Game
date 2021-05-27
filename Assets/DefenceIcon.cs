@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class DefenceIcon : MonoBehaviour
 {
+    static List<DefenceIcon> s_xDefenceIcons = new List<DefenceIcon>();
     [SerializeField]
     UnityEngine.UI.Text m_xDefenceText;
     Edge m_xOwner;
@@ -58,6 +59,7 @@ public class DefenceIcon : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        s_xDefenceIcons.Add(this);
         m_iDefence = CalculateActualMaxDefence();
     }
 
@@ -97,16 +99,6 @@ public class DefenceIcon : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (m_xCyberSecurityOwner != null)
-        {
-            SetDefenceDegradationTime(m_xCyberSecurityOwner.GetAdditionalDefenceDegradationTime());
-            SetDefenceRechargeTime(m_xCyberSecurityOwner.GetDefenceRechargeTime());
-            SetBaseMaxDefense(m_xCyberSecurityOwner.GetMaxDefenceForEdge(m_xOwner));
-            if (CalculateActualMaxDefence() == 0)
-            {
-                m_xOwner.RemoveDefenceIcon(this);
-            }
-        }
         if (!Manager.GetIsPaused())
         {
             if (m_iDefence < CalculateActualMaxDefence())
@@ -153,11 +145,124 @@ public class DefenceIcon : MonoBehaviour
             m_xDataBackdoor.m_xAdditionText.text = string.Format("+{0}", m_xDataBackdoor.m_iAddition);
         }
         
-        m_xMoneyBackdoor.m_xGameObject.SetActive(m_xDataBackdoor.m_iRequirement > 0);
-        if (m_xDataBackdoor.m_xGameObject.activeSelf)
+        m_xMoneyBackdoor.m_xGameObject.SetActive(m_xMoneyBackdoor.m_iRequirement > 0);
+        if (m_xMoneyBackdoor.m_xGameObject.activeSelf)
         {
             m_xMoneyBackdoor.m_xReqirementText.text = string.Format("${0}", m_xMoneyBackdoor.m_iRequirement);
             m_xMoneyBackdoor.m_xAdditionText.text = string.Format("+{0}", m_xMoneyBackdoor.m_iAddition);
+        }
+    }
+
+    public static void OnNextTurnAll()
+    {
+        foreach(DefenceIcon xDefenceIcon in s_xDefenceIcons)
+        {
+            xDefenceIcon.OnNextTurn();
+        }
+    }
+
+    static int s_iRefreshTime = 100;
+    int m_iNextRefreshTime = 0;
+    void OnNextTurn()
+    {
+        if (m_xOwner != null)
+        {
+            if (Manager.GetTurnNumber() > m_iNextRefreshTime)
+            {
+                if (m_xCyberSecurityOwner != null)
+                {
+                    SetDefenceDegradationTime(m_xCyberSecurityOwner.GetAdditionalDefenceDegradationTime());
+                    SetDefenceRechargeTime(m_xCyberSecurityOwner.GetDefenceRechargeTime());
+                    SetBaseMaxDefense(m_xCyberSecurityOwner.GetMaxDefenceForEdge(m_xOwner));
+                    if (CalculateActualMaxDefence() == 0)
+                    {
+                        m_xOwner.RemoveDefenceIcon(this);
+                    }
+                }
+                else
+                {
+                    SystemValuesBase xStartValues = m_xOwner.GetStart().GetMyValues();
+                    SystemValuesBase xEndValues = m_xOwner.GetEnd().GetMyValues();
+                    SetBaseMaxDefense(ProjectMaths.Max(
+                        xStartValues.GetBaseDefenceMax(),
+                        xEndValues.GetBaseDefenceMax()
+                        ));
+                    SetDefenceDegradationTime(Mathf.Max(
+                        xStartValues.GetAdditionalShielddeteriorationTime(),
+                        xEndValues.GetAdditionalShielddeteriorationTime()
+                        ));
+                    SetDefenceRechargeTime(Mathf.Min(
+                        xStartValues.GetBaseDefenceRefreshTime(),
+                        xEndValues.GetBaseDefenceRefreshTime()
+                        ));
+                    float fTripWireExistenceProb = Mathf.Max(
+                        xStartValues.GetTripWireExistanceProbability(),
+                        xEndValues.GetTripWireExistanceProbability());
+                    if (UnityEngine.Random.Range(0f, 1f) < fTripWireExistenceProb)
+                    {
+                        float fTripWireCatchProb = Mathf.Max(
+                        xStartValues.GetTripWireCatchProbability(),
+                        xEndValues.GetTripWireCatchProbability());
+                        int iTripWireDamage = ProjectMaths.Max(
+                        xStartValues.GetTripWireDamage(),
+                        xEndValues.GetTripWireDamage());
+                        AddTripWire(fTripWireCatchProb, iTripWireDamage);
+                    }
+                    else
+                    {
+                        RemoveTripWire();
+                    }
+                    float fMoneyRequirementProb = Mathf.Max(
+                        xStartValues.GetMoneyRequirementProbability(),
+                        xEndValues.GetMoneyRequirementProbability());
+                    if (UnityEngine.Random.Range(0f, 1f) < fMoneyRequirementProb)
+                    {
+                        int iCost = ProjectMaths.Max(
+                        xStartValues.GetMoneyRequirementCost(),
+                        xEndValues.GetMoneyRequirementCost());
+                        // TODO: use better method than choosing best increase and decrease - use same system for both
+                        int iIncrease = ProjectMaths.Max(
+                        xStartValues.GetMoneyRequirementAddition(),
+                        xEndValues.GetMoneyRequirementAddition());
+                        int iInitialDecrease = ProjectMaths.Max(
+                        xStartValues.GetMoneyRequirementInitialDecrease(),
+                        xEndValues.GetMoneyRequirementInitialDecrease());
+                        m_iBaseMaxDefence -= iInitialDecrease;
+                        m_xMoneyBackdoor.m_iAddition = iIncrease;
+                        m_xMoneyBackdoor.m_iRequirement = iCost;
+                    }
+                    else
+                    {
+                        m_xMoneyBackdoor.m_iAddition = 0;
+                        m_xMoneyBackdoor.m_iRequirement = 0;
+                    }
+                    float fDataRequirementProb = Mathf.Max(
+                        xStartValues.GetDataRequirementProbability(),
+                        xEndValues.GetDataRequirementProbability());
+                    if (UnityEngine.Random.Range(0f, 1f) < fDataRequirementProb)
+                    {
+                        int iCost = ProjectMaths.Max(
+                        xStartValues.GetDataRequirementCost(),
+                        xEndValues.GetDataRequirementCost());
+                        // TODO: use better method than choosing best increase and decrease - use same system for both
+                        int iIncrease = ProjectMaths.Max(
+                        xStartValues.GetDataRequirementAddition(),
+                        xEndValues.GetDataRequirementAddition());
+                        int iInitialDecrease = ProjectMaths.Max(
+                        xStartValues.GetDataRequirementInitialDecrease(),
+                        xEndValues.GetDataRequirementInitialDecrease());
+                        m_iBaseMaxDefence -= iInitialDecrease;
+                        m_xDataBackdoor.m_iAddition = iIncrease;
+                        m_xDataBackdoor.m_iRequirement = iCost;
+                    }
+                    else
+                    {
+                        m_xDataBackdoor.m_iAddition = 0;
+                        m_xDataBackdoor.m_iRequirement = 0;
+                    }
+                }
+                m_iNextRefreshTime += s_iRefreshTime;
+            }
         }
     }
 
@@ -223,6 +328,11 @@ public class DefenceIcon : MonoBehaviour
         m_iTripWireDamage = iDamage;
     }
 
+    public void RemoveTripWire()
+    {
+        m_bHasTripWire = false;
+    }
+
     public bool HasTripWire()
     {
         return m_bHasTripWire;
@@ -262,5 +372,10 @@ public class DefenceIcon : MonoBehaviour
             m_xMoneyBackdoor.m_iAddition = 0;
             m_xMoneyBackdoor.m_iRequirement = 0;
         }
+    }
+
+    public void OnDestroy()
+    {
+        s_xDefenceIcons.Remove(this);
     }
 }
