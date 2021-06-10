@@ -161,7 +161,7 @@ public class DefenceIcon : MonoBehaviour
         }
     }
 
-    static int s_iRefreshTime = 100;
+    static int s_iRefreshTime = 1000;
     int m_iNextRefreshTime = 0;
     void OnNextTurn()
     {

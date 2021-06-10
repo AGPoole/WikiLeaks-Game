@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public abstract class OrganisationBase : MonoBehaviour
@@ -42,6 +44,7 @@ public abstract class OrganisationBase : MonoBehaviour
         {
             xSys.SetOwner(this);
         }
+
     }
 
     // Update is called once per frame
@@ -62,6 +65,18 @@ public abstract class OrganisationBase : MonoBehaviour
     {
         UpdateSystems();
         UpdateUI();
+        if (m_xSystems.Count < 6)
+        {
+            List<(int, int)> xPossiblePositions = new List<(int, int)>();
+            GetAdjacentEmptySystems(ref xPossiblePositions);
+
+            if (xPossiblePositions.Count != 0) 
+            {
+                (int iX, int iY) = xPossiblePositions[UnityEngine.Random.Range(0, xPossiblePositions.Count - 1)];
+
+                AddNewSystem(iX, iY);
+            }
+        }
     }
 
     protected virtual void UpdateSystems()
@@ -143,6 +158,57 @@ public abstract class OrganisationBase : MonoBehaviour
             m_xCountry = transform.parent.gameObject.GetComponent<Country>();
         }
         return m_xCountry;
+    }
+
+    public void AddNewSystem(int iXPos, int iYPos)
+    {
+        GameObject xSystemPrefab = null;
+        int iCounter = 0;
+        const int iCOUNTER_MAX = 10;
+        // TODO: do this better
+        while (xSystemPrefab == null)
+        {
+            xSystemPrefab  = Manager.GetManager().GetRandomSystemPrefab();
+            if (!xSystemPrefab.GetComponent<SystemBase>().CanBeOwnedByOrganisation(this))
+            {
+                xSystemPrefab = null;
+                iCounter++;
+                if (iCounter >= iCOUNTER_MAX)
+                {
+                    Debug.LogError("Failed to produce valid system");
+                    return;
+                }
+            }
+        }
+
+        SystemBase xInstance = Instantiate(xSystemPrefab, transform).GetComponent<SystemBase>();
+        m_xSystems.Add(xInstance);
+
+        xInstance.SetOwner(this);
+        xInstance.SetPosition(iXPos, iYPos);
+
+        xInstance.Init();
+    }
+
+    public void GetAdjacentEmptySystems(ref List<(int, int)> xOutputs)
+    {
+        xOutputs.Clear();
+        if (m_xSystems.Count == 0)
+        {
+            xOutputs.Add((m_iXPosInGrid, m_iYPosInGrid));
+        }
+        var xDirections = Enum.GetValues(typeof(Manager.GridDirection)).Cast<Manager.GridDirection>();
+        foreach (SystemBase xSystem in m_xSystems) {
+            foreach (var xDirection in xDirections)
+            {
+                (int iX, int iY) = xSystem.GetGridPosition();
+                if (Manager.GetAdjacentSystem(iX, iY, xDirection) == null)
+                {
+                    (int iNewX, int iNewY) = Manager.GetPositionInDirection(iX, iY, xDirection);
+                    xOutputs.Add((iNewX, iNewY));
+                }
+            }
+        }
     }
 }
 

@@ -525,7 +525,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_xDefenceText: {fileID: 7641345161617337914}
   m_iDefence: 0
-  m_iBaseMaxDefence: 0
+  m_iBaseMaxDefence: 5
   m_fAdditionalDefenceDegradationTime: 0.5
   m_fDefenceRechargeTime: 0.5
   m_fDefencePauseAtZero: 10

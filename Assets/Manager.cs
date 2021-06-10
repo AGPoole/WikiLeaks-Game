@@ -68,6 +68,9 @@ public class Manager : MonoBehaviour
     [SerializeField]
     GameObject m_xPerkUIPrefab;
 
+    [SerializeField]
+    List<GameObject> m_xSystemPrefabs;
+
     public enum GridDirection : int
     {
         UP,
@@ -367,62 +370,68 @@ public class Manager : MonoBehaviour
 
     public static SystemBase GetAdjacentSystem(int iX, int iY, GridDirection eDir)
     {
+        (int iNewX, int iNewY) = GetPositionInDirection(iX, iY, eDir);
+        return SystemBase.GetSystemWithCoords(iNewX, iNewY);
+    }
+
+    public static (int, int) GetPositionInDirection(int iX, int iY, GridDirection eDir)
+    {
         switch (eDir)
         {
             case GridDirection.UP:
                 {
-                    return SystemBase.GetSystemWithCoords(iX, iY + 1);
+                    return (iX, iY + 1);
                 }
             case GridDirection.UP_LEFT:
                 {
                     if (ProjectMaths.Mod(iX, 2) == 0)
                     {
-                        return SystemBase.GetSystemWithCoords(iX - 1, iY + 1);
+                        return (iX - 1, iY + 1);
                     }
                     else
                     {
-                        return SystemBase.GetSystemWithCoords(iX - 1, iY);
+                        return (iX - 1, iY);
                     }
                 }
             case GridDirection.DOWN_LEFT:
                 {
                     if (ProjectMaths.Mod(iX, 2) == 0)
                     {
-                        return SystemBase.GetSystemWithCoords(iX - 1, iY);
+                        return (iX - 1, iY);
                     }
                     else
                     {
-                        return SystemBase.GetSystemWithCoords(iX - 1, iY - 1);
+                        return (iX - 1, iY - 1);
                     }
                 }
             case GridDirection.DOWN:
                 {
-                    return SystemBase.GetSystemWithCoords(iX, iY - 1);
+                    return (iX, iY - 1);
                 }
             case GridDirection.DOWN_RIGHT:
                 {
                     if (ProjectMaths.Mod(iX, 2) == 0)
                     {
-                        return SystemBase.GetSystemWithCoords(iX + 1, iY);
+                        return (iX + 1, iY);
                     }
                     else
                     {
-                        return SystemBase.GetSystemWithCoords(iX + 1, iY - 1);
+                        return (iX + 1, iY - 1);
                     }
                 }
             case GridDirection.UP_RIGHT:
                 {
                     if (ProjectMaths.Mod(iX, 2) == 0)
                     {
-                        return SystemBase.GetSystemWithCoords(iX + 1, iY + 1);
+                        return (iX + 1, iY + 1);
                     }
                     else
                     {
-                        return SystemBase.GetSystemWithCoords(iX + 1, iY);
+                        return (iX + 1, iY);
                     }
                 }
         }
-        return null;
+        return (iX, iY);
     }
 
     public static GridDirection GetOppositeDirection(GridDirection eDir)
@@ -450,6 +459,11 @@ public class Manager : MonoBehaviour
     public GameObject GetUIPrefab()
     {
         return m_xPerkUIPrefab;
+    }
+
+    public GameObject GetRandomSystemPrefab()
+    {
+        return m_xSystemPrefabs[Random.Range(0, m_xSystemPrefabs.Count)];
     }
 
 #if (UNITY_EDITOR)

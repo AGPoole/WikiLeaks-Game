@@ -25,13 +25,19 @@ public abstract class SystemBase : MonoBehaviour, IPointerEnterHandler, IPointer
 
     protected List<Edge> m_xEdges;
 
+    [SerializeField]
     List<GameObject> m_xHexagonLineRenderers;
 
     bool m_bPointerOver = false;
 
     int m_iNextTimeToUpdateTripWires;
 
-    protected virtual void Start()
+    void Start()
+    {
+        Init();
+    }
+
+    public virtual void Init()
     {
         if (s_xAllSystems == null)
         {
@@ -46,7 +52,7 @@ public abstract class SystemBase : MonoBehaviour, IPointerEnterHandler, IPointer
             }
         }
         SetLevel(m_iLevel, GetDefaultTimer());
-        if(m_xUI == null)
+        if (m_xUI == null)
         {
             m_xUI = GetComponentInChildren<SystemUI>();
             if (m_xUI == null)
@@ -59,22 +65,30 @@ public abstract class SystemBase : MonoBehaviour, IPointerEnterHandler, IPointer
         s_xAllSystems.Add(this);
 
         m_xEdges = new List<Edge>();
-        for(int i=0; i<6; i++)
+        for (int i = 0; i < 6; i++)
         {
             m_xEdges.Add(null);
         }
 
         CorrectPosition();
 
+        if (m_xHexagonLineRenderers != null) {
+            for (int i=m_xHexagonLineRenderers.Count-1; i>=0; i--)
+            {
+                Destroy(m_xHexagonLineRenderers[i]);
+                m_xHexagonLineRenderers.RemoveAt(i);
+            }
+        }
         m_xHexagonLineRenderers = new List<GameObject>();
         // Use 7 to loop to start
-        for(int i = 0; i<6; i++)
+        for (int i = 0; i < 6; i++)
         {
             GameObject xLineRenderer = Instantiate(Manager.GetManager().GetLineRendererPrefabGameObject());
+            xLineRenderer.transform.parent = transform;
             const float fAngleDifference = Mathf.PI / 3;
             const float fStartingAngle = -Mathf.PI / 6;
             float fAngle1 = fStartingAngle + (i * fAngleDifference);
-            float fAngle2 = fStartingAngle + ((i+1) * fAngleDifference);
+            float fAngle2 = fStartingAngle + ((i + 1) * fAngleDifference);
             Vector3 xPos1 = transform.position + (new Vector3(Mathf.Sin(fAngle1), Mathf.Cos(fAngle1), 0f) * Manager.GetManager().GetHexagonEdgeSize());
             Vector3 xPos2 = transform.position + (new Vector3(Mathf.Sin(fAngle2), Mathf.Cos(fAngle2), 0f) * Manager.GetManager().GetHexagonEdgeSize());
 
@@ -91,6 +105,13 @@ public abstract class SystemBase : MonoBehaviour, IPointerEnterHandler, IPointer
     public void CorrectPosition()
     {
         transform.position = Manager.GetManager().GetPositionFromGridCoords(m_iXPosInGrid, m_iYPosInGrid);
+    }
+
+    public void SetPosition(int iX, int iY)
+    {
+        m_iXPosInGrid = iX;
+        m_iYPosInGrid = iY;
+        CorrectPosition();
     }
 
     protected virtual void Update()
@@ -445,6 +466,16 @@ public abstract class SystemBase : MonoBehaviour, IPointerEnterHandler, IPointer
             }
         }
         return xDefenceIcons;
+    }
+
+    public (int, int) GetGridPosition()
+    {
+        return (m_iXPosInGrid, m_iYPosInGrid);
+    }
+
+    public virtual bool CanBeOwnedByOrganisation(OrganisationBase xOrganisation)
+    {
+        return true;
     }
 }
 
