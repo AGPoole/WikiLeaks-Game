@@ -165,11 +165,15 @@ public class DefenceIcon : MonoBehaviour
     int m_iNextRefreshTime = 0;
     void OnNextTurn()
     {
+        if (m_xCyberSecurityOwner != null && !m_xCyberSecurityOwner.IsInUse())
+        {
+            m_xOwner.RemoveDefenceIcon(this);
+        }
         if (m_xOwner != null)
         {
             if (Manager.GetTurnNumber() > m_iNextRefreshTime)
             {
-                if (m_xCyberSecurityOwner != null)
+                if (m_xCyberSecurityOwner != null && !m_xCyberSecurityOwner.IsDisabledByPlayer() )
                 {
                     SetDefenceDegradationTime(m_xCyberSecurityOwner.GetAdditionalDefenceDegradationTime());
                     SetDefenceRechargeTime(m_xCyberSecurityOwner.GetDefenceRechargeTime());

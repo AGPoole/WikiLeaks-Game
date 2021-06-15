@@ -59,8 +59,9 @@ public class Government : OrganisationBase
     [SerializeField]
     Transform m_xRightTarget;
 
-    protected override void Start()
+    public override void Init()
     {
+        base.Init();
         #if (UNITY_EDITOR)
         string xPath = Application.dataPath + "/CSV/Taxes.csv";
         m_xStreamWriter = File.CreateText(xPath);

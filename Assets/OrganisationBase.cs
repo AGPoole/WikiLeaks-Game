@@ -26,6 +26,9 @@ public abstract class OrganisationBase : MonoBehaviour
 
     Country m_xCountry;
 
+    [SerializeField]
+    int m_iCapacity = 6;
+
     public OrganisationData GetData() {
         if (m_xMyData == null)
         {
@@ -37,14 +40,19 @@ public abstract class OrganisationBase : MonoBehaviour
     protected abstract void SetData();
 
     // Start is called before the first frame update
-    protected virtual void Start()
+    void Start()
+    {
+        Init();
+    }
+
+    public virtual void Init()
     {
         SetData();
         foreach (var xSys in m_xSystems)
         {
             xSys.SetOwner(this);
         }
-
+        m_iCapacity = UnityEngine.Random.Range(1, 10);
     }
 
     // Update is called once per frame
@@ -61,16 +69,18 @@ public abstract class OrganisationBase : MonoBehaviour
         transform.position = Manager.GetManager().GetPositionFromGridCoords(m_iXPosInGrid, m_iYPosInGrid);
     }
 
+    bool m_bBlocked = false;
     public virtual void OnNextTurn()
     {
         UpdateSystems();
         UpdateUI();
-        if (m_xSystems.Count < 6)
+        if (m_xSystems.Count < m_iCapacity)
         {
             List<(int, int)> xPossiblePositions = new List<(int, int)>();
             GetAdjacentEmptySystems(ref xPossiblePositions);
 
-            if (xPossiblePositions.Count != 0) 
+            m_bBlocked = xPossiblePositions.Count == 0;
+            if (!m_bBlocked) 
             {
                 (int iX, int iY) = xPossiblePositions[UnityEngine.Random.Range(0, xPossiblePositions.Count - 1)];
 
@@ -81,6 +91,10 @@ public abstract class OrganisationBase : MonoBehaviour
 
     protected virtual void UpdateSystems()
     {
+        if (m_xSystems.Count == 0)
+        {
+            return;
+        }
         foreach (SystemBase m_xSys in m_xSystems)
         {
             m_xSys.OnNextTurn(m_xMyData.GetSize());
@@ -190,9 +204,12 @@ public abstract class OrganisationBase : MonoBehaviour
         xInstance.Init();
     }
 
-    public void GetAdjacentEmptySystems(ref List<(int, int)> xOutputs)
+    public void GetAdjacentEmptySystems(ref List<(int, int)> xOutputs, bool bAdditive = false)
     {
-        xOutputs.Clear();
+        if (!bAdditive)
+        {
+            xOutputs.Clear();
+        }
         if (m_xSystems.Count == 0)
         {
             xOutputs.Add((m_iXPosInGrid, m_iYPosInGrid));
@@ -210,6 +227,18 @@ public abstract class OrganisationBase : MonoBehaviour
             }
         }
     }
+
+    public bool AtCapacityOrBlocked()
+    {
+        return m_xSystems.Count() == m_iCapacity || m_bBlocked;
+    }
+    public void SetPosition(int iX, int iY)
+    {
+        m_iXPosInGrid = iX;
+        m_iYPosInGrid = iY;
+        CorrectPosition();
+    }
+
 }
 
 [System.Serializable]

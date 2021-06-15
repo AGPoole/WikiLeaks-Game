@@ -73,6 +73,11 @@ public class CyberSecurity : SystemBase, IDisablable
         return m_bDisabledByPlayer;
     }
 
+    public bool IsInUse()
+    {
+        return !m_bDisabledByPlayer && GetLevel() > 0 && !IsForceDisabled();
+    }
+
     int m_iNoLongerForceDisabled = 0;
     public void ForceDisable(int iNumTurns)
     {

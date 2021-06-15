@@ -382,12 +382,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 173598580cdb6614aa3f65914c26d7ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_iRechargeTime: 0
+  m_iRechargeTime: 100
   m_xSlider: {fileID: 3660571097060913471}
   m_xSelectedIcon: {fileID: 21300000, guid: 42cdc690bd287a44483fd54114324637, type: 3}
   m_xUnselectedIcon: {fileID: 21300000, guid: 144c44f424cae3f45b436d8af44b901c, type: 3}
   m_xDescriptionText: {fileID: 2707175560579322631}
-  m_xTextContainer: {fileID: 0}
   m_xDescription: 
   m_xOwner: {fileID: 0}
   m_bDetectable: 1

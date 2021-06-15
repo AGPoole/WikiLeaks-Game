@@ -13,6 +13,9 @@ public class Country : MonoBehaviour
 
     CountryData m_xCountryData;
 
+    [SerializeField]
+    GameObject m_xEmptyTechCompanyPrefab;
+
     void Awake()
     {
         m_xCountryData = new CountryData(m_xPopulation.GetPopulationData(), (GovernmentData)m_xGovernment.GetData());
@@ -23,18 +26,43 @@ public class Country : MonoBehaviour
         m_xPopulation.SetGovernment(m_xGovernment);
     }
 
+    // TODO make adjustable
+    const int g_iNUM_TECH_COMPANIES = 15;
     public void OnNextTurn()
     {
         m_xCountryData.OnNextTurn();
 
+        bool bAllAtCapacity = true;
         foreach(var xTechComp in m_xTechCompanies)
         {
             xTechComp.OnNextTurn();
+            bAllAtCapacity &= xTechComp.AtCapacityOrBlocked();
         }
         m_xGovernment.OnNextTurn();
+        bAllAtCapacity &= m_xGovernment.AtCapacityOrBlocked();
         m_xPopulation.OnNextTurn();
 
         DisasterSystem.ActivateDisasters(this);
+
+        if (bAllAtCapacity && m_xTechCompanies.Count<g_iNUM_TECH_COMPANIES)
+        {
+            List<(int, int)> xPerimeterTiles = new List<(int, int)>();
+            foreach(TechCompany xTechComp in m_xTechCompanies)
+            {
+                xTechComp.GetAdjacentEmptySystems(ref xPerimeterTiles, true);
+            }
+
+            if (xPerimeterTiles.Count > 0) {
+                TechCompany xNewComp = Instantiate(m_xEmptyTechCompanyPrefab, transform).GetComponent<TechCompany>();
+                m_xTechCompanies.Add(xNewComp);
+                // not strictly uniformly-random, since one tile may appear more than once
+                // however, I don't think it matters enough to warrant removing repeats
+                (int iX, int iY) = xPerimeterTiles[Random.Range(0, xPerimeterTiles.Count)];
+                xNewComp.SetPosition(iX, iY);
+                xNewComp.Init();
+                m_xCountryData.AddTechCompanyData((TechCompanyData)xNewComp.GetData());
+            }
+        }
     }
 
     public CountryData GetCountryData()

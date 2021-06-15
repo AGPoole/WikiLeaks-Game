@@ -108,10 +108,12 @@ public class Candidate : MonoBehaviour
     [SerializeReference]
     [Range(1, 1000)]
     int m_iLookAhead = 100;
+    [SerializeField]
+    int m_iCalculateionDelay = 10;
     public float GetPredictedHappiness()
     {
         // only calculate this once a turn, for now. May be good to recalculate if the player does something that could change it
-        if (m_iLastCalculated != Manager.GetTurnNumber())
+        if (m_iLastCalculated < Manager.GetTurnNumber()-m_iCalculateionDelay)
         {
             m_iLastCalculated = Manager.GetTurnNumber();
 

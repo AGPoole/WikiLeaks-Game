@@ -978,7 +978,8 @@ MonoBehaviour:
   m_xHappinessText: {fileID: 331958267}
   m_xNameText: {fileID: 1892319755505586959}
   m_xExposeButton: {fileID: 2698365135708911009}
-  m_iLookAhead: 500
+  m_iLookAhead: 100
+  m_iCalculateionDelay: 10
 --- !u!1 &9217294095567440366
 GameObject:
   m_ObjectHideFlags: 0
