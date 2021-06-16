@@ -130,8 +130,14 @@ public class Government : OrganisationBase
 
         if (GetElectionsEnabled())
         {
-            m_xHappinessSlider.value = fLeftHappiness / (fLeftHappiness + fRightHappiness);
-            m_xScoreSlider.value = fLeftScore / (fLeftScore + fRightScore);
+            if (fLeftHappiness + fRightHappiness > 0)
+            {
+                m_xHappinessSlider.value = fLeftHappiness / (fLeftHappiness + fRightHappiness);
+            }
+            if (fLeftScore + fRightScore > 0)
+            {
+                m_xScoreSlider.value = fLeftScore / (fLeftScore + fRightScore);
+            }
 
             // TODO: Change to be based around previous happiness?
             if (GetTimeTillNextElection() <= 0 && GetElectionsEnabled())

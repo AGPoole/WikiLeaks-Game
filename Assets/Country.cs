@@ -51,18 +51,25 @@ public class Country : MonoBehaviour
             {
                 xTechComp.GetAdjacentEmptySystems(ref xPerimeterTiles, true);
             }
-
+            m_xGovernment.GetAdjacentEmptySystems(ref xPerimeterTiles, true);
             if (xPerimeterTiles.Count > 0) {
+                var xTileDistribution = new ProjectMaths.Distribution<(int, int)>(xPerimeterTiles, PositionProbWeighting);
                 TechCompany xNewComp = Instantiate(m_xEmptyTechCompanyPrefab, transform).GetComponent<TechCompany>();
                 m_xTechCompanies.Add(xNewComp);
                 // not strictly uniformly-random, since one tile may appear more than once
                 // however, I don't think it matters enough to warrant removing repeats
-                (int iX, int iY) = xPerimeterTiles[Random.Range(0, xPerimeterTiles.Count)];
+                (int iX, int iY) = xTileDistribution.Sample();
                 xNewComp.SetPosition(iX, iY);
                 xNewComp.Init();
                 m_xCountryData.AddTechCompanyData((TechCompanyData)xNewComp.GetData());
             }
         }
+    }
+
+    public float PositionProbWeighting((int, int) xCoords, int iIndex)
+    {
+        Vector3 xPos = Manager.GetManager().GetPositionFromGridCoords(xCoords.Item1, xCoords.Item2);
+        return 10f / Vector3.Distance(m_xGovernment.transform.position, xPos);
     }
 
     public CountryData GetCountryData()

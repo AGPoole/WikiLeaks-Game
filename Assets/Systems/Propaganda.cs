@@ -97,7 +97,7 @@ public class Propaganda : SystemBase
         }
         if (!m_bActive)
         {
-            Debug.LogError("Propaganda disabled twice - this shouldn't happen");
+            Debug.LogWarning("Propaganda disabled twice - this shouldn't happen");
         }
 
         m_bActive = false;
