@@ -29,6 +29,9 @@ public abstract class OrganisationBase : MonoBehaviour
     [SerializeField]
     int m_iCapacity = 6;
 
+    // TODO: move to another place and make accessible in editor
+    int m_iNewBuildingCost=1;
+
     public OrganisationData GetData() {
         if (m_xMyData == null)
         {
@@ -70,23 +73,11 @@ public abstract class OrganisationBase : MonoBehaviour
     }
 
     bool m_bBlocked = false;
+    bool m_bCanAffordNewSystem = false;
     public virtual void OnNextTurn()
     {
         UpdateSystems();
         UpdateUI();
-        if (m_xSystems.Count < m_iCapacity)
-        {
-            List<(int, int)> xPossiblePositions = new List<(int, int)>();
-            GetAdjacentEmptySystems(ref xPossiblePositions);
-
-            m_bBlocked = xPossiblePositions.Count == 0;
-            if (!m_bBlocked) 
-            {
-                (int iX, int iY) = xPossiblePositions[UnityEngine.Random.Range(0, xPossiblePositions.Count - 1)];
-
-                AddNewSystem(iX, iY);
-            }
-        }
     }
 
     protected virtual void UpdateSystems()
@@ -104,6 +95,7 @@ public abstract class OrganisationBase : MonoBehaviour
 
         do
         {
+            // TODO: use deterministic process
             fTotal = 0;
             foreach (SystemBase m_xSys in m_xSystems)
             {
@@ -130,6 +122,19 @@ public abstract class OrganisationBase : MonoBehaviour
         if (fTotal + fCheapestCost <= m_xMyData.GetSize() + 5)
         {
             xCheapest.LevelUp();
+        }
+        if (m_xSystems.Count < m_iCapacity)
+        {
+            List<(int, int)> xPossiblePositions = new List<(int, int)>();
+            GetAdjacentEmptySystems(ref xPossiblePositions);
+
+            m_bBlocked = xPossiblePositions.Count == 0;
+            if (!m_bBlocked)
+            {
+                (int iX, int iY) = xPossiblePositions[UnityEngine.Random.Range(0, xPossiblePositions.Count - 1)];
+
+                AddNewSystem(iX, iY);
+            }
         }
     }
 
@@ -230,7 +235,7 @@ public abstract class OrganisationBase : MonoBehaviour
 
     public bool AtCapacityOrBlocked()
     {
-        return m_xSystems.Count() == m_iCapacity || m_bBlocked;
+        return m_xSystems.Count() >= m_iCapacity || m_bBlocked;
     }
     public void SetPosition(int iX, int iY)
     {

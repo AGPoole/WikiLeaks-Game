@@ -69,7 +69,7 @@ public class Country : MonoBehaviour
     public float PositionProbWeighting((int, int) xCoords, int iIndex)
     {
         Vector3 xPos = Manager.GetManager().GetPositionFromGridCoords(xCoords.Item1, xCoords.Item2);
-        return 10f / Vector3.Distance(m_xGovernment.transform.position, xPos);
+        return 10f / Mathf.Pow( Vector3.Distance(m_xGovernment.transform.position, xPos), 2);
     }
 
     public CountryData GetCountryData()
