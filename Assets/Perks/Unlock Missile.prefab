@@ -48,3 +48,5 @@ MonoBehaviour:
   m_xIcon: {fileID: 21300000, guid: 4cc8cdf440447bf4487c5095d230963c, type: 3}
   m_bRequiresHack: 1
   m_xWeaponPrefab: {fileID: 3660571097855331972, guid: eb14f04045b9a7741abc014ce00c3a46, type: 3}
+  m_bPermanent: 0
+  m_iCost: 0

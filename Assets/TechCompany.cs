@@ -54,6 +54,11 @@ public class TechCompany : OrganisationBase
             m_xMyData = new TechCompanyData();
         }
     }
+
+    public void ChangeMarketShare(float fChange)
+    {
+        ((TechCompanyData)GetData()).ChangeMarketShare(fChange);
+    }
 }
 
 [System.Serializable]
@@ -144,6 +149,7 @@ public class TechCompanyData : OrganisationData
 
     public void ChangeMarketShare(float fChange)
     {
+        // TODO: make this normalise better
         m_fMarketShare = Mathf.Clamp(m_fMarketShare + fChange, GetTechValues().GetShareMin(), GetTechValues().GetShareMax());
     }
 }

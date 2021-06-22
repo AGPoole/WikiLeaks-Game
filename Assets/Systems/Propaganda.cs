@@ -18,6 +18,12 @@ public class Propaganda : SystemBase
 
     int m_iCoolDownCompletionTime=1;
 
+    public override void Init()
+    {
+        base.Init();
+        m_xGov = GetOwner().GetCountry().GetGovernment(); 
+    }
+
     protected override void OnDeactivation()
     {
         m_bActive = false;
@@ -63,6 +69,11 @@ public class Propaganda : SystemBase
         }
         if (!m_bActive && Manager.GetTurnNumber()>m_iCoolDownCompletionTime)
         {
+            if (m_xGov == null)
+            {
+                Debug.LogError("Missing Government");
+                m_xGov = GetOwner().GetCountry().GetGovernment();
+            }
             m_bActive = true;
             GameObject xPropagandaMessage = Instantiate(PropagandaValuesContainer.GetPropagandaValues(m_eType).GetPropagandaMessageObject(), transform);
             xPropagandaMessage.GetComponent<MessageIcon>().SetSource(transform);
@@ -86,7 +97,7 @@ public class Propaganda : SystemBase
         }
         if (!m_bActive)
         {
-            Debug.LogError("Propaganda disabled twice - this shouldn't happen");
+            Debug.LogWarning("Propaganda disabled twice - this shouldn't happen");
         }
 
         m_bActive = false;

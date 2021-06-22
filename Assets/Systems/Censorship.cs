@@ -45,4 +45,9 @@ public class Censorship : SystemBase
     {
         return CensorshipValuesContainer.GetCensorshipValues();
     }
+
+    public override bool CanBeOwnedByOrganisation(OrganisationBase xOrganisation)
+    {
+        return xOrganisation.GetType() == typeof(Government);
+    }
 }

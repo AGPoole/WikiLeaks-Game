@@ -11,6 +11,10 @@ public class WeaponManager : MonoBehaviour
     List<GameObject> m_xWeapons;
 
     Dictionary<KeyCode, int> m_xKeyValuePairs;
+
+    List<WeaponRechargeIncreasePerk> m_xRechargeModifiers = new List<WeaponRechargeIncreasePerk>();
+    List<WeaponDamageIncreasePerk> m_xDamageModifiers = new List<WeaponDamageIncreasePerk>();
+
     // Start is called before the first frame update
     void Start()
     {
@@ -58,10 +62,11 @@ public class WeaponManager : MonoBehaviour
         m_xSelected = xWeapon.GetComponent<IWeapon>();
     }
 
-    public GameObject AddWeapon(GameObject xWeapon)
+    public GameObject AddWeapon(GameObject xWeapon, SystemBase xOwner=null)
     {
         GameObject xNew = Instantiate(xWeapon, transform);
         m_xWeapons.Add(xNew);
+        xNew.GetComponent<IWeapon>().SetOwner(xOwner);
         return xNew;
     }
 
@@ -73,5 +78,62 @@ public class WeaponManager : MonoBehaviour
         }
         m_xWeapons.Remove(xWeapon);
         Destroy(xWeapon);
+    }
+
+    public void AddRechargeModifier(WeaponRechargeIncreasePerk xPerk)
+    {
+        m_xRechargeModifiers.Add(xPerk);
+    }
+    
+    public void RemoveRechargeModifier(WeaponRechargeIncreasePerk xPerk)
+    {
+        bool bContains = m_xRechargeModifiers.Remove(xPerk);
+        if (!bContains)
+        {
+            Debug.LogError("Removing perk that was not included");
+        }
+    }
+    public void AddDamageModifier(WeaponDamageIncreasePerk xPerk)
+    {
+        m_xDamageModifiers.Add(xPerk);
+    }
+    
+    public void RemoveDamageModifier(WeaponDamageIncreasePerk xPerk)
+    {
+        bool bContains = m_xDamageModifiers.Remove(xPerk);
+        if (!bContains)
+        {
+            Debug.LogError("Removing perk that was not included");
+        }
+    }
+
+    public int GetModifiedRechargeTime(int iRechargeTime)
+    {
+        // TODO: make sure recharge time isn't so fast that shields can't recover
+        float fValue = iRechargeTime;
+        foreach(WeaponRechargeIncreasePerk xPerk in m_xRechargeModifiers)
+        {
+            if (!xPerk.IsUnlocked())
+            {
+                Debug.LogError("Perk in modifier list but not unlocked");
+            }
+            fValue = xPerk.GetModifiedValue(fValue);
+        }
+        return (int) fValue;
+    }
+
+    // TODO: find another way to do this that enforces damage being applied through this
+    public int GetModifiedDamage(int iDamage)
+    {
+        float fValue = iDamage;
+        foreach (WeaponDamageIncreasePerk xPerk in m_xDamageModifiers)
+        {
+            if (!xPerk.IsUnlocked())
+            {
+                Debug.LogError("Perk in modifier list but not unlocked");
+            }
+            fValue = xPerk.GetModifiedValue(fValue);
+        }
+        return (int)fValue;
     }
 }

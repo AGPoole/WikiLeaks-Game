@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public abstract class SystemBase : MonoBehaviour
+public abstract class SystemBase : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     static List<SystemBase> s_xAllSystems;
     [SerializeField]
@@ -24,9 +25,19 @@ public abstract class SystemBase : MonoBehaviour
 
     protected List<Edge> m_xEdges;
 
+    [SerializeField]
     List<GameObject> m_xHexagonLineRenderers;
 
-    protected virtual void Start()
+    bool m_bPointerOver = false;
+
+    int m_iNextTimeToUpdateTripWires;
+
+    void Start()
+    {
+        Init();
+    }
+
+    public virtual void Init()
     {
         if (s_xAllSystems == null)
         {
@@ -41,7 +52,7 @@ public abstract class SystemBase : MonoBehaviour
             }
         }
         SetLevel(m_iLevel, GetDefaultTimer());
-        if(m_xUI == null)
+        if (m_xUI == null)
         {
             m_xUI = GetComponentInChildren<SystemUI>();
             if (m_xUI == null)
@@ -54,22 +65,30 @@ public abstract class SystemBase : MonoBehaviour
         s_xAllSystems.Add(this);
 
         m_xEdges = new List<Edge>();
-        for(int i=0; i<6; i++)
+        for (int i = 0; i < 6; i++)
         {
             m_xEdges.Add(null);
         }
 
         CorrectPosition();
 
+        if (m_xHexagonLineRenderers != null) {
+            for (int i=m_xHexagonLineRenderers.Count-1; i>=0; i--)
+            {
+                Destroy(m_xHexagonLineRenderers[i]);
+                m_xHexagonLineRenderers.RemoveAt(i);
+            }
+        }
         m_xHexagonLineRenderers = new List<GameObject>();
         // Use 7 to loop to start
-        for(int i = 0; i<6; i++)
+        for (int i = 0; i < 6; i++)
         {
             GameObject xLineRenderer = Instantiate(Manager.GetManager().GetLineRendererPrefabGameObject());
+            xLineRenderer.transform.parent = transform;
             const float fAngleDifference = Mathf.PI / 3;
             const float fStartingAngle = -Mathf.PI / 6;
             float fAngle1 = fStartingAngle + (i * fAngleDifference);
-            float fAngle2 = fStartingAngle + ((i+1) * fAngleDifference);
+            float fAngle2 = fStartingAngle + ((i + 1) * fAngleDifference);
             Vector3 xPos1 = transform.position + (new Vector3(Mathf.Sin(fAngle1), Mathf.Cos(fAngle1), 0f) * Manager.GetManager().GetHexagonEdgeSize());
             Vector3 xPos2 = transform.position + (new Vector3(Mathf.Sin(fAngle2), Mathf.Cos(fAngle2), 0f) * Manager.GetManager().GetHexagonEdgeSize());
 
@@ -88,6 +107,13 @@ public abstract class SystemBase : MonoBehaviour
         transform.position = Manager.GetManager().GetPositionFromGridCoords(m_iXPosInGrid, m_iYPosInGrid);
     }
 
+    public void SetPosition(int iX, int iY)
+    {
+        m_iXPosInGrid = iX;
+        m_iYPosInGrid = iY;
+        CorrectPosition();
+    }
+
     protected virtual void Update()
     {
         CorrectPosition();
@@ -98,12 +124,26 @@ public abstract class SystemBase : MonoBehaviour
             bool bEnabled = xSys==null || xSys.m_xOwner!=m_xOwner;
             m_xHexagonLineRenderers[i].SetActive(bEnabled);
         }
+
+        if (m_bPointerOver)
+        {
+            IWeapon xWeapon = WeaponManager.GetWeaponManager().GetSelectedWeapon();
+            if (xWeapon is WeaponBase<SystemBase>)
+            {
+                WeaponBase<SystemBase> xSystemWeapon = xWeapon as WeaponBase<SystemBase>;
+                xSystemWeapon.OnPointerOver(this);
+            }
+        }
     }
     public virtual void OnNextTurn(int iOwnerLevel)
     {
         if (m_bHacked)
         {
             m_xUI.ActivatePerks();
+        }
+        if (Manager.GetTurnNumber() > m_iNextTimeToUpdateTripWires)
+        {
+            m_iNextTimeToUpdateTripWires += GetMyValues().GetTripWireUpdateTime();
         }
     }
 
@@ -278,7 +318,7 @@ public abstract class SystemBase : MonoBehaviour
     #if (UNITY_EDITOR)
     [ContextMenu("Unhack")]
     #endif
-    protected virtual void UnHack()
+    public virtual void UnHack()
     {
         m_bHacked = false;
         for (int i = 0; i < 6; i++)
@@ -401,6 +441,41 @@ public abstract class SystemBase : MonoBehaviour
         {
             xOut[i] = GetConnectedSystem((Manager.GridDirection)i);
         }
+    }
+
+    // TODO: is this robust? If the pointer leaves in an unexpected way, the pointer over variable will be wrong
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        m_bPointerOver = false;
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        m_bPointerOver = true;
+    }
+
+    // TODO: Could be done with reference to prevent unnecessary copying and instantiation
+    protected List<DefenceIcon> GetDefenceIcons()
+    {
+        List<DefenceIcon> xDefenceIcons = new List<DefenceIcon>();
+        foreach(Edge xEdge in m_xEdges)
+        {
+            if (xEdge != null)
+            {
+                xDefenceIcons.AddRange(xEdge.GetDefenceIcons());
+            }
+        }
+        return xDefenceIcons;
+    }
+
+    public (int, int) GetGridPosition()
+    {
+        return (m_iXPosInGrid, m_iYPosInGrid);
+    }
+
+    public virtual bool CanBeOwnedByOrganisation(OrganisationBase xOrganisation)
+    {
+        return true;
     }
 }
 

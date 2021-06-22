@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public abstract class OrganisationBase : MonoBehaviour
@@ -24,6 +26,12 @@ public abstract class OrganisationBase : MonoBehaviour
 
     Country m_xCountry;
 
+    [SerializeField]
+    int m_iCapacity = 6;
+
+    // TODO: move to another place and make accessible in editor
+    int m_iNewBuildingCost=1;
+
     public OrganisationData GetData() {
         if (m_xMyData == null)
         {
@@ -35,13 +43,19 @@ public abstract class OrganisationBase : MonoBehaviour
     protected abstract void SetData();
 
     // Start is called before the first frame update
-    protected virtual void Start()
+    void Start()
+    {
+        Init();
+    }
+
+    public virtual void Init()
     {
         SetData();
         foreach (var xSys in m_xSystems)
         {
             xSys.SetOwner(this);
         }
+        m_iCapacity = UnityEngine.Random.Range(1, 10);
     }
 
     // Update is called once per frame
@@ -58,6 +72,8 @@ public abstract class OrganisationBase : MonoBehaviour
         transform.position = Manager.GetManager().GetPositionFromGridCoords(m_iXPosInGrid, m_iYPosInGrid);
     }
 
+    bool m_bBlocked = false;
+    bool m_bCanAffordNewSystem = false;
     public virtual void OnNextTurn()
     {
         UpdateSystems();
@@ -66,6 +82,10 @@ public abstract class OrganisationBase : MonoBehaviour
 
     protected virtual void UpdateSystems()
     {
+        if (m_xSystems.Count == 0)
+        {
+            return;
+        }
         foreach (SystemBase m_xSys in m_xSystems)
         {
             m_xSys.OnNextTurn(m_xMyData.GetSize());
@@ -75,6 +95,7 @@ public abstract class OrganisationBase : MonoBehaviour
 
         do
         {
+            // TODO: use deterministic process
             fTotal = 0;
             foreach (SystemBase m_xSys in m_xSystems)
             {
@@ -101,6 +122,19 @@ public abstract class OrganisationBase : MonoBehaviour
         if (fTotal + fCheapestCost <= m_xMyData.GetSize() + 5)
         {
             xCheapest.LevelUp();
+        }
+        if (m_xSystems.Count < m_iCapacity)
+        {
+            List<(int, int)> xPossiblePositions = new List<(int, int)>();
+            GetAdjacentEmptySystems(ref xPossiblePositions);
+
+            m_bBlocked = xPossiblePositions.Count == 0;
+            if (!m_bBlocked)
+            {
+                (int iX, int iY) = xPossiblePositions[UnityEngine.Random.Range(0, xPossiblePositions.Count - 1)];
+
+                AddNewSystem(iX, iY);
+            }
         }
     }
 
@@ -144,6 +178,72 @@ public abstract class OrganisationBase : MonoBehaviour
         }
         return m_xCountry;
     }
+
+    public void AddNewSystem(int iXPos, int iYPos)
+    {
+        GameObject xSystemPrefab = null;
+        int iCounter = 0;
+        const int iCOUNTER_MAX = 10;
+        // TODO: do this better
+        while (xSystemPrefab == null)
+        {
+            xSystemPrefab  = Manager.GetManager().GetRandomSystemPrefab();
+            if (!xSystemPrefab.GetComponent<SystemBase>().CanBeOwnedByOrganisation(this))
+            {
+                xSystemPrefab = null;
+                iCounter++;
+                if (iCounter >= iCOUNTER_MAX)
+                {
+                    Debug.LogError("Failed to produce valid system");
+                    return;
+                }
+            }
+        }
+
+        SystemBase xInstance = Instantiate(xSystemPrefab, transform).GetComponent<SystemBase>();
+        m_xSystems.Add(xInstance);
+
+        xInstance.SetOwner(this);
+        xInstance.SetPosition(iXPos, iYPos);
+
+        xInstance.Init();
+    }
+
+    public void GetAdjacentEmptySystems(ref List<(int, int)> xOutputs, bool bAdditive = false)
+    {
+        if (!bAdditive)
+        {
+            xOutputs.Clear();
+        }
+        if (m_xSystems.Count == 0)
+        {
+            xOutputs.Add((m_iXPosInGrid, m_iYPosInGrid));
+        }
+        var xDirections = Enum.GetValues(typeof(Manager.GridDirection)).Cast<Manager.GridDirection>();
+        foreach (SystemBase xSystem in m_xSystems) {
+            foreach (var xDirection in xDirections)
+            {
+                (int iX, int iY) = xSystem.GetGridPosition();
+                if (Manager.GetAdjacentSystem(iX, iY, xDirection) == null)
+                {
+                    (int iNewX, int iNewY) = Manager.GetPositionInDirection(iX, iY, xDirection);
+                    xOutputs.Add((iNewX, iNewY));
+                }
+            }
+        }
+    }
+
+    public bool AtCapacityOrBlocked()
+    {
+        return m_xSystems.Count() >= m_iCapacity || m_bBlocked;
+    }
+    public void SetPosition(int iX, int iY)
+    {
+        m_iXPosInGrid = iX;
+        m_iYPosInGrid = iY;
+        CorrectPosition();
+    }
+
 }
 
 [System.Serializable]

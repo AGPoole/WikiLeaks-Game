@@ -77,20 +77,10 @@ public class Edge : MonoBehaviour
         return s_xAllEdges;
     }
 
+    // TODO: remove this function
     void SetMainDefenceIconValues()
     {
         m_xMainDefenceIcon.SetOwner(this);
-        m_xMainDefenceIcon.SetMaxDefense(ProjectMaths.Max(
-            m_xStart.GetMyValues().GetBaseDefenceMax(),
-            m_xEnd.GetMyValues().GetBaseDefenceMax()));
-        m_xMainDefenceIcon.SetDefenceDegradationTime(Mathf.Max(
-            m_xStart.GetMyValues().GetAdditionalShielddeteriorationTime(),
-            m_xEnd.GetMyValues().GetAdditionalShielddeteriorationTime()
-            ));
-        m_xMainDefenceIcon.SetDefenceRechargeTime(Mathf.Min(
-            m_xStart.GetMyValues().GetBaseDefenceRefreshTime(),
-            m_xEnd.GetMyValues().GetBaseDefenceRefreshTime()
-            ));
     }
 
     public bool Contains(SystemBase xSys)
@@ -241,6 +231,11 @@ public class Edge : MonoBehaviour
             }
         }
         return true;
+    }
+
+    public List<DefenceIcon> GetDefenceIcons()
+    {
+        return m_xDefenceIconInstances;
     }
 
     void OnDestroy()

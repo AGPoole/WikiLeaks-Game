@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Timers;
 using UnityEngine;
 
+// TODO: split this class up
 public class Manager : MonoBehaviour
 {
     static Manager s_xInstance;
@@ -19,7 +20,23 @@ public class Manager : MonoBehaviour
     [SerializeField]
     UnityEngine.UI.Text m_xMoneyText;
     [SerializeField]
-    float m_fPlayerMoney;
+    int m_iPlayerMoney;
+
+    [SerializeField]
+    UnityEngine.UI.Text m_xDataText;
+    [SerializeField]
+    int m_iData;
+
+    [SerializeField]
+    UnityEngine.UI.Text m_xAlertText;
+    [SerializeField]
+    UnityEngine.UI.Image m_xAlertImage;
+    [SerializeField]
+    List<Sprite> m_xAlertSprites;
+    [SerializeField]
+    int m_iAlert;
+    [SerializeField]
+    int m_iMaxAlert;
 
     // TODO: move to a better place
     [SerializeField]
@@ -50,6 +67,9 @@ public class Manager : MonoBehaviour
     float m_fHexagonEdgeSize;
     [SerializeField]
     GameObject m_xPerkUIPrefab;
+
+    [SerializeField]
+    List<GameObject> m_xSystemPrefabs;
 
     public enum GridDirection : int
     {
@@ -86,6 +106,12 @@ public class Manager : MonoBehaviour
     Vector2 xMaxCam;
     [SerializeField]
     Vector2 xMinCam;
+
+    void Start()
+    {
+        m_iAlert = m_iMaxAlert;
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -107,6 +133,7 @@ public class Manager : MonoBehaviour
             m_xCountry.OnNextTurn();
             NotificationSystem.OnNextTurn();
             SystemBase.SetUpEdges();
+            DefenceIcon.OnNextTurnAll();
             if (m_bTechIncreaseEnabled)
             {
                 m_iTechLevelUpPoints += 1;
@@ -128,8 +155,10 @@ public class Manager : MonoBehaviour
             fNextTime = Time.time + m_fTimeGap;
         }
         HandleCameraMovement();
-        m_xMoneyText.text = "$" + m_fPlayerMoney.ToString("0.00");
+        m_xMoneyText.text = "$" + m_iPlayerMoney.ToString("0.00");
         m_xTechLevelText.text = "Tech Level: " + GetTechLevel().ToString();
+        m_xDataText.text = m_iData.ToString();
+        m_xAlertText.text = m_iAlert.ToString();
     }
 
     void HandleCameraMovement()
@@ -254,18 +283,52 @@ public class Manager : MonoBehaviour
         return fReturn;
     }
 
-    public void ChangeMoney(float fAddition)
+    public void ChangeMoney(int iAddition)
     {
-        m_fPlayerMoney += fAddition;
-        if (m_fPlayerMoney < 0f)
+        m_iPlayerMoney += iAddition;
+        if (m_iPlayerMoney < 0)
         {
-            m_fPlayerMoney = 0f;
+            m_iPlayerMoney = 0;
         }
     }
 
-    public float GetMoney()
+    public int GetMoney()
     {
-        return m_fPlayerMoney;
+        return m_iPlayerMoney;
+    }
+
+    public void ChangeData(int iAddition)
+    {
+        m_iData += iAddition;
+        if (m_iData < 0)
+        {
+            m_iData = 0;
+        }
+    }
+
+    public int GetData()
+    {
+        return m_iData;
+    }
+
+    public void ChangeAlert(int iAddition)
+    {
+        m_iAlert += iAddition;
+        if (m_iAlert > m_iMaxAlert)
+        {
+            m_iAlert = m_iMaxAlert;
+        }else if (m_iAlert < 0)
+        {
+            m_iAlert = 0;
+        }
+        float fValue = (float)m_iAlert / m_iMaxAlert;
+        fValue *= m_xAlertSprites.Count;
+        m_xAlertImage.sprite = m_xAlertSprites[(int)fValue];
+    }
+
+    public int GetAlert()
+    {
+        return m_iAlert;
     }
 
     public GameObject GetEdgePrefabGameObject()
@@ -307,62 +370,68 @@ public class Manager : MonoBehaviour
 
     public static SystemBase GetAdjacentSystem(int iX, int iY, GridDirection eDir)
     {
+        (int iNewX, int iNewY) = GetPositionInDirection(iX, iY, eDir);
+        return SystemBase.GetSystemWithCoords(iNewX, iNewY);
+    }
+
+    public static (int, int) GetPositionInDirection(int iX, int iY, GridDirection eDir)
+    {
         switch (eDir)
         {
             case GridDirection.UP:
                 {
-                    return SystemBase.GetSystemWithCoords(iX, iY + 1);
+                    return (iX, iY + 1);
                 }
             case GridDirection.UP_LEFT:
                 {
                     if (ProjectMaths.Mod(iX, 2) == 0)
                     {
-                        return SystemBase.GetSystemWithCoords(iX - 1, iY + 1);
+                        return (iX - 1, iY + 1);
                     }
                     else
                     {
-                        return SystemBase.GetSystemWithCoords(iX - 1, iY);
+                        return (iX - 1, iY);
                     }
                 }
             case GridDirection.DOWN_LEFT:
                 {
                     if (ProjectMaths.Mod(iX, 2) == 0)
                     {
-                        return SystemBase.GetSystemWithCoords(iX - 1, iY);
+                        return (iX - 1, iY);
                     }
                     else
                     {
-                        return SystemBase.GetSystemWithCoords(iX - 1, iY - 1);
+                        return (iX - 1, iY - 1);
                     }
                 }
             case GridDirection.DOWN:
                 {
-                    return SystemBase.GetSystemWithCoords(iX, iY - 1);
+                    return (iX, iY - 1);
                 }
             case GridDirection.DOWN_RIGHT:
                 {
                     if (ProjectMaths.Mod(iX, 2) == 0)
                     {
-                        return SystemBase.GetSystemWithCoords(iX + 1, iY);
+                        return (iX + 1, iY);
                     }
                     else
                     {
-                        return SystemBase.GetSystemWithCoords(iX + 1, iY - 1);
+                        return (iX + 1, iY - 1);
                     }
                 }
             case GridDirection.UP_RIGHT:
                 {
                     if (ProjectMaths.Mod(iX, 2) == 0)
                     {
-                        return SystemBase.GetSystemWithCoords(iX + 1, iY + 1);
+                        return (iX + 1, iY + 1);
                     }
                     else
                     {
-                        return SystemBase.GetSystemWithCoords(iX + 1, iY);
+                        return (iX + 1, iY);
                     }
                 }
         }
-        return null;
+        return (iX, iY);
     }
 
     public static GridDirection GetOppositeDirection(GridDirection eDir)
@@ -390,6 +459,11 @@ public class Manager : MonoBehaviour
     public GameObject GetUIPrefab()
     {
         return m_xPerkUIPrefab;
+    }
+
+    public GameObject GetRandomSystemPrefab()
+    {
+        return m_xSystemPrefabs[Random.Range(0, m_xSystemPrefabs.Count)];
     }
 
 #if (UNITY_EDITOR)
