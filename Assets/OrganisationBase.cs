@@ -82,6 +82,19 @@ public abstract class OrganisationBase : MonoBehaviour
 
     protected virtual void UpdateSystems()
     {
+        if (m_xSystems.Count < m_iCapacity)
+        {
+            List<(int, int)> xPossiblePositions = new List<(int, int)>();
+            GetAdjacentEmptySystems(ref xPossiblePositions);
+
+            m_bBlocked = xPossiblePositions.Count == 0;
+            if (!m_bBlocked)
+            {
+                (int iX, int iY) = xPossiblePositions[UnityEngine.Random.Range(0, xPossiblePositions.Count - 1)];
+
+                AddNewSystem(iX, iY);
+            }
+        }
         if (m_xSystems.Count == 0)
         {
             return;
@@ -122,19 +135,6 @@ public abstract class OrganisationBase : MonoBehaviour
         if (fTotal + fCheapestCost <= m_xMyData.GetSize() + 5)
         {
             xCheapest.LevelUp();
-        }
-        if (m_xSystems.Count < m_iCapacity)
-        {
-            List<(int, int)> xPossiblePositions = new List<(int, int)>();
-            GetAdjacentEmptySystems(ref xPossiblePositions);
-
-            m_bBlocked = xPossiblePositions.Count == 0;
-            if (!m_bBlocked)
-            {
-                (int iX, int iY) = xPossiblePositions[UnityEngine.Random.Range(0, xPossiblePositions.Count - 1)];
-
-                AddNewSystem(iX, iY);
-            }
         }
     }
 
