@@ -71,6 +71,16 @@ public class Manager : MonoBehaviour
     [SerializeField]
     List<GameObject> m_xSystemPrefabs;
 
+    [SerializeField]
+    GameObject m_xSystemUIPrefab;
+
+    // TODO: make different for different buildings
+    [SerializeField]
+    List<Sprite> m_xSprites;
+
+    [SerializeField]
+    GameObject m_xImagePrefab;
+
     public enum GridDirection : int
     {
         UP,
@@ -466,6 +476,11 @@ public class Manager : MonoBehaviour
         return m_xSystemPrefabs[Random.Range(0, m_xSystemPrefabs.Count)];
     }
 
+    public GameObject GetSystemUIPrefab()
+    {
+        return m_xSystemUIPrefab;
+    }
+
 #if (UNITY_EDITOR)
     [ContextMenu("Correct Positions")]
     void CorrectPositions()
@@ -480,6 +495,23 @@ public class Manager : MonoBehaviour
         }
     }
 #endif
+
+    public Sprite GetSpriteAtLevel(int iLevel) 
+    {
+        if (iLevel < m_xSprites.Count)
+        {
+            return m_xSprites[iLevel];
+        }
+        else
+        {
+            return m_xSprites[m_xSprites.Count - 1];
+        }
+    }
+
+    public GameObject CreateImagePrefab(Transform xParent)
+    {
+        return Instantiate(m_xImagePrefab, xParent);
+    }
 }
 
 [System.Serializable]

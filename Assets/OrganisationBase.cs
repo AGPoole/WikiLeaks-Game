@@ -80,6 +80,8 @@ public abstract class OrganisationBase : MonoBehaviour
         UpdateUI();
     }
 
+    int m_iNextSystemUpgradeTime = 0;
+    const int iTIME_BETWEEN_UPGRADES = 10;
     protected virtual void UpdateSystems()
     {
         if (m_xSystems.Count < m_iCapacity)
@@ -97,6 +99,7 @@ public abstract class OrganisationBase : MonoBehaviour
         }
         if (m_xSystems.Count == 0)
         {
+            // TODO: destroy this if it's at 0 size
             return;
         }
         foreach (SystemBase m_xSys in m_xSystems)
@@ -120,21 +123,38 @@ public abstract class OrganisationBase : MonoBehaviour
                 m_xSystems[iToRemove].LevelDown();
             }
         } while (fTotal > m_xMyData.GetSize());
-        // Calculate Cheapest
-        float fCheapestCost = m_xSystems[0].GetLevelUpCost() - m_xSystems[0].GetCurrentCost();
-        var xCheapest = m_xSystems[0];
-        foreach (SystemBase xSys in m_xSystems)
+
+        // Level up systems here
+        if (Manager.GetTurnNumber() > m_iNextSystemUpgradeTime)
         {
-            if (xSys.GetLevelUpCost() - xSys.GetCurrentCost() < fCheapestCost)
+            List<SystemBase> xAffordableSystems = new List<SystemBase>();
+
+            // prioritise level zeros
+            foreach (SystemBase xSys in m_xSystems)
             {
-                fCheapestCost = xSys.GetLevelUpCost() - xSys.GetCurrentCost();
-                xCheapest = xSys;
+                float fCost = xSys.GetLevelUpCost() - xSys.GetCurrentCost();
+                if (xSys.GetLevel()==0 && fTotal + fCost <= m_xMyData.GetSize() + 5)
+                {
+                    xAffordableSystems.Add(xSys);
+                }
             }
-        }
-        // UpgradeCheapest, if you can
-        if (fTotal + fCheapestCost <= m_xMyData.GetSize() + 5)
-        {
-            xCheapest.LevelUp();
+            if (xAffordableSystems.Count == 0)
+            {
+                foreach (SystemBase xSys in m_xSystems)
+                {
+                    float fCost = xSys.GetLevelUpCost() - xSys.GetCurrentCost();
+                    if (fTotal + fCost <= m_xMyData.GetSize() + 5)
+                    {
+                        xAffordableSystems.Add(xSys);
+                    }
+                }
+            }
+            // TODO: deterministic process
+            if (xAffordableSystems.Count > 0)
+            {
+                xAffordableSystems[UnityEngine.Random.Range(0, xAffordableSystems.Count)].LevelUp();
+            }
+            m_iNextSystemUpgradeTime = Manager.GetTurnNumber() + iTIME_BETWEEN_UPGRADES;
         }
     }
 
@@ -228,6 +248,31 @@ public abstract class OrganisationBase : MonoBehaviour
                 {
                     (int iNewX, int iNewY) = Manager.GetPositionInDirection(iX, iY, xDirection);
                     xOutputs.Add((iNewX, iNewY));
+                }
+            }
+        }
+    }
+    protected void GetAdjacentOrganisations(ref HashSet<TechCompany> xComps)
+    {
+        if (xComps.Count != 0)
+        {
+            Debug.LogWarning("Non-empty hash set passed in for GetAdjacentOrganisations output");
+            xComps.Clear();
+        }
+        var xDirections = Enum.GetValues(typeof(Manager.GridDirection)).Cast<Manager.GridDirection>();
+        foreach (SystemBase xSystem in m_xSystems)
+        {
+            foreach (var xDirection in xDirections)
+            {
+                (int iX, int iY) = xSystem.GetGridPosition();
+                SystemBase xSys = Manager.GetAdjacentSystem(iX, iY, xDirection);
+                if (Manager.GetAdjacentSystem(iX, iY, xDirection) != null)
+                {
+                    OrganisationBase xOrg = xSys.GetOwner();
+                    if (xOrg is TechCompany)
+                    {
+                        xComps.Add((TechCompany) xOrg);
+                    }
                 }
             }
         }

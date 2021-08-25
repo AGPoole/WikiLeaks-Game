@@ -6,7 +6,6 @@ using UnityEngine.EventSystems;
 public abstract class SystemBase : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     static List<SystemBase> s_xAllSystems;
-    [SerializeField]
     SystemUI m_xUI;
     [SerializeField]
     protected int m_iLevel = 0;
@@ -32,6 +31,10 @@ public abstract class SystemBase : MonoBehaviour, IPointerEnterHandler, IPointer
 
     int m_iNextTimeToUpdateTripWires;
 
+    const float fUI_OffsetY = -2.5f;
+
+    GameObject m_xImageContainer;
+
     void Start()
     {
         Init();
@@ -54,14 +57,10 @@ public abstract class SystemBase : MonoBehaviour, IPointerEnterHandler, IPointer
         SetLevel(m_iLevel, GetDefaultTimer());
         if (m_xUI == null)
         {
-            m_xUI = GetComponentInChildren<SystemUI>();
-            if (m_xUI == null)
-            {
-                Debug.LogError(string.Format("Missing UI object on {0}", gameObject.name));
-                return;
-            }
+            m_xUI = Instantiate(Manager.GetManager().GetSystemUIPrefab(), transform).GetComponent<SystemUI>();
         }
         GetMyValues().SetUpUIPerks(m_xUI);
+        m_xUI.transform.position = transform.position + new Vector3(0, fUI_OffsetY, 0);
         s_xAllSystems.Add(this);
 
         m_xEdges = new List<Edge>();
@@ -97,6 +96,13 @@ public abstract class SystemBase : MonoBehaviour, IPointerEnterHandler, IPointer
 
             m_xHexagonLineRenderers.Add(xLineRenderer);
         }
+
+        if (m_xImageContainer != null)
+        {
+            Destroy(m_xImageContainer);
+        }
+        m_xImageContainer = Manager.GetManager().CreateImagePrefab(transform);
+        m_xImageContainer.GetComponent<SpriteRenderer>().sprite = Manager.GetManager().GetSpriteAtLevel(m_iLevel);
     }
 
     #if (UNITY_EDITOR)
@@ -182,6 +188,11 @@ public abstract class SystemBase : MonoBehaviour, IPointerEnterHandler, IPointer
         }
         m_iLevel = iLevel;
 
+        if (m_xImageContainer != null)
+        {
+            m_xImageContainer.GetComponent<SpriteRenderer>().sprite = Manager.GetManager().GetSpriteAtLevel(m_iLevel);
+        }
+
         m_iLevelChangeTimer = iTimer;
     }
 
@@ -255,7 +266,10 @@ public abstract class SystemBase : MonoBehaviour, IPointerEnterHandler, IPointer
 
     protected virtual void OnDeactivation() 
     {
-        m_xUI.OnDeactivation();
+        if (m_xUI != null)
+        {
+            m_xUI.OnDeactivation();
+        }
     }
     protected virtual void OnActivation() 
     {

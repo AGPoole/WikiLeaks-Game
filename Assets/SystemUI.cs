@@ -15,6 +15,10 @@ public class SystemUI : MonoBehaviour
     List<GameObject> m_xPerkUIs;
     [SerializeField]
     Color m_xDisabledColor;
+    [SerializeField]
+    Color m_xHackedColor = Color.green;
+    [SerializeField]
+    Color m_xUnhackedColor = Color.white;
 
     static SystemUI s_xSelected;
 
@@ -43,7 +47,7 @@ public class SystemUI : MonoBehaviour
         m_xLevelText.text = GetParent().GetLevel().ToString();
         if (GetParent().GetLevel() > 0f)
         {
-            m_xTitleText.color = GetParent().IsHacked() ? Color.green : Color.white;
+            m_xTitleText.color = GetParent().IsHacked() ? m_xHackedColor : m_xUnhackedColor;
             if (GetParent().GetComponent<IDisablable>() != null
                 && GetParent().GetComponent<IDisablable>().IsForceDisabled())
             {

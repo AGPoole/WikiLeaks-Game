@@ -44,7 +44,7 @@ public class TechCompany : OrganisationBase
         m_xProfitText.text = xTechCompanyData.GetProfit().ToString("0.00");
         m_xSavingsGainText.text = xTechCompanyData.GetSavingsGain().ToString("0.00");
         m_xTurnsToLevelUpText.text = xTechCompanyData.GetTimeToLevelUp().ToString("0");
-        m_xMarketShareText.text = (xTechCompanyData.GetNormalisedMarketShare()*100).ToString("0.00");
+        m_xMarketShareText.text = (xTechCompanyData.GetMarketShare()*100).ToString("0.00");
     }
 
     protected override void SetData()
@@ -55,9 +55,21 @@ public class TechCompany : OrganisationBase
         }
     }
 
-    public void ChangeMarketShare(float fChange)
+    public void ChangeMarketShare(float fChange, bool bUpdateRivals)
     {
         ((TechCompanyData)GetData()).ChangeMarketShare(fChange);
+        if (bUpdateRivals)
+        {
+            HashSet<TechCompany> xRivals = new HashSet<TechCompany>();
+            GetAdjacentOrganisations(ref xRivals);
+            if (xRivals.Count > 0) {
+                foreach (TechCompany xBase in xRivals)
+                {
+                    // false here to prevent infinite loop
+                    xBase.ChangeMarketShare(-fChange / xRivals.Count, false);
+                }
+            }
+        }
     }
 }
 
@@ -76,7 +88,7 @@ public class TechCompanyData : OrganisationData
         float fTotalProfit = 0;
         if (m_iSize > 0.0f)
         {
-            fTotalProfit += GetNormalisedMarketShare()*GetTechValues().GetProfitAtLevel(m_xCountryData.GetTotalTechCompaniesSize());
+            fTotalProfit += GetMarketShare()*GetTechValues().GetProfitAtLevel(m_xCountryData.GetTotalTechCompaniesSize());
             xGovernment.PayTaxes(fTotalProfit * xGovernment.GetTaxRate());
             fTotalProfit -= fTotalProfit * xGovernment.GetTaxRate();
         }
@@ -142,14 +154,21 @@ public class TechCompanyData : OrganisationData
     {
         return m_fMarketShare;
     }
-    public float GetNormalisedMarketShare()
-    {
-        return m_fMarketShare/m_xCountryData.GetTotalShare();
-    }
 
     public void ChangeMarketShare(float fChange)
     {
-        // TODO: make this normalise better
         m_fMarketShare = Mathf.Clamp(m_fMarketShare + fChange, GetTechValues().GetShareMin(), GetTechValues().GetShareMax());
+        // No need to normalise as this will be done every frame anyway
+    }
+
+    public void NormaliseShare(float fTotal)
+    {
+        const float fMINIMUM_TOTAL = 0.01f;
+        if(fTotal < fMINIMUM_TOTAL)
+        {
+            Debug.LogError("Attempting to normalise with total value approximately equal to 0");
+            return;
+        }
+        m_fMarketShare /= fTotal;
     }
 }
