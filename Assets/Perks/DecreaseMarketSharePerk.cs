@@ -6,6 +6,6 @@ public class DecreaseMarketSharePerk : PerkBase
 {
     public override void OnClick()
     {
-        ((TechCompanyData)((TechCompany)m_xSystemOwner.GetOwner()).GetData()).ChangeMarketShare(-10f);
+        ((TechCompany)m_xSystemOwner.GetOwner()).ChangeMarketShare(-10f, true);
     }
 }

@@ -16,7 +16,7 @@ public class StealWeapon : WeaponBase<SystemBase>
         {
             Manager.GetManager().ChangeMoney(GetMoney(xSys));
             TechCompany xTechCompanyOwner = xSys.GetOwner() as TechCompany;
-            xTechCompanyOwner.ChangeMarketShare(m_fMarketShareChange);
+            xTechCompanyOwner.ChangeMarketShare(m_fMarketShareChange, true);
             return true;
         }
         return false;

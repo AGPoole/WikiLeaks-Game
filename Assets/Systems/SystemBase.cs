@@ -6,7 +6,6 @@ using UnityEngine.EventSystems;
 public abstract class SystemBase : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     static List<SystemBase> s_xAllSystems;
-    [SerializeField]
     SystemUI m_xUI;
     [SerializeField]
     protected int m_iLevel = 0;
@@ -32,6 +31,10 @@ public abstract class SystemBase : MonoBehaviour, IPointerEnterHandler, IPointer
 
     int m_iNextTimeToUpdateTripWires;
 
+    const float fUI_OffsetY = -2.5f;
+
+    GameObject m_xImageContainer;
+
     void Start()
     {
         Init();
@@ -54,14 +57,10 @@ public abstract class SystemBase : MonoBehaviour, IPointerEnterHandler, IPointer
         SetLevel(m_iLevel, GetDefaultTimer());
         if (m_xUI == null)
         {
-            m_xUI = GetComponentInChildren<SystemUI>();
-            if (m_xUI == null)
-            {
-                Debug.LogError(string.Format("Missing UI object on {0}", gameObject.name));
-                return;
-            }
+            m_xUI = Instantiate(Manager.GetManager().GetSystemUIPrefab(), transform).GetComponent<SystemUI>();
         }
         GetMyValues().SetUpUIPerks(m_xUI);
+        m_xUI.transform.position = transform.position + new Vector3(0, fUI_OffsetY, 0);
         s_xAllSystems.Add(this);
 
         m_xEdges = new List<Edge>();
@@ -97,6 +96,18 @@ public abstract class SystemBase : MonoBehaviour, IPointerEnterHandler, IPointer
 
             m_xHexagonLineRenderers.Add(xLineRenderer);
         }
+
+        if (m_xImageContainer != null)
+        {
+            Destroy(m_xImageContainer);
+        }
+        m_xImageContainer = Manager.GetManager().CreateImagePrefab(transform);
+        SpriteRenderer xSpriteRenderer = m_xImageContainer.GetComponent<SpriteRenderer>();
+        xSpriteRenderer.sprite = Manager.GetManager().GetSpriteAtLevel(m_iLevel);
+        Color c = xSpriteRenderer.color;
+        c.a = m_iLevel == 0 ? 0.4f : 1f;
+        xSpriteRenderer.color = c;
+        m_xUI.gameObject.SetActive(m_iLevel != 0);
     }
 
     #if (UNITY_EDITOR)
@@ -182,6 +193,16 @@ public abstract class SystemBase : MonoBehaviour, IPointerEnterHandler, IPointer
         }
         m_iLevel = iLevel;
 
+        if (m_xImageContainer != null)
+        {
+            SpriteRenderer xSpriteRenderer = m_xImageContainer.GetComponent<SpriteRenderer>();
+            xSpriteRenderer.sprite = Manager.GetManager().GetSpriteAtLevel(m_iLevel);
+            Color c = xSpriteRenderer.color;
+            c.a = m_iLevel == 0 ? 0.4f : 1f;
+            xSpriteRenderer.color = c;
+            m_xUI.gameObject.SetActive(m_iLevel != 0);
+        }
+
         m_iLevelChangeTimer = iTimer;
     }
 
@@ -255,7 +276,10 @@ public abstract class SystemBase : MonoBehaviour, IPointerEnterHandler, IPointer
 
     protected virtual void OnDeactivation() 
     {
-        m_xUI.OnDeactivation();
+        if (m_xUI != null)
+        {
+            m_xUI.OnDeactivation();
+        }
     }
     protected virtual void OnActivation() 
     {
@@ -476,6 +500,21 @@ public abstract class SystemBase : MonoBehaviour, IPointerEnterHandler, IPointer
     public virtual bool CanBeOwnedByOrganisation(OrganisationBase xOrganisation)
     {
         return true;
+    }
+
+    public static void GetSystemPositionBounds(ref float fXMin, ref float fXMax, ref float fYMin, ref float fYMax)
+    {
+        fXMin = -10.0f;
+        fXMax = 10.0f;
+        fYMin = -10.0f;
+        fYMax = 10.0f;
+        foreach (SystemBase xSys in s_xAllSystems)
+        {
+            fXMin = Mathf.Min(xSys.transform.position.x, fXMin);
+            fYMin = Mathf.Min(xSys.transform.position.y, fYMin);
+            fXMax = Mathf.Max(xSys.transform.position.x, fXMax);
+            fYMax = Mathf.Max(xSys.transform.position.y, fYMax);
+        }
     }
 }
 

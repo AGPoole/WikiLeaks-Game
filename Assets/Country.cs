@@ -116,6 +116,7 @@ public class CountryData
 
     public void OnNextTurn()
     {
+        NormaliseMarketShares();
         foreach (var xData in m_xTechCompaniesData)
         {
             xData.OnNextTurn();
@@ -156,13 +157,16 @@ public class CountryData
         return xFake;
     }
 
-    public float GetTotalShare()
+    public void NormaliseMarketShares()
     {
         float fValue = 0;
         foreach(var xData in m_xTechCompaniesData)
         {
             fValue += xData.GetMarketShare();
         }
-        return fValue;
+        foreach(var xData in m_xTechCompaniesData)
+        {
+            xData.NormaliseShare(fValue);
+        }
     }
 }
