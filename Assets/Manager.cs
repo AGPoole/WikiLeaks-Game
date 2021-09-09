@@ -112,10 +112,6 @@ public class Manager : MonoBehaviour
     [SerializeField]
     private float dragSpeed = 1f;
     private Vector3 dragOrigin = new Vector3(0f, 0f, 0f);
-    [SerializeField]
-    Vector2 xMaxCam;
-    [SerializeField]
-    Vector2 xMinCam;
 
     void Start()
     {
@@ -185,8 +181,13 @@ public class Manager : MonoBehaviour
         Vector3 move = new Vector3(pos.x * dragSpeed, pos.y * dragSpeed, 0);
         Camera.main.gameObject.transform.Translate(move, Space.World);
 
+        float fXMin = -10;
+        float fXMax = 10;
+        float fYMin = -10;
+        float fYMax = 10;
+        SystemBase.GetSystemPositionBounds(ref fXMin, ref fXMax, ref fYMin, ref fYMax);
         Vector3 xCurrent = Camera.main.gameObject.transform.position;
-        Camera.main.gameObject.transform.position = new Vector3(Mathf.Clamp(xCurrent.x, xMinCam.x, xMaxCam.x), Mathf.Clamp(xCurrent.y, xMinCam.y, xMaxCam.y), xCurrent.z);
+        Camera.main.gameObject.transform.position = new Vector3(Mathf.Clamp(xCurrent.x, fXMin, fXMax), Mathf.Clamp(xCurrent.y, fYMin, fYMax), xCurrent.z);
     }
 
     public static void TogglePaused()

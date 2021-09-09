@@ -148,3 +148,4 @@ MonoBehaviour:
   m_xDefenceIconInstances: []
   m_xMainDefenceIcon: {fileID: 0}
   m_iDefenceMax: 10
+  m_fIconOffset: 0.8

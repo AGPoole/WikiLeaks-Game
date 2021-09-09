@@ -7209,7 +7209,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -10.146957, y: -0.00018310547}
+  m_AnchoredPosition: {x: -10.146957, y: -0.00088500977}
   m_SizeDelta: {x: -20.296127, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &2080925866
@@ -7685,8 +7685,6 @@ MonoBehaviour:
   - {fileID: 21300000, guid: db9d2a37620a86c4f9a41bf22c5d76da, type: 3}
   m_xImagePrefab: {fileID: 3240958124342501254, guid: 8d797d3375165324eb60c11b76d8ab8f, type: 3}
   dragSpeed: 2
-  xMaxCam: {x: 25, y: 10}
-  xMinCam: {x: -30, y: -15}
   m_fSOFT_CAP_TAX: 150
   m_fHARD_CAP_TAX: 200
   m_fSOFT_CAP_CORP: 150

@@ -52,6 +52,8 @@ public class Edge : MonoBehaviour
         transform.position = (xStart.transform.position + xEnd.transform.position) / 2;
     }
 
+    [SerializeField]
+    float m_fIconOffset = 0.01f;
     void SetDefenceIconPositions()
     {
         if(m_xStart==null || m_xEnd == null)
@@ -59,9 +61,12 @@ public class Edge : MonoBehaviour
             return;
         }
         int iLength = m_xDefenceIconInstances.Count;
-        for(int i=0; i<iLength; i++)
+        Vector3 xDifference = m_xEnd.transform.position - m_xStart.transform.position;
+        xDifference -= 2 * m_fIconOffset * xDifference.normalized;
+        Vector3 xStart = m_xStart.transform.position + m_fIconOffset * xDifference.normalized;
+        for (int i=0; i<iLength; i++)
         {
-            m_xDefenceIconInstances[i].transform.position = m_xStart.transform.position + ((i+1) * (m_xEnd.transform.position - m_xStart.transform.position) / (iLength+1));
+            m_xDefenceIconInstances[i].transform.position = xStart + ((i+1) * xDifference / (iLength+1));
         }
     }
 

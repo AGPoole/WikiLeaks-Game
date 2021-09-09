@@ -102,7 +102,12 @@ public abstract class SystemBase : MonoBehaviour, IPointerEnterHandler, IPointer
             Destroy(m_xImageContainer);
         }
         m_xImageContainer = Manager.GetManager().CreateImagePrefab(transform);
-        m_xImageContainer.GetComponent<SpriteRenderer>().sprite = Manager.GetManager().GetSpriteAtLevel(m_iLevel);
+        SpriteRenderer xSpriteRenderer = m_xImageContainer.GetComponent<SpriteRenderer>();
+        xSpriteRenderer.sprite = Manager.GetManager().GetSpriteAtLevel(m_iLevel);
+        Color c = xSpriteRenderer.color;
+        c.a = m_iLevel == 0 ? 0.4f : 1f;
+        xSpriteRenderer.color = c;
+        m_xUI.gameObject.SetActive(m_iLevel != 0);
     }
 
     #if (UNITY_EDITOR)
@@ -190,7 +195,12 @@ public abstract class SystemBase : MonoBehaviour, IPointerEnterHandler, IPointer
 
         if (m_xImageContainer != null)
         {
-            m_xImageContainer.GetComponent<SpriteRenderer>().sprite = Manager.GetManager().GetSpriteAtLevel(m_iLevel);
+            SpriteRenderer xSpriteRenderer = m_xImageContainer.GetComponent<SpriteRenderer>();
+            xSpriteRenderer.sprite = Manager.GetManager().GetSpriteAtLevel(m_iLevel);
+            Color c = xSpriteRenderer.color;
+            c.a = m_iLevel == 0 ? 0.4f : 1f;
+            xSpriteRenderer.color = c;
+            m_xUI.gameObject.SetActive(m_iLevel != 0);
         }
 
         m_iLevelChangeTimer = iTimer;
@@ -490,6 +500,21 @@ public abstract class SystemBase : MonoBehaviour, IPointerEnterHandler, IPointer
     public virtual bool CanBeOwnedByOrganisation(OrganisationBase xOrganisation)
     {
         return true;
+    }
+
+    public static void GetSystemPositionBounds(ref float fXMin, ref float fXMax, ref float fYMin, ref float fYMax)
+    {
+        fXMin = -10.0f;
+        fXMax = 10.0f;
+        fYMin = -10.0f;
+        fYMax = 10.0f;
+        foreach (SystemBase xSys in s_xAllSystems)
+        {
+            fXMin = Mathf.Min(xSys.transform.position.x, fXMin);
+            fYMin = Mathf.Min(xSys.transform.position.y, fYMin);
+            fXMax = Mathf.Max(xSys.transform.position.x, fXMax);
+            fYMax = Mathf.Max(xSys.transform.position.y, fYMax);
+        }
     }
 }
 
