@@ -9,25 +9,37 @@ public class SystemValuesBase
     public class LevelRequirements
     {
         [SerializeField]
-        int m_iCost;
+        float m_fCost;
         [SerializeField]
         int m_iLevelRequirement = 0;
         [SerializeField]
         int m_iTechRequirement = 0;
+
+        public LevelRequirements(float fCost, int iLevelRequirement, int iTechRequirement)
+        {
+            m_fCost = fCost;
+            m_iLevelRequirement = iLevelRequirement;
+            m_iTechRequirement = iTechRequirement;
+        }
 
         public virtual bool CanLevelUp(int iLevel)
         {
             return (m_iLevelRequirement <= iLevel);
         }
 
-        public virtual int GetCost()
+        public virtual float GetCost()
         {
-            return m_iCost;
+            return m_fCost;
         }
     }
 
-    [SerializeField]
-    LevelRequirements[] m_xLevelRequirements;
+    //[SerializeField]
+    LevelRequirements[] m_xLevelRequirements = { 
+        new LevelRequirements(0.25f, 0, 0), 
+        new LevelRequirements(0.5f, 0, 0),
+        new LevelRequirements(0.75f, 0, 0),
+        new LevelRequirements(1f, 0, 0)
+    };
 
     [SerializeField]
     protected int m_iBaseDefenceMax = 10;
@@ -74,7 +86,7 @@ public class SystemValuesBase
     [SerializeField]
     int m_iDataRequirementCost = 10;
 
-    public int GetLevelUpCost(int iCurrentLevel)
+    public float GetLevelUpCost(int iCurrentLevel)
     {
         return m_xLevelRequirements[iCurrentLevel].GetCost();
     }

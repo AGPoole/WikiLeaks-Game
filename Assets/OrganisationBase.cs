@@ -109,6 +109,7 @@ public abstract class OrganisationBase : MonoBehaviour
         // Calculate Total Cost
         float fTotal = 0;
 
+        // remove or sell unaffordable systems
         do
         {
             // TODO: use deterministic process
@@ -120,7 +121,31 @@ public abstract class OrganisationBase : MonoBehaviour
             if (fTotal > m_xMyData.GetSize())
             {
                 int iToRemove = UnityEngine.Random.Range(0, m_xSystems.Count);
-                m_xSystems[iToRemove].LevelDown();
+                SystemBase xSys = m_xSystems[iToRemove];
+                // first see if the selected system can be sold to an adjacent org
+                bool bSold = false;
+                List<OrganisationBase> xAdjacents = new List<OrganisationBase>();
+                xSys.GetAdjacentOrganisations(ref xAdjacents);
+                if (xAdjacents.Count > 0)
+                {
+                    // start at a random position and cycle, to avoid prefering a direction
+                    int i = UnityEngine.Random.Range(0, xAdjacents.Count);
+                    for(int j = 0; j < xAdjacents.Count; j++)
+                    {
+                        OrganisationBase xOtherOrg = xAdjacents[(i + j) % xAdjacents.Count];
+                        if (xOtherOrg.CanAffordSystem(xSys))
+                        {
+                            bSold = true;
+                            SwapSystem(xSys, xOtherOrg);
+                            Debug.LogError("System transferred");
+                            break;
+                        }
+                    }
+                }
+                if (!bSold)
+                {
+                    xSys.LevelDown();
+                }
             }
         } while (fTotal > m_xMyData.GetSize());
 
@@ -156,6 +181,16 @@ public abstract class OrganisationBase : MonoBehaviour
             }
             m_iNextSystemUpgradeTime = Manager.GetTurnNumber() + iTIME_BETWEEN_UPGRADES;
         }
+    }
+
+    public bool CanAffordSystem(SystemBase xSys)
+    {
+        float fTotal = 0;
+        foreach (SystemBase m_xSys in m_xSystems)
+        {
+            fTotal += m_xSys.GetCurrentCost();
+        }
+        return fTotal + xSys.GetCurrentCost() > m_xMyData.GetSize();
     }
 
     protected virtual void UpdateUI()
@@ -227,6 +262,25 @@ public abstract class OrganisationBase : MonoBehaviour
         xInstance.SetPosition(iXPos, iYPos);
 
         xInstance.Init();
+    }
+
+    public void SwapSystem(SystemBase xSystem, OrganisationBase xOther)
+    {
+        if (!m_xSystems.Contains(xSystem))
+        {
+            Debug.LogError("Attempting to remove system we do not currently own");
+            return;
+        }
+
+        if (xOther.m_xSystems.Contains(xSystem))
+        {
+            Debug.LogError("Attempting to add system twice");
+            return;
+        }
+
+        m_xSystems.Remove(xSystem);
+        xSystem.SetOwner(xOther);
+        xOther.m_xSystems.Add(xSystem);
     }
 
     public void GetAdjacentEmptySystems(ref List<(int, int)> xOutputs, bool bAdditive = false)
