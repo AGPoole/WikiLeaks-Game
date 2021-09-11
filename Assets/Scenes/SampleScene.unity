@@ -4689,7 +4689,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1386430395}
   m_HandleRect: {fileID: 1386430394}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -7209,7 +7209,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -10.146957, y: -0.00088500977}
+  m_AnchoredPosition: {x: -10.146957, y: 0}
   m_SizeDelta: {x: -20.296127, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &2080925866
@@ -7796,37 +7796,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_xGovValues:
-    m_xLevelRequirements:
-    - m_iCost: 1
-      m_iLevelRequirement: 0
-      m_iTechRequirement: 0
-    - m_iCost: 20
-      m_iLevelRequirement: 0
-      m_iTechRequirement: 0
-    - m_iCost: 30
-      m_iLevelRequirement: 0
-      m_iTechRequirement: 0
-    - m_iCost: 40
-      m_iLevelRequirement: 0
-      m_iTechRequirement: 0
-    - m_iCost: 50
-      m_iLevelRequirement: 0
-      m_iTechRequirement: 0
-    - m_iCost: 60
-      m_iLevelRequirement: 0
-      m_iTechRequirement: 0
-    - m_iCost: 70
-      m_iLevelRequirement: 0
-      m_iTechRequirement: 0
-    - m_iCost: 80
-      m_iLevelRequirement: 0
-      m_iTechRequirement: 0
-    - m_iCost: 90
-      m_iLevelRequirement: 0
-      m_iTechRequirement: 0
-    - m_iCost: 100
-      m_iLevelRequirement: 0
-      m_iTechRequirement: 0
     m_iBaseDefenceMax: 10
     m_fBaseDefenceRefreshTime: 0.5
     m_fAdditionalShielddeteriorationTime: 0.5
@@ -7852,37 +7821,6 @@ MonoBehaviour:
     m_iCoolDownLength: 70
     m_xPropagandaMessageObject: {fileID: 1813745609784449481, guid: af13e85f00581564d90bc83eea2cd3e1, type: 3}
   m_xCorpValues:
-    m_xLevelRequirements:
-    - m_iCost: 1
-      m_iLevelRequirement: 0
-      m_iTechRequirement: 0
-    - m_iCost: 20
-      m_iLevelRequirement: 0
-      m_iTechRequirement: 0
-    - m_iCost: 30
-      m_iLevelRequirement: 0
-      m_iTechRequirement: 0
-    - m_iCost: 40
-      m_iLevelRequirement: 0
-      m_iTechRequirement: 0
-    - m_iCost: 50
-      m_iLevelRequirement: 0
-      m_iTechRequirement: 0
-    - m_iCost: 60
-      m_iLevelRequirement: 0
-      m_iTechRequirement: 0
-    - m_iCost: 70
-      m_iLevelRequirement: 0
-      m_iTechRequirement: 0
-    - m_iCost: 80
-      m_iLevelRequirement: 0
-      m_iTechRequirement: 0
-    - m_iCost: 90
-      m_iLevelRequirement: 0
-      m_iTechRequirement: 0
-    - m_iCost: 100
-      m_iLevelRequirement: 0
-      m_iTechRequirement: 0
     m_iBaseDefenceMax: 10
     m_fBaseDefenceRefreshTime: 0.5
     m_fAdditionalShielddeteriorationTime: 0.5
@@ -8074,13 +8012,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_xValues:
-    m_xLevelRequirements:
-    - m_iCost: 50
-      m_iLevelRequirement: 0
-      m_iTechRequirement: 0
-    - m_iCost: 100
-      m_iLevelRequirement: 0
-      m_iTechRequirement: 0
     m_iBaseDefenceMax: 10
     m_fBaseDefenceRefreshTime: 0.5
     m_fAdditionalShielddeteriorationTime: 0.5
@@ -8117,19 +8048,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_xValues:
-    m_xLevelRequirements:
-    - m_iCost: 1
-      m_iLevelRequirement: 0
-      m_iTechRequirement: 0
-    - m_iCost: 2
-      m_iLevelRequirement: 0
-      m_iTechRequirement: 0
-    - m_iCost: 3
-      m_iLevelRequirement: 0
-      m_iTechRequirement: 0
-    - m_iCost: 4
-      m_iLevelRequirement: 0
-      m_iTechRequirement: 0
     m_iBaseDefenceMax: 10
     m_fBaseDefenceRefreshTime: 0.5
     m_fAdditionalShielddeteriorationTime: 0.5
@@ -8173,19 +8091,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_xValues:
-    m_xLevelRequirements:
-    - m_iCost: 1
-      m_iLevelRequirement: 0
-      m_iTechRequirement: 0
-    - m_iCost: 2
-      m_iLevelRequirement: 0
-      m_iTechRequirement: 0
-    - m_iCost: 3
-      m_iLevelRequirement: 0
-      m_iTechRequirement: 0
-    - m_iCost: 4
-      m_iLevelRequirement: 0
-      m_iTechRequirement: 0
     m_iBaseDefenceMax: 10
     m_fBaseDefenceRefreshTime: 0.5
     m_fAdditionalShielddeteriorationTime: 0.5
@@ -8226,10 +8131,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_xValues:
-    m_xLevelRequirements:
-    - m_iCost: 1
-      m_iLevelRequirement: 0
-      m_iTechRequirement: 0
     m_iBaseDefenceMax: 20
     m_fBaseDefenceRefreshTime: 0.5
     m_fAdditionalShielddeteriorationTime: 0.5
@@ -8272,10 +8173,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_xValues:
-    m_xLevelRequirements:
-    - m_iCost: 1
-      m_iLevelRequirement: 0
-      m_iTechRequirement: 0
     m_iBaseDefenceMax: 10
     m_fBaseDefenceRefreshTime: 0.1
     m_fAdditionalShielddeteriorationTime: 0.1
@@ -8308,10 +8205,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_xValues:
-    m_xLevelRequirements:
-    - m_iCost: 1
-      m_iLevelRequirement: 0
-      m_iTechRequirement: 0
     m_iBaseDefenceMax: 10
     m_fBaseDefenceRefreshTime: 0.1
     m_fAdditionalShielddeteriorationTime: 0.1

@@ -254,15 +254,15 @@ public abstract class SystemBase : MonoBehaviour, IPointerEnterHandler, IPointer
         return 1;
     }
 
-    public int GetLevelUpCost()
+    public float GetLevelUpCost()
     {
         if (m_iLevel == GetMaxLevel())
         {
-            return int.MaxValue;
+            return float.MaxValue;
         }
         return GetMyValues().GetLevelUpCost(m_iLevel);
     }
-    public int GetCurrentCost()
+    public float GetCurrentCost()
     {
         if (m_iLevel > 0)
         {
@@ -514,6 +514,18 @@ public abstract class SystemBase : MonoBehaviour, IPointerEnterHandler, IPointer
             fYMin = Mathf.Min(xSys.transform.position.y, fYMin);
             fXMax = Mathf.Max(xSys.transform.position.x, fXMax);
             fYMax = Mathf.Max(xSys.transform.position.y, fYMax);
+        }
+    }
+
+    public void GetAdjacentOrganisations(ref List<OrganisationBase> xOrgs)
+    {
+        for (int i = 0; i < 6; i++)
+        {
+            SystemBase xSys = Manager.GetAdjacentSystem(m_iXPosInGrid, m_iYPosInGrid, (Manager.GridDirection)i);
+            if (xSys != null && xSys.m_xOwner != m_xOwner)
+            {
+                xOrgs.Add(xSys.m_xOwner);
+            }
         }
     }
 }
