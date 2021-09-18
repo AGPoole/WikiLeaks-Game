@@ -20,8 +20,6 @@ public class Government : OrganisationBase
     UnityEngine.UI.Text m_xTaxText;
     [SerializeField]
     UnityEngine.UI.Text m_xSavingsPerTurnText;
-    [SerializeField]
-    UnityEngine.UI.Text m_xTimeTilNextElectionText;
 
     [SerializeField]
     Transform m_xLeftTransform;
@@ -50,6 +48,8 @@ public class Government : OrganisationBase
     UnityEngine.UI.Slider m_xHappinessSlider;
     [SerializeField]
     UnityEngine.UI.Slider m_xScoreSlider;
+    [SerializeField]
+    UnityEngine.UI.Text m_xElectionTurnsCounter;
 
     #if (UNITY_EDITOR)
     StreamWriter m_xStreamWriter;
@@ -93,18 +93,20 @@ public class Government : OrganisationBase
 
         if (GetTimeTillNextElection() < 100)
         {
-            m_xLeader.transform.parent = m_xLeader.GetOrientation() == Orientation.LEFT ? m_xLeftTransform : m_xRightTransform;
-            m_xLeader.transform.localPosition = Vector3.zero;
+            RectTransform xRect = m_xLeader.GetComponent<RectTransform>();
+            xRect.SetParent(m_xLeader.GetOrientation() == Orientation.LEFT ? m_xLeftTransform : m_xRightTransform, false);
+            xRect.localPosition = Vector3.zero;
+            xRect.anchoredPosition3D = Vector3.zero;
+            xRect.sizeDelta = Vector2.zero;
+            xRect.anchorMin = Vector2.zero;
+            xRect.anchorMax = Vector2.one;
             if (GetOpposition() != null)
             {
                 GetOpposition().gameObject.SetActive(true);
             }
-
-            m_xTimeTilNextElectionText.transform.parent.gameObject.SetActive(true);
         }
         else
         {
-            m_xTimeTilNextElectionText.transform.parent.gameObject.SetActive(false);
             m_xLeader.transform.parent = m_xLeaderTransform;
             m_xLeader.transform.localPosition = Vector3.zero;
             if (GetOpposition() != null)
@@ -161,6 +163,7 @@ public class Government : OrganisationBase
         {
             float fLeaderScore = m_xLeader.GetCandidateData().GetOrientation() == Orientation.LEFT ? fLeftScore : fRightScore;
             m_xLeader.OnNextTurn(fLeaderScore / fLeftScore + fRightScore);
+            m_xElectionTurnsCounter.text = "Elections Have Been Postponed Indefinitely";
         }
 
         if (GetTimeTillNextElection() == 5)
@@ -271,7 +274,7 @@ public class Government : OrganisationBase
         float fSavingsDiff = xGovData.GetSavings() - m_fPreviousSavings;
         m_fPreviousSavings = xGovData.GetSavings();
         m_xSavingsPerTurnText.text = fSavingsDiff.ToString("0.00");
-        m_xTimeTilNextElectionText.text = GetTimeTillNextElection().ToString();
+        m_xElectionTurnsCounter.text = String.Format("{0} Turns Until Election", GetTimeTillNextElection());
     }
 
     #if (UNITY_EDITOR)

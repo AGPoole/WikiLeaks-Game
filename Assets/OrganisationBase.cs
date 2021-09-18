@@ -137,7 +137,6 @@ public abstract class OrganisationBase : MonoBehaviour
                         {
                             bSold = true;
                             SwapSystem(xSys, xOtherOrg);
-                            Debug.LogError("System transferred");
                             break;
                         }
                     }
