@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class MessageIcon : MonoBehaviour
 {
+    int m_iCreationTurn;
+    const int iMAX_TURNS_LIFETIME = 200;
     protected Transform m_xTarget;
     protected Transform m_xSource; 
     [SerializeField]
@@ -42,6 +44,11 @@ public class MessageIcon : MonoBehaviour
         return m_xSource;
     }
 
+    void Start()
+    {
+        m_iCreationTurn = Manager.GetTurnNumber();
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -52,6 +59,11 @@ public class MessageIcon : MonoBehaviour
             {
                 Destroy(gameObject);
                 OnTargetReached();
+            }
+            if (Manager.GetTurnNumber() > m_iCreationTurn + iMAX_TURNS_LIFETIME)
+            {
+                Destroy(this);
+                Debug.LogError("Did not reach target");
             }
         }
     }
