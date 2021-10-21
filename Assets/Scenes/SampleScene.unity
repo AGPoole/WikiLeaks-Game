@@ -8539,6 +8539,12 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 1906b0c5b530d1448876bdc82ca8d16f, type: 3}
   - {fileID: 21300000, guid: 39da3867188dd554ab982e367be3ea9f, type: 3}
   - {fileID: 21300000, guid: db9d2a37620a86c4f9a41bf22c5d76da, type: 3}
+  m_xGovernmentSprites:
+  - {fileID: 21300000, guid: 35aa3d1572948fe449fa23fb74327648, type: 3}
+  - {fileID: 21300000, guid: 233a2155bd1757948a679d8babc400d7, type: 3}
+  - {fileID: 21300000, guid: d9657e299b299d14b80ad0885051ff2f, type: 3}
+  - {fileID: 21300000, guid: 8f9747b56fcf1714ea38b549c77841a3, type: 3}
+  - {fileID: 21300000, guid: 936d8dbace3e94f42ae7373f3f978c36, type: 3}
   m_xImagePrefab: {fileID: 3172937024864219626, guid: 3d72bbe912b68b84b8588458a0652e53, type: 3}
   m_iNumGameObjectsDELETE_THIS: 0
   dragSpeed: 2

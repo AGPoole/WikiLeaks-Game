@@ -22,7 +22,8 @@ public class SystemImageContainer : MonoBehaviour
 
     public void UpdateSpriteAndColour(int iLevel)
     {
-        m_xImage.sprite = Manager.GetManager().GetSpriteAtLevel(iLevel);
+        bool bIsGovernment = m_xSystem.GetOwner().GetType() == typeof(Government);
+        m_xImage.sprite = Manager.GetManager().GetSpriteAtLevel(iLevel, bIsGovernment);
         Color c = m_xImage.color;
         c.a = iLevel == 0 ? 0.4f : 1f;
         m_xImage.color = c;

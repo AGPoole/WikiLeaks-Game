@@ -77,6 +77,8 @@ public class Manager : MonoBehaviour
     // TODO: make different for different buildings
     [SerializeField]
     List<Sprite> m_xSprites;
+    [SerializeField]
+    List<Sprite> m_xGovernmentSprites;
 
     [SerializeField]
     GameObject m_xImagePrefab;
@@ -502,15 +504,29 @@ public class Manager : MonoBehaviour
     }
 #endif
 
-    public Sprite GetSpriteAtLevel(int iLevel) 
+    public Sprite GetSpriteAtLevel(int iLevel, bool bIsGovernment) 
     {
-        if (iLevel < m_xSprites.Count)
+        if (bIsGovernment) 
         {
-            return m_xSprites[iLevel];
+            if (iLevel < m_xGovernmentSprites.Count)
+            {
+                return m_xGovernmentSprites[iLevel];
+            }
+            else
+            {
+                return m_xGovernmentSprites[m_xGovernmentSprites.Count - 1];
+            }
         }
         else
         {
-            return m_xSprites[m_xSprites.Count - 1];
+            if (iLevel < m_xSprites.Count)
+            {
+                return m_xSprites[iLevel];
+            }
+            else
+            {
+                return m_xSprites[m_xSprites.Count - 1];
+            }
         }
     }
 
