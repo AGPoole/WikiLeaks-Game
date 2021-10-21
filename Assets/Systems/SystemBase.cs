@@ -33,7 +33,7 @@ public abstract class SystemBase : MonoBehaviour, IPointerEnterHandler, IPointer
 
     const float fUI_OffsetY = -2.5f;
 
-    GameObject m_xImageContainer;
+    SystemImageContainer m_xImageContainer;
 
     void Start()
     {
@@ -99,14 +99,10 @@ public abstract class SystemBase : MonoBehaviour, IPointerEnterHandler, IPointer
 
         if (m_xImageContainer != null)
         {
-            Destroy(m_xImageContainer);
+            Destroy(m_xImageContainer.gameObject);
         }
-        m_xImageContainer = Manager.GetManager().CreateImagePrefab(transform);
-        SpriteRenderer xSpriteRenderer = m_xImageContainer.GetComponent<SpriteRenderer>();
-        xSpriteRenderer.sprite = Manager.GetManager().GetSpriteAtLevel(m_iLevel);
-        Color c = xSpriteRenderer.color;
-        c.a = m_iLevel == 0 ? 0.4f : 1f;
-        xSpriteRenderer.color = c;
+        m_xImageContainer = Manager.GetManager().CreateImagePrefab(this);
+        m_xImageContainer.UpdateSpriteAndColour( m_iLevel );
         m_xUI.gameObject.SetActive(m_iLevel != 0);
     }
 
@@ -195,11 +191,7 @@ public abstract class SystemBase : MonoBehaviour, IPointerEnterHandler, IPointer
 
         if (m_xImageContainer != null)
         {
-            SpriteRenderer xSpriteRenderer = m_xImageContainer.GetComponent<SpriteRenderer>();
-            xSpriteRenderer.sprite = Manager.GetManager().GetSpriteAtLevel(m_iLevel);
-            Color c = xSpriteRenderer.color;
-            c.a = m_iLevel == 0 ? 0.4f : 1f;
-            xSpriteRenderer.color = c;
+            m_xImageContainer.UpdateSpriteAndColour(m_iLevel);
             m_xUI.gameObject.SetActive(m_iLevel != 0);
         }
 
@@ -527,6 +519,11 @@ public abstract class SystemBase : MonoBehaviour, IPointerEnterHandler, IPointer
                 xOrgs.Add(xSys.m_xOwner);
             }
         }
+    }
+
+    public SystemUI GetUI()
+    {
+        return m_xUI;
     }
 }
 

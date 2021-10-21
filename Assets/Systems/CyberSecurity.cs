@@ -12,7 +12,8 @@ public class CyberSecurity : SystemBase, IDisablable
     float m_fEdgeRecalculateTimer = 0f;
     protected override void Update()
     {
-        const float fEDGE_CALCULATION_TIME_GAP = 0.5f;
+        // TODO: change to number of turns
+        const float fEDGE_CALCULATION_TIME_GAP = 2f;
         if (!Manager.GetIsPaused() && !m_bDisabledByPlayer && !IsForceDisabled())
         {
             m_fEdgeRecalculateTimer += Time.deltaTime;
@@ -27,7 +28,9 @@ public class CyberSecurity : SystemBase, IDisablable
 
     void CalculateEdges()
     {
-        foreach(Edge xEdge in Edge.GetAllEdges())
+        // TODO: only iterate over nearby edges
+        ref readonly List<Edge> xEdges = ref Edge.GetAllEdges();
+        foreach (Edge xEdge in xEdges)
         {
             if((xEdge.GetPosition()-transform.position).magnitude < CyberSecurityValuesContainer.GetCyberSecurityValues().GetMaxLength())
             {
