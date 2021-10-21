@@ -77,9 +77,9 @@ public class Edge : MonoBehaviour
         SetMainDefenceIconValues();
     }
 
-    public static List<Edge> GetAllEdges()
+    public static ref readonly List<Edge> GetAllEdges()
     {
-        return s_xAllEdges;
+        return ref s_xAllEdges;
     }
 
     // TODO: remove this function

@@ -81,6 +81,10 @@ public class Manager : MonoBehaviour
     [SerializeField]
     GameObject m_xImagePrefab;
 
+    // TODO: delete this
+    [SerializeField]
+    int m_iNumGameObjectsDELETE_THIS = 0;
+
     public enum GridDirection : int
     {
         UP,
@@ -135,6 +139,7 @@ public class Manager : MonoBehaviour
         }
         if (!s_bIsPaused && fNextTime < Time.time)
         {
+            m_iNumGameObjectsDELETE_THIS = GameObject.FindObjectsOfType(typeof(MonoBehaviour)).Length;
             fNextTime = Time.time + m_fTimeGap;
             m_xCountry.OnNextTurn();
             NotificationSystem.OnNextTurn();
@@ -509,9 +514,18 @@ public class Manager : MonoBehaviour
         }
     }
 
-    public GameObject CreateImagePrefab(Transform xParent)
+    public SystemImageContainer CreateImagePrefab(SystemBase xOwner)
     {
-        return Instantiate(m_xImagePrefab, xParent);
+        GameObject xImageInstance = Instantiate(m_xImagePrefab, xOwner.transform);
+        SystemImageContainer xImageContainer = xImageInstance.GetComponent<SystemImageContainer>();
+        if (xImageContainer == null)
+        {
+            UnityEngine.Debug.LogError("No Image Container on instance");
+            return xImageContainer;
+        }
+
+        xImageContainer.SetSystem(xOwner);
+        return xImageContainer;
     }
 }
 
