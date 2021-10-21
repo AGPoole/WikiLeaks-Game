@@ -25,13 +25,16 @@ public class TechCompany : OrganisationBase
         var xTechCompanyData = (TechCompanyData)m_xMyData;
 
         int iSize = xTechCompanyData.GetSize();
-        if (iSize > m_iPreviousSize)
+        if (Manager.GetManager().AreLevelChangeNotificationsEnabled())
         {
-            NotificationSystem.AddNotification(string.Format("Tech company has grown to level {0}", iSize.ToString()));
-        }
-        else if(iSize < m_iPreviousSize)
-        {
-            NotificationSystem.AddNotification(string.Format("Tech company has shrunk to level {0}", iSize.ToString()));
+            if (iSize > m_iPreviousSize)
+            {
+                NotificationSystem.AddNotification(string.Format("Tech company has grown to level {0}", iSize.ToString()));
+            }
+            else if (iSize < m_iPreviousSize)
+            {
+                NotificationSystem.AddNotification(string.Format("Tech company has shrunk to level {0}", iSize.ToString()));
+            }
         }
         m_iPreviousSize = iSize;
         ((TechCompanyData)m_xMyData).UpdateShare();

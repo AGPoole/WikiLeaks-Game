@@ -12,7 +12,7 @@ public enum Orientation
 
 public class Government : OrganisationBase
 {
-
+    //TODO: prevent government from reaching size 0
     [SerializeField]
     float m_fTechLevel = 1;
 

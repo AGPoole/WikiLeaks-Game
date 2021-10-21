@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
 public class Notification : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
@@ -17,6 +18,8 @@ public class Notification : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     string m_xMyText;
     int m_iCreationTurn;
     string m_xDescription = "";
+
+    UnityAction m_xAction;
 
     void Awake()
     {
@@ -66,5 +69,15 @@ public class Notification : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     public void OnPointerExit(PointerEventData eventData)
     {
         m_xDescriptionPanel.SetActive(false);
+    }
+
+    public void SetOnClick(UnityAction xAction)
+    {
+        m_xAction = xAction;
+    }
+
+    public void OnClick()
+    {
+        m_xAction?.Invoke();
     }
 }

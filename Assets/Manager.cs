@@ -87,6 +87,11 @@ public class Manager : MonoBehaviour
     [SerializeField]
     int m_iNumGameObjectsDELETE_THIS = 0;
 
+    // TODO: move to general settings file
+    [SerializeField]
+    bool m_bLevelUpdateNotificationsEnabled = false;
+    // TODO: implement this feature
+    bool m_bSystemAquisitionNotificationsEnabled = false;
     public enum GridDirection : int
     {
         UP,
@@ -147,6 +152,7 @@ public class Manager : MonoBehaviour
             NotificationSystem.OnNextTurn();
             SystemBase.SetUpEdges();
             DefenceIcon.OnNextTurnAll();
+            MissionSystem.GetMissionSystem().OnNextTurn();
             if (m_bTechIncreaseEnabled)
             {
                 m_iTechLevelUpPoints += 1;
@@ -543,6 +549,8 @@ public class Manager : MonoBehaviour
         xImageContainer.SetSystem(xOwner);
         return xImageContainer;
     }
+
+    public bool AreLevelChangeNotificationsEnabled() { return m_bLevelUpdateNotificationsEnabled; }
 }
 
 [System.Serializable]

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class NotificationSystem : MonoBehaviour
 {
@@ -30,13 +31,15 @@ public class NotificationSystem : MonoBehaviour
         return s_xNotificationSystem;
     }
 
-    public static void AddNotification(string xString, string xDescription="")
+    public static void AddNotification(string xString, string xDescription="", UnityAction xAction = null)
     {
-        GameObject xNewNotification = Instantiate(s_xNotificationSystem.m_xNotificationPrefab, s_xNotificationSystem.m_xScrollArea.transform);
-        s_xNotificationSystem.m_xNotifications.Add(xNewNotification);
-        xNewNotification.GetComponent<Notification>().SetText(xString);
-        xNewNotification.GetComponent<Notification>().SetDescription(xDescription);
-        xNewNotification.name = xString;
+        GameObject xNewNotificationGameObject = Instantiate(s_xNotificationSystem.m_xNotificationPrefab, s_xNotificationSystem.m_xScrollArea.transform);
+        s_xNotificationSystem.m_xNotifications.Add(xNewNotificationGameObject);
+        Notification xNewNotification = xNewNotificationGameObject.GetComponent<Notification>();
+        xNewNotification.SetText(xString);
+        xNewNotification.SetDescription(xDescription);
+        xNewNotification.SetOnClick(xAction);
+        xNewNotificationGameObject.name = xString;
     }
 
     public static void OnNextTurn()
