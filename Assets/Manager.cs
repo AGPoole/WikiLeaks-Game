@@ -205,7 +205,12 @@ public class Manager : MonoBehaviour
 
     public static void TogglePaused()
     {
-        s_bIsPaused = !s_bIsPaused;
+        SetPaused(!s_bIsPaused);
+    }
+
+    public static void SetPaused(bool bPaused)
+    {
+        s_bIsPaused = bPaused;
     }
     public static bool GetIsPaused()
     {
