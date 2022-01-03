@@ -500,7 +500,7 @@ public class Manager : MonoBehaviour
         return m_xSystemUIPrefab;
     }
 
-#if (UNITY_EDITOR)
+    #if (UNITY_EDITOR)
     [ContextMenu("Correct Positions")]
     void CorrectPositions()
     {
@@ -513,7 +513,7 @@ public class Manager : MonoBehaviour
             xSys.CorrectPosition();
         }
     }
-#endif
+    #endif
 
     public Sprite GetSpriteAtLevel(int iLevel, bool bIsGovernment) 
     {

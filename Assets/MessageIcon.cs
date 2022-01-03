@@ -63,7 +63,7 @@ public class MessageIcon : MonoBehaviour
             if (Manager.GetTurnNumber() > m_iCreationTurn + iMAX_TURNS_LIFETIME)
             {
                 Destroy(this);
-                Debug.LogError("Did not reach target");
+                Debug.LogError("Did not reach target"); 
             }
         }
     }

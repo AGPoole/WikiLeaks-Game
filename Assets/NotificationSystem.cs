@@ -31,15 +31,17 @@ public class NotificationSystem : MonoBehaviour
         return s_xNotificationSystem;
     }
 
-    public static void AddNotification(string xString, string xDescription="", UnityAction xAction = null)
+    public static Notification AddNotification(string xString, string xDescription="", UnityAction xOnClick = null, UnityAction xOnDestroy = null)
     {
         GameObject xNewNotificationGameObject = Instantiate(s_xNotificationSystem.m_xNotificationPrefab, s_xNotificationSystem.m_xScrollArea.transform);
         s_xNotificationSystem.m_xNotifications.Add(xNewNotificationGameObject);
         Notification xNewNotification = xNewNotificationGameObject.GetComponent<Notification>();
         xNewNotification.SetText(xString);
         xNewNotification.SetDescription(xDescription);
-        xNewNotification.SetOnClick(xAction);
+        xNewNotification.SetOnClick(xOnClick);
+        xNewNotification.SetOnDestroy(xOnDestroy);
         xNewNotificationGameObject.name = xString;
+        return xNewNotification;
     }
 
     public static void OnNextTurn()
@@ -50,13 +52,27 @@ public class NotificationSystem : MonoBehaviour
         }
         while (s_xNotificationSystem.m_xNotifications.Count >= s_xNotificationSystem.m_iMaxNotifications)
         {
-            GameObject xLast = s_xNotificationSystem.m_xNotifications[0];
-            Destroy(xLast);
-            s_xNotificationSystem.m_xNotifications.RemoveAt(0);
+            DestroyNotificationAtIndex(0);
         }
         foreach (GameObject xNot in s_xNotificationSystem.m_xNotifications)
         {
             xNot.GetComponent<Notification>().OnNextTurn();
         }
+    }
+
+    public static void DestroyNotification(GameObject xNotification)
+    {
+        int iIndex = s_xNotificationSystem.m_xNotifications.IndexOf(xNotification);
+        if(iIndex != -1)
+        {
+            DestroyNotificationAtIndex(iIndex);
+        }
+    }
+
+    static void DestroyNotificationAtIndex(int iIndex)
+    {
+        GameObject xGameObject = s_xNotificationSystem.m_xNotifications[iIndex];
+        Destroy(xGameObject);
+        s_xNotificationSystem.m_xNotifications.RemoveAt(iIndex);
     }
 }

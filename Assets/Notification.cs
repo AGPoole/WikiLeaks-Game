@@ -19,7 +19,8 @@ public class Notification : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     int m_iCreationTurn;
     string m_xDescription = "";
 
-    UnityAction m_xAction;
+    UnityAction m_xClickAction;
+    UnityAction m_xDestroyAction;
 
     void Awake()
     {
@@ -73,11 +74,21 @@ public class Notification : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
 
     public void SetOnClick(UnityAction xAction)
     {
-        m_xAction = xAction;
+        m_xClickAction = xAction;
     }
 
     public void OnClick()
     {
-        m_xAction?.Invoke();
+        m_xClickAction?.Invoke();
+    }
+
+    public void SetOnDestroy(UnityAction xAction) { m_xDestroyAction = xAction; }
+
+    public void OnDestroy()
+    {
+        if (m_xDestroyAction != null)
+        {
+            m_xDestroyAction.Invoke();
+        }
     }
 }

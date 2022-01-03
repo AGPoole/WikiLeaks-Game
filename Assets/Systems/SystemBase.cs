@@ -416,7 +416,7 @@ public abstract class SystemBase : MonoBehaviour, IPointerEnterHandler, IPointer
 
     public static List<SystemBase> GetAllSystems()
     {
-        // a little inefficient but prevents errors from modifying actual lists
+        // a little inefficient but prevents errors from modifying the actual s_xAllSystems list
         // TODO: look into best C# practices for this-in C++ you'd just use a const list
         return new List<SystemBase>(s_xAllSystems);
     }
