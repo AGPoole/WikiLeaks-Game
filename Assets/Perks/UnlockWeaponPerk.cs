@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class UnlockWeaponPerk : PerkBase
 {
@@ -29,7 +27,7 @@ public class UnlockWeaponPerk : PerkBase
             {
                 Debug.LogError("Non-permanent weapons should not cost money");
             }
-            if (Manager.GetManager().GetMoney() > m_iCost && m_xWeaponInstance==null)
+            if (Manager.GetManager().GetMoney() > m_iCost && m_xWeaponInstance == null)
             {
                 m_xWeaponInstance = WeaponManager.GetWeaponManager().AddWeapon(m_xWeaponPrefab, m_xSystemOwner);
                 Manager.GetManager().ChangeMoney(-m_iCost);

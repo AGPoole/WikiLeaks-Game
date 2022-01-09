@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class ChangePoliticsSettingsButton : MonoBehaviour
 {
@@ -27,28 +25,28 @@ public class ChangePoliticsSettingsButton : MonoBehaviour
         switch (m_iCurrentSetting)
         {
             case 0:
-            {
-                m_xSearchBarContainer.SetActive(false);
-                m_xCandidatesContainer.SetActive(false);
-                break;
-            }
+                {
+                    m_xSearchBarContainer.SetActive(false);
+                    m_xCandidatesContainer.SetActive(false);
+                    break;
+                }
             case 1:
-            {
-                m_xSearchBarContainer.SetActive(true);
-                m_xCandidatesContainer.SetActive(false);
-                break;
-            }
+                {
+                    m_xSearchBarContainer.SetActive(true);
+                    m_xCandidatesContainer.SetActive(false);
+                    break;
+                }
             case 2:
-            {
-                m_xSearchBarContainer.SetActive(true);
-                m_xCandidatesContainer.SetActive(true);
-                break;
-            }
+                {
+                    m_xSearchBarContainer.SetActive(true);
+                    m_xCandidatesContainer.SetActive(true);
+                    break;
+                }
             default:
-            {
-                Debug.LogError("Invalid setting for politics display controller");
-                break;
-            }
+                {
+                    Debug.LogError("Invalid setting for politics display controller");
+                    break;
+                }
         }
     }
 }

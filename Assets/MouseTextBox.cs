@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class MouseTextBox : MonoBehaviour
@@ -14,7 +13,7 @@ public class MouseTextBox : MonoBehaviour
 
     void Start()
     {
-        if (s_xMouseTextInstance!=null)
+        if (s_xMouseTextInstance != null)
         {
             Debug.LogError("2 mouse text boxes-this should not happen");
         }

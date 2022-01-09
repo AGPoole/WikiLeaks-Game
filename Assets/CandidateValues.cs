@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public enum Gender
 {
@@ -74,7 +72,7 @@ public class CandidateValues : MonoBehaviour
             xName.m_cMiddleInitial = (char)Random.Range((int)65, (int)89);
         }
 
-        if(Random.Range(0f, 1f) < s_xStaticInstance.m_fSuffixProb)
+        if (Random.Range(0f, 1f) < s_xStaticInstance.m_fSuffixProb)
         {
             xName.m_eSuffix = Random.Range(0f, 1f) < 0.5f ? Name.NameSuffix.Jr : Name.NameSuffix.Sr;
         }
@@ -95,7 +93,7 @@ public class CandidateValues : MonoBehaviour
     {
         return GetCandidateValues().m_fScandalEffect;
     }
-    
+
     public static int GetScandalLength()
     {
         return GetCandidateValues().m_iScandalLength;
@@ -105,7 +103,7 @@ public class CandidateValues : MonoBehaviour
     {
         return GetCandidateValues().m_fCandidateChangeBoundary;
     }
-    
+
     public static float GetTaxDifference()
     {
         return GetCandidateValues().m_fCandidateTaxDifference;

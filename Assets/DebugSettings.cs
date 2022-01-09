@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class DebugSettings : MonoBehaviour
 {
@@ -20,7 +18,7 @@ public class DebugSettings : MonoBehaviour
     {
         return s_xDebugSettings.m_bLogTurnEnd;
     }
-    
+
     public static bool ShouldDetectFakeChanges()
     {
         return s_xDebugSettings.m_bDetectFakeChanges;

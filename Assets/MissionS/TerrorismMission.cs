@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class TerrorismMission : MissionBase
 {
@@ -15,7 +13,7 @@ public class TerrorismMission : MissionBase
 
     protected override MissionState CalculateNextState()
     {
-        var xSystems = SystemBase.GetAllSystems().FindAll((SystemBase xSys) => { return xSys.IsHacked() && xSys.GetType()==typeof(MiltaryBase); });
+        var xSystems = SystemBase.GetAllSystems().FindAll((SystemBase xSys) => { return xSys.IsHacked() && xSys.GetType() == typeof(MiltaryBase); });
         if (xSystems.Count != 0)
         {
             return MissionState.SUCCEEDED;

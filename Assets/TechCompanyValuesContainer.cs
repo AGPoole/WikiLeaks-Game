@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Reflection;
+﻿using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
@@ -19,7 +17,7 @@ public class TechCompanyValuesContainer : MonoBehaviour
         return s_xInstance.m_xTechCompanyValues;
     }
 
-    #if (UNITY_EDITOR)
+#if (UNITY_EDITOR)
     [ContextMenu("Run Calculations")]
     void RunCalculations()
     {
@@ -72,7 +70,7 @@ public class TechCompanyValuesContainer : MonoBehaviour
             Debug.LogError("Incorrect ordering of scores");
         }
     }
-    #endif
+#endif
 }
 
 [System.Serializable]

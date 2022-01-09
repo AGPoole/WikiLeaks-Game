@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class DecreaseMarketSharePerk : PerkBase
+﻿public class DecreaseMarketSharePerk : PerkBase
 {
     public override void OnClick()
     {

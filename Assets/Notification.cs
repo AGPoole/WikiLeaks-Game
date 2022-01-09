@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
@@ -34,13 +32,16 @@ public class Notification : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
         if (iTime == 0)
         {
             xAgeText = "Just now";
-        } else if(iTime < 7)
+        }
+        else if (iTime < 7)
         {
-            xAgeText = string.Format("{0} day{1} ago", iTime, iTime==1?"":"s");
-        } else if(iTime < 30)
+            xAgeText = string.Format("{0} day{1} ago", iTime, iTime == 1 ? "" : "s");
+        }
+        else if (iTime < 30)
         {
-            xAgeText = string.Format("{0} week{1} ago", iTime/7, iTime/7 == 1 ? "" : "s");
-        } else
+            xAgeText = string.Format("{0} week{1} ago", iTime / 7, iTime / 7 == 1 ? "" : "s");
+        }
+        else
         {
             xAgeText = string.Format("{0} month{1} ago", iTime / 30, iTime / 30 == 1 ? "" : "s");
         }
@@ -52,7 +53,7 @@ public class Notification : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
         m_xMyText = xText;
         m_xNotificationText.text = m_xMyText;
     }
-    
+
     public void SetDescription(string xText)
     {
         m_xDescription = xText;

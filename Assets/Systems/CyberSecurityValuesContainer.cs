@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class CyberSecurityValuesContainer : MonoBehaviour
 {
@@ -50,7 +48,7 @@ public class CyberSecurityValues : SystemValuesBase
         float fStandard = iLevel < m_afDefenceForSystemLevels.Length ?
             m_afDefenceForSystemLevels[iLevel] :
             m_afDefenceForSystemLevels[m_afDefenceForSystemLevels.Length - 1];
-        return (int)(fDistanceMultiplier*fTechMultiplier*fStandard);
+        return (int)(fDistanceMultiplier * fTechMultiplier * fStandard);
     }
 
     public float GetMaxLength()
@@ -62,7 +60,7 @@ public class CyberSecurityValues : SystemValuesBase
     {
         return m_fAdditionalDefenceDegradationTime;
     }
-    
+
     public float GetDefenceRechargeTime()
     {
         return m_fDefenceRechargeTime;

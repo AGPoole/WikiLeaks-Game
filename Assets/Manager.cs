@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Timers;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 // TODO: split this class up
@@ -346,7 +343,8 @@ public class Manager : MonoBehaviour
         if (m_iAlert > m_iMaxAlert)
         {
             m_iAlert = m_iMaxAlert;
-        }else if (m_iAlert < 0)
+        }
+        else if (m_iAlert < 0)
         {
             m_iAlert = 0;
         }
@@ -500,7 +498,7 @@ public class Manager : MonoBehaviour
         return m_xSystemUIPrefab;
     }
 
-    #if (UNITY_EDITOR)
+#if (UNITY_EDITOR)
     [ContextMenu("Correct Positions")]
     void CorrectPositions()
     {
@@ -513,11 +511,11 @@ public class Manager : MonoBehaviour
             xSys.CorrectPosition();
         }
     }
-    #endif
+#endif
 
-    public Sprite GetSpriteAtLevel(int iLevel, bool bIsGovernment) 
+    public Sprite GetSpriteAtLevel(int iLevel, bool bIsGovernment)
     {
-        if (bIsGovernment) 
+        if (bIsGovernment)
         {
             if (iLevel < m_xGovernmentSprites.Count)
             {

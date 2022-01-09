@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class WeaponDamageIncreasePerk : PerkBase
 {
@@ -19,8 +17,8 @@ public class WeaponDamageIncreasePerk : PerkBase
         WeaponManager.GetWeaponManager().RemoveDamageModifier(this);
     }
 
-    public virtual float GetModifiedValue (float fValue)
+    public virtual float GetModifiedValue(float fValue)
     {
-        return fValue+m_iDamageIncrease;
+        return fValue + m_iDamageIncrease;
     }
 }

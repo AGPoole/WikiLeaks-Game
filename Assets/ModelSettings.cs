@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class ModelSettings : MonoBehaviour
 {
@@ -11,7 +9,7 @@ public class ModelSettings : MonoBehaviour
     [SerializeField]
     bool m_bDisastersEnabled = true;
     [SerializeField]
-    bool m_bElectionsEnabled= true;
+    bool m_bElectionsEnabled = true;
 
     void Awake()
     {

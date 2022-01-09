@@ -49,7 +49,7 @@ public class MissionSystem : MonoBehaviour
         {
             m_iLastMissionTurn = Manager.GetTurnNumber();
             List<GameObject> xValidMissions = m_xMissionPrefabs;
-            for(int i = xValidMissions.Count-1; i>=0; i--)
+            for (int i = xValidMissions.Count - 1; i >= 0; i--)
             {
                 if (!m_xMissionPrefabs[i].GetComponent<MissionBase>().IsUnlocked())
                 {
@@ -70,7 +70,7 @@ public class MissionSystem : MonoBehaviour
             }
         }
         // iterate backwards so we can safely delete entries
-        for (int i = m_xActiveMissions.Count-1; i >= 0; i--)
+        for (int i = m_xActiveMissions.Count - 1; i >= 0; i--)
         {
             m_xActiveMissions[i].OnNextTurn();
             if (m_xActiveMissions[i].IsFinished())
@@ -95,7 +95,7 @@ public class MissionSystem : MonoBehaviour
 
     void DestroyAction(MissionBase xMission)
     {
-        if (xMission!=null && !xMission.HasStarted())
+        if (xMission != null && !xMission.HasStarted())
         {
             Destroy(xMission.gameObject);
         }
@@ -163,13 +163,13 @@ public abstract class MissionBase : MonoBehaviour
     public bool AllowRepeats() { return m_bAllowRepeats; }
     public bool AllowMultiple() { return m_bAllowMultiple; }
 
-    public bool NotificationExists() 
+    public bool NotificationExists()
     {
         if (!IsPrefab())
         {
             Debug.LogError("You should only use NotificationExists functions on prefabs");
         }
-        return m_bNotificationExists; 
+        return m_bNotificationExists;
     }
 
     public void SetNotificationExists(bool bExists)
@@ -191,17 +191,18 @@ public abstract class MissionBase : MonoBehaviour
 
     public void OnNextTurn()
     {
-        if (m_eState == MissionState.ACTIVE) {
+        if (m_eState == MissionState.ACTIVE)
+        {
             m_eState = CalculateNextState();
             if (m_eState == MissionState.SUCCEEDED)
             {
                 OnSuccess();
             }
-            else if(m_eState == MissionState.FAILED)
+            else if (m_eState == MissionState.FAILED)
             {
                 OnFailure();
             }
-           
+
         }
     }
 

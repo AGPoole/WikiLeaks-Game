@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -30,15 +29,16 @@ public abstract class OrganisationBase : MonoBehaviour
     int m_iCapacity = 6;
 
     // TODO: move to another place and make accessible in editor
-    int m_iNewBuildingCost=1;
+    int m_iNewBuildingCost = 1;
 
-    public OrganisationData GetData() {
+    public OrganisationData GetData()
+    {
         if (m_xMyData == null)
         {
             SetData();
         }
-            
-        return m_xMyData; 
+
+        return m_xMyData;
     }
     protected abstract void SetData();
 
@@ -64,9 +64,9 @@ public abstract class OrganisationBase : MonoBehaviour
         CorrectPosition();
     }
 
-    #if (UNITY_EDITOR)
+#if (UNITY_EDITOR)
     [ContextMenu("Correct Position")]
-    #endif
+#endif
     public void CorrectPosition()
     {
         transform.position = Manager.GetManager().GetPositionFromGridCoords(m_iXPosInGrid, m_iYPosInGrid);
@@ -130,7 +130,7 @@ public abstract class OrganisationBase : MonoBehaviour
                 {
                     // start at a random position and cycle, to avoid prefering a direction
                     int i = UnityEngine.Random.Range(0, xAdjacents.Count);
-                    for(int j = 0; j < xAdjacents.Count; j++)
+                    for (int j = 0; j < xAdjacents.Count; j++)
                     {
                         OrganisationBase xOtherOrg = xAdjacents[(i + j) % xAdjacents.Count];
                         if (xOtherOrg.CanAffordSystem(xSys))
@@ -157,7 +157,7 @@ public abstract class OrganisationBase : MonoBehaviour
             foreach (SystemBase xSys in m_xSystems)
             {
                 float fCost = xSys.GetLevelUpCost() - xSys.GetCurrentCost();
-                if (xSys.GetLevel()==0 && fTotal + fCost <= m_xMyData.GetSize() + 5)
+                if (xSys.GetLevel() == 0 && fTotal + fCost <= m_xMyData.GetSize() + 5)
                 {
                     xAffordableSystems.Add(xSys);
                 }
@@ -241,7 +241,7 @@ public abstract class OrganisationBase : MonoBehaviour
         // TODO: do this better
         while (xSystemPrefab == null)
         {
-            xSystemPrefab  = Manager.GetManager().GetRandomSystemPrefab();
+            xSystemPrefab = Manager.GetManager().GetRandomSystemPrefab();
             if (!xSystemPrefab.GetComponent<SystemBase>().CanBeOwnedByOrganisation(this))
             {
                 xSystemPrefab = null;
@@ -293,7 +293,8 @@ public abstract class OrganisationBase : MonoBehaviour
             xOutputs.Add((m_iXPosInGrid, m_iYPosInGrid));
         }
         var xDirections = Enum.GetValues(typeof(Manager.GridDirection)).Cast<Manager.GridDirection>();
-        foreach (SystemBase xSystem in m_xSystems) {
+        foreach (SystemBase xSystem in m_xSystems)
+        {
             foreach (var xDirection in xDirections)
             {
                 (int iX, int iY) = xSystem.GetGridPosition();
@@ -324,7 +325,7 @@ public abstract class OrganisationBase : MonoBehaviour
                     OrganisationBase xOrg = xSys.GetOwner();
                     if (xOrg is TechCompany)
                     {
-                        xComps.Add((TechCompany) xOrg);
+                        xComps.Add((TechCompany)xOrg);
                     }
                 }
             }

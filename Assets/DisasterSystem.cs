@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class DisasterSystem : MonoBehaviour
 {
@@ -29,14 +27,14 @@ public class DisasterSystem : MonoBehaviour
         s_xDisasterSystem = GetDisasterSystem();
 
         int iSum = 0;
-        
-        foreach(var xDisaster in s_xDisasterSystem.m_xDisasters)
+
+        foreach (var xDisaster in s_xDisasterSystem.m_xDisasters)
         {
             iSum += xDisaster.GetProbScore();
         }
-        foreach(var xDisaster in s_xDisasterSystem.m_xDisasters)
+        foreach (var xDisaster in s_xDisasterSystem.m_xDisasters)
         {
-            if(Random.Range(0f, 1f) < xDisaster.GetProbScore()* s_xDisasterSystem.m_fEventRate / iSum)
+            if (Random.Range(0f, 1f) < xDisaster.GetProbScore() * s_xDisasterSystem.m_fEventRate / iSum)
             {
                 xDisaster.Activate(xCountry);
             }

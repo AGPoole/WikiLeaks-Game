@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class AntiVirusSystem : SystemBase, IDisablable
 {
@@ -34,7 +32,7 @@ public class AntiVirusSystem : SystemBase, IDisablable
                 {
                     xSystemBases.RemoveAt(i);
                 }
-                else if ((m_xSystemTarget==null
+                else if ((m_xSystemTarget == null
                     || GetDistanceTo(xSystemBases[i]) < GetDistanceTo(m_xSystemTarget))
                     && GetDistanceTo(xSystemBases[i]) <= AntiVirusValuesContainer.GetAntiVirusValues().GetRange())
                 {
@@ -59,7 +57,7 @@ public class AntiVirusSystem : SystemBase, IDisablable
         base.Update();
         // TODO: suspend if paused
         m_fSystemTimer -= Time.deltaTime;
-        if (m_xSystemTarget!=null && m_fSystemTimer < 0)
+        if (m_xSystemTarget != null && m_fSystemTimer < 0)
         {
             GameObject xMessage = Instantiate(AntiVirusValuesContainer.GetAntiVirusValues().GetMessagePrefab(), transform);
 

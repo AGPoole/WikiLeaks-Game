@@ -1,11 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Propaganda : SystemBase
 {
     [SerializeField]
-    PropagandaValuesContainer.ObjectType m_eType; 
+    PropagandaValuesContainer.ObjectType m_eType;
 
     // TODO: remove this
     [SerializeField]
@@ -16,18 +14,18 @@ public class Propaganda : SystemBase
     [SerializeField]
     Government m_xGov;
 
-    int m_iCoolDownCompletionTime=1;
+    int m_iCoolDownCompletionTime = 1;
 
     public override void Init()
     {
         base.Init();
-        m_xGov = GetOwner().GetCountry().GetGovernment(); 
+        m_xGov = GetOwner().GetCountry().GetGovernment();
     }
 
     protected override void OnDeactivation()
     {
         m_bActive = false;
-        if(m_xActiveIndicator!=null)
+        if (m_xActiveIndicator != null)
             m_xActiveIndicator.SetActive(false);
         base.OnDeactivation();
     }
@@ -48,10 +46,10 @@ public class Propaganda : SystemBase
     protected override void Update()
     {
         base.Update();
-        if (m_bActive && m_iLevel>0)
+        if (m_bActive && m_iLevel > 0)
         {
             m_fActiveIndicatorNextSwitchTime -= Time.deltaTime;
-            if(m_fActiveIndicatorNextSwitchTime < 0f)
+            if (m_fActiveIndicatorNextSwitchTime < 0f)
             {
                 if (m_xActiveIndicator != null)
                     m_xActiveIndicator.SetActive(!m_xActiveIndicator.activeSelf);
@@ -67,7 +65,7 @@ public class Propaganda : SystemBase
         {
             return;
         }
-        if (!m_bActive && Manager.GetTurnNumber()>m_iCoolDownCompletionTime)
+        if (!m_bActive && Manager.GetTurnNumber() > m_iCoolDownCompletionTime)
         {
             if (m_xGov == null)
             {

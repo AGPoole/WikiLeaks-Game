@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class WeaponManager : MonoBehaviour
@@ -26,7 +25,7 @@ public class WeaponManager : MonoBehaviour
         m_xKeyValuePairs = new Dictionary<KeyCode, int>();
         for (int i = alphaStart; i <= alphaEnd; i++)
         {
-            m_xKeyValuePairs.Add((KeyCode)i, i-alphaStart);
+            m_xKeyValuePairs.Add((KeyCode)i, i - alphaStart);
         }
     }
 
@@ -36,7 +35,7 @@ public class WeaponManager : MonoBehaviour
         foreach (KeyValuePair<KeyCode, int> entry in m_xKeyValuePairs)
         {
             //Check if the keycode is pressed
-            if (Input.GetKeyDown(entry.Key) && m_xWeapons.Count>entry.Value && m_xWeapons[entry.Value]!=null)
+            if (Input.GetKeyDown(entry.Key) && m_xWeapons.Count > entry.Value && m_xWeapons[entry.Value] != null)
             {
                 SetSelectedWeapon(m_xWeapons[entry.Value]);
             }
@@ -62,7 +61,7 @@ public class WeaponManager : MonoBehaviour
         m_xSelected = xWeapon.GetComponent<IWeapon>();
     }
 
-    public GameObject AddWeapon(GameObject xWeapon, SystemBase xOwner=null)
+    public GameObject AddWeapon(GameObject xWeapon, SystemBase xOwner = null)
     {
         GameObject xNew = Instantiate(xWeapon, transform);
         m_xWeapons.Add(xNew);
@@ -84,7 +83,7 @@ public class WeaponManager : MonoBehaviour
     {
         m_xRechargeModifiers.Add(xPerk);
     }
-    
+
     public void RemoveRechargeModifier(WeaponRechargeIncreasePerk xPerk)
     {
         bool bContains = m_xRechargeModifiers.Remove(xPerk);
@@ -97,7 +96,7 @@ public class WeaponManager : MonoBehaviour
     {
         m_xDamageModifiers.Add(xPerk);
     }
-    
+
     public void RemoveDamageModifier(WeaponDamageIncreasePerk xPerk)
     {
         bool bContains = m_xDamageModifiers.Remove(xPerk);
@@ -111,7 +110,7 @@ public class WeaponManager : MonoBehaviour
     {
         // TODO: make sure recharge time isn't so fast that shields can't recover
         float fValue = iRechargeTime;
-        foreach(WeaponRechargeIncreasePerk xPerk in m_xRechargeModifiers)
+        foreach (WeaponRechargeIncreasePerk xPerk in m_xRechargeModifiers)
         {
             if (!xPerk.IsUnlocked())
             {
@@ -119,7 +118,7 @@ public class WeaponManager : MonoBehaviour
             }
             fValue = xPerk.GetModifiedValue(fValue);
         }
-        return (int) fValue;
+        return (int)fValue;
     }
 
     // TODO: find another way to do this that enforces damage being applied through this

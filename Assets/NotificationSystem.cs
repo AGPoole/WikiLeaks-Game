@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -11,10 +10,10 @@ public class NotificationSystem : MonoBehaviour
     GameObject m_xNotificationPrefab;
     [SerializeField]
     GameObject m_xScrollArea;
-    
+
     [SerializeField]
     [Range(1, 200)]
-    int m_iMaxNotifications=100;
+    int m_iMaxNotifications = 100;
 
     // TODO: switch to list of notifications rather than game objects
     List<GameObject> m_xNotifications;
@@ -31,7 +30,7 @@ public class NotificationSystem : MonoBehaviour
         return s_xNotificationSystem;
     }
 
-    public static Notification AddNotification(string xString, string xDescription="", UnityAction xOnClick = null, UnityAction xOnDestroy = null)
+    public static Notification AddNotification(string xString, string xDescription = "", UnityAction xOnClick = null, UnityAction xOnDestroy = null)
     {
         GameObject xNewNotificationGameObject = Instantiate(s_xNotificationSystem.m_xNotificationPrefab, s_xNotificationSystem.m_xScrollArea.transform);
         s_xNotificationSystem.m_xNotifications.Add(xNewNotificationGameObject);
@@ -63,7 +62,7 @@ public class NotificationSystem : MonoBehaviour
     public static void DestroyNotification(GameObject xNotification)
     {
         int iIndex = s_xNotificationSystem.m_xNotifications.IndexOf(xNotification);
-        if(iIndex != -1)
+        if (iIndex != -1)
         {
             DestroyNotificationAtIndex(iIndex);
         }

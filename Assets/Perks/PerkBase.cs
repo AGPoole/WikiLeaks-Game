@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public abstract class PerkBase : MonoBehaviour
 {
@@ -19,7 +17,7 @@ public abstract class PerkBase : MonoBehaviour
 
     protected virtual void Start()
     {
-        
+
     }
     public virtual void OnClick()
     { }
@@ -39,7 +37,7 @@ public abstract class PerkBase : MonoBehaviour
 
     }
 
-    public virtual void OnNextTurn() 
+    public virtual void OnNextTurn()
     { }
 
     public bool IsUnlocked()
@@ -62,7 +60,7 @@ public abstract class PerkBase : MonoBehaviour
         return m_xDescription;
     }
 
-    public  bool GetRequiresHack()
+    public bool GetRequiresHack()
     {
         return m_bRequiresHack;
     }

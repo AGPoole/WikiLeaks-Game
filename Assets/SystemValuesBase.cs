@@ -1,7 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class SystemValuesBase
 {
@@ -34,8 +32,8 @@ public class SystemValuesBase
     }
 
     //[SerializeField]
-    LevelRequirements[] m_xLevelRequirements = { 
-        new LevelRequirements(0.25f, 0, 0), 
+    LevelRequirements[] m_xLevelRequirements = {
+        new LevelRequirements(0.25f, 0, 0),
         new LevelRequirements(0.5f, 0, 0),
         new LevelRequirements(0.75f, 0, 0),
         new LevelRequirements(1f, 0, 0)
@@ -114,7 +112,7 @@ public class SystemValuesBase
     }
     public void SetUpUIPerks(SystemUI xUI)
     {
-        foreach(var xPerk in m_xMandatoryPerks)
+        foreach (var xPerk in m_xMandatoryPerks)
         {
             xUI.AddPerk(xPerk);
         }
@@ -122,7 +120,7 @@ public class SystemValuesBase
         // Reservoir sampling
         // TODO: do this in O(subset) rather than O(whole-list)
         int iNumToAdd = m_iNumOptional;
-        for(int iNumLeft=m_xOptionalPerks.Count; iNumLeft>0; iNumLeft--)
+        for (int iNumLeft = m_xOptionalPerks.Count; iNumLeft > 0; iNumLeft--)
         {
             if (Random.Range(0f, 1f) < (float)iNumToAdd / (float)iNumLeft)
             {
