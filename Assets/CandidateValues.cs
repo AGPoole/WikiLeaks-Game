@@ -38,7 +38,7 @@ public class CandidateValues : MonoBehaviour
 
     static CandidateValues GetCandidateValues()
     {
-        // WSTODO: in awake, count instances to ensure there is only one
+        // TODO: in awake, count instances to ensure there is only one
         if (s_xStaticInstance == null)
         {
             s_xStaticInstance = FindObjectOfType(typeof(CandidateValues)) as CandidateValues;

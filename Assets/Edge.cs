@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-// TODO: Rename this
 [RequireComponent(typeof(LineRenderer))]
 public class Edge : MonoBehaviour
 {

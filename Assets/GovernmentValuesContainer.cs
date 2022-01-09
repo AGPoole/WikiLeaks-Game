@@ -8,7 +8,7 @@ public class GovernmentValuesContainer : MonoBehaviour
 
     public static GovernmentValues GetGovernmentValues()
     {
-        // WSTODO: in awake, count instances to ensure there is only one
+        // TODO: in awake, count instances to ensure there is only one
         if (s_xInstance == null)
         {
             s_xInstance = FindObjectOfType(typeof(GovernmentValuesContainer)) as GovernmentValuesContainer;

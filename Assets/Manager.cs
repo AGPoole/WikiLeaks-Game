@@ -80,15 +80,9 @@ public class Manager : MonoBehaviour
     [SerializeField]
     GameObject m_xImagePrefab;
 
-    // TODO: delete this
-    [SerializeField]
-    int m_iNumGameObjectsDELETE_THIS = 0;
-
     // TODO: move to general settings file
     [SerializeField]
     bool m_bLevelUpdateNotificationsEnabled = false;
-    // TODO: implement this feature
-    bool m_bSystemAquisitionNotificationsEnabled = false;
     public enum GridDirection : int
     {
         UP,
@@ -118,8 +112,8 @@ public class Manager : MonoBehaviour
     int m_iTurnNumber = 0;
 
     [SerializeField]
-    private float dragSpeed = 1f;
-    private Vector3 dragOrigin = new Vector3(0f, 0f, 0f);
+    private float m_fDragSpeed = 1f;
+    private Vector3 m_fDragOrigin = new Vector3(0f, 0f, 0f);
 
     void Start()
     {
@@ -143,7 +137,6 @@ public class Manager : MonoBehaviour
         }
         if (!s_bIsPaused && fNextTime < Time.time)
         {
-            m_iNumGameObjectsDELETE_THIS = GameObject.FindObjectsOfType(typeof(MonoBehaviour)).Length;
             fNextTime = Time.time + m_fTimeGap;
             m_xCountry.OnNextTurn();
             NotificationSystem.OnNextTurn();
@@ -181,14 +174,14 @@ public class Manager : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            dragOrigin = Input.mousePosition;
+            m_fDragOrigin = Input.mousePosition;
             return;
         }
 
         if (!Input.GetMouseButton(0)) return;
 
-        Vector3 pos = Camera.main.ScreenToViewportPoint(Input.mousePosition - dragOrigin);
-        Vector3 move = new Vector3(pos.x * dragSpeed, pos.y * dragSpeed, 0);
+        Vector3 pos = Camera.main.ScreenToViewportPoint(Input.mousePosition - m_fDragOrigin);
+        Vector3 move = new Vector3(pos.x * m_fDragSpeed, pos.y * m_fDragSpeed, 0);
         Camera.main.gameObject.transform.Translate(move, Space.World);
 
         float fXMin = -10;

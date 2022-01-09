@@ -31,7 +31,6 @@ public class SystemValuesBase
         }
     }
 
-    //[SerializeField]
     LevelRequirements[] m_xLevelRequirements = {
         new LevelRequirements(0.25f, 0, 0),
         new LevelRequirements(0.5f, 0, 0),
