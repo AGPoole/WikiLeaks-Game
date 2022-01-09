@@ -35,6 +35,11 @@ public abstract class SystemBase : MonoBehaviour, IPointerEnterHandler, IPointer
 
     SystemImageContainer m_xImageContainer;
 
+    // TODO: delete these
+    static int s_iXTarget = 3;
+    static int s_iYTarget = 3;
+    public int iDistanceFromTarget = 0;
+
     void Start()
     {
         Init();
@@ -42,6 +47,7 @@ public abstract class SystemBase : MonoBehaviour, IPointerEnterHandler, IPointer
 
     public virtual void Init()
     {
+
         if (s_xAllSystems == null)
         {
             s_xAllSystems = new List<SystemBase>();
@@ -119,6 +125,10 @@ public abstract class SystemBase : MonoBehaviour, IPointerEnterHandler, IPointer
         m_iXPosInGrid = iX;
         m_iYPosInGrid = iY;
         CorrectPosition();
+
+        // TODO: delete this
+        iDistanceFromTarget = ProjectMaths.HexagonGridDistance(iX, iY, s_iXTarget, s_iYTarget);
+        Debug.Log(string.Format("{0} {1} {2}", iX, iY, iDistanceFromTarget));
     }
 
     protected virtual void Update()

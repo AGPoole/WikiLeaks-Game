@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class ProjectMaths
 {
+    // Mod, but also for negative values
     public static int Mod(int i1, int i2)
     {
         return (i1 % i2 + i2) % i2;
@@ -18,6 +19,67 @@ public class ProjectMaths
     public static int Max(int i1, int i2)
     {
         return i1 > i2 ? i1 : i2;
+    }
+
+    public static int HexagonGridDistance(int iX1, int iY1, int iX2, int iY2)
+    {
+        // start at bottom co-ordinate
+        if( iY1 > iY2 )
+        {
+            int iTempX = iX1;
+            iX1 = iX2;
+            iX2 = iTempX;
+
+            int iTempY = iY1;
+            iY1 = iY2;
+            iY2 = iTempY;
+        }
+        
+        if(iX1 == iX2)
+        {
+            return Math.Abs(iY1 - iY2);
+        }
+        if(iY1 == iY2)
+        {
+            return Math.Abs(iX1 - iX2);
+        }
+
+        bool bIs1Peak = Mod(iX1, 2) == 1;
+        bool bIs2Peak = Mod(iX2, 2) == 1;
+
+        // case 1: trough to trough or peak to peak
+        if(bIs1Peak == bIs2Peak)
+        {
+            int iXDifference = Math.Abs(iX1 - iX2);
+            int iYDifference = Math.Abs(iY1 - iY2);
+
+            if(iXDifference < 2*iYDifference)
+            {
+                // Move in across, up-across increments until below the target, then move up
+                return (iXDifference / 2) + iYDifference;
+            }
+            else
+            {
+                // Move in across, up-across increments, then just move right
+                return iXDifference;
+            }
+        }
+
+        // case 2: peak to trough
+        if(bIs1Peak && !bIs2Peak)
+        {
+            // To do this, we reduce to case 1 by moving diagonally down in the wrong direction.
+            // This takes to a trough to trough where we know the first move would be diagonally
+            // up. We can take away 1 from the result to then remove this
+
+            int iXMoveAway = iX1 < iX2 ? -1 : 1;
+            return HexagonGridDistance(iX1 + iXMoveAway, iY1 - 1, iX2, iY2) - 1;
+        }
+
+        // case 3: trough to peak
+        // the first move will be diagonally up. Then we have case 1
+        int iXMoveToward = iX1 < iX2 ? 1 : -1;
+        return HexagonGridDistance(iX1 + iXMoveToward, iY1 + 1, iX2, iY2) + 1;
     }
 
     // class to store a distribution with different probabilities for different things
