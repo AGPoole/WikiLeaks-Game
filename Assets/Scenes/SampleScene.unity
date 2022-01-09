@@ -10606,7 +10606,6 @@ MonoBehaviour:
   m_iXPosInGrid: 3
   m_iYPosInGrid: 0
   m_xHexagonLineRenderers: []
-  iDistanceFromTarget: 0
   m_eType: 1
   m_xActiveIndicator: {fileID: 0}
   m_bActive: 0

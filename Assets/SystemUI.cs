@@ -69,11 +69,6 @@ public class SystemUI : MonoBehaviour
         {
             xGameObject.GetComponent<PerkUI>().UpdateActive(GetParent().IsHacked());
         }
-
-        // TODO: delete this
-        m_xTitleText.text = string.Format("{0}", GetParent().iDistanceFromTarget);
-        (int, int) xPos = GetParent().GetGridPosition(); 
-        m_xLevelText.text = string.Format("{0} {1}", xPos.Item1, xPos.Item2);
     }
 
 
