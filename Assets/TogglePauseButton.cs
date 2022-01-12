@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class TogglePauseButton : MonoBehaviour
 {
@@ -21,6 +19,6 @@ public class TogglePauseButton : MonoBehaviour
     public void TogglePause()
     {
         Manager.TogglePaused();
-        GetComponent<UnityEngine.UI.Button>().image.sprite=Manager.GetIsPaused() ? m_xPlaySprite : m_xPauseSprite;
+        GetComponent<UnityEngine.UI.Button>().image.sprite = Manager.GetIsPaused() ? m_xPlaySprite : m_xPauseSprite;
     }
 }

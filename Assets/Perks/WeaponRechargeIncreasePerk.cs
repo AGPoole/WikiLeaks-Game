@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class WeaponRechargeIncreasePerk : PerkBase
 {
@@ -19,8 +17,8 @@ public class WeaponRechargeIncreasePerk : PerkBase
         WeaponManager.GetWeaponManager().RemoveRechargeModifier(this);
     }
 
-    public virtual float GetModifiedValue (float fValue)
+    public virtual float GetModifiedValue(float fValue)
     {
-        return m_fRechargeModifier*fValue;
+        return m_fRechargeModifier * fValue;
     }
 }

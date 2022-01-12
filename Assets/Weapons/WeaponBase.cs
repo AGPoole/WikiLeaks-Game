@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.EventSystems;
 
 public abstract class WeaponBase<TargetType> : MonoBehaviour, IWeapon, IPointerEnterHandler, IPointerExitHandler
@@ -35,7 +32,7 @@ public abstract class WeaponBase<TargetType> : MonoBehaviour, IWeapon, IPointerE
     protected virtual void Update()
     {
         // TODO: make continuous
-        m_xSlider.value = Mathf.Clamp01(1 -((Manager.GetTurnNumber() - m_iLastUseTime) / (float)WeaponManager.GetWeaponManager().GetModifiedRechargeTime(m_iRechargeTime)));
+        m_xSlider.value = Mathf.Clamp01(1 - ((Manager.GetTurnNumber() - m_iLastUseTime) / (float)WeaponManager.GetWeaponManager().GetModifiedRechargeTime(m_iRechargeTime)));
 
         if (WeaponManager.GetWeaponManager().GetSelectedWeapon() == this)
         {
@@ -110,14 +107,14 @@ public abstract class WeaponBase<TargetType> : MonoBehaviour, IWeapon, IPointerE
 
     public virtual string GetDescription()
     {
-        return string.Format("Recovery Time: {0}\n", m_iRechargeTime)+m_xDescription;
+        return string.Format("Recovery Time: {0}\n", m_iRechargeTime) + m_xDescription;
     }
 }
 
-public interface IWeapon 
+public interface IWeapon
 {
     void SetOwner(SystemBase xOwner);
-   SystemBase GetOwner();
+    SystemBase GetOwner();
     Sprite GetUnselectedIcon();
 
     bool IsDetectable();

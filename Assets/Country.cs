@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class Country : MonoBehaviour
@@ -19,21 +18,21 @@ public class Country : MonoBehaviour
     void Awake()
     {
         m_xCountryData = new CountryData(m_xPopulation.GetPopulationData(), (GovernmentData)m_xGovernment.GetData());
-        foreach(var xData in m_xTechCompanies)
+        foreach (var xData in m_xTechCompanies)
         {
             m_xCountryData.AddTechCompanyData((TechCompanyData)xData.GetData());
         }
         m_xPopulation.SetGovernment(m_xGovernment);
     }
 
-    // TODO make adjustable
+    // TODO: make adjustable
     const int g_iNUM_TECH_COMPANIES = 15;
     public void OnNextTurn()
     {
         m_xCountryData.OnNextTurn();
 
         bool bAllAtCapacity = true;
-        foreach(var xTechComp in m_xTechCompanies)
+        foreach (var xTechComp in m_xTechCompanies)
         {
             xTechComp.OnNextTurn();
             bAllAtCapacity &= xTechComp.AtCapacityOrBlocked();
@@ -44,15 +43,16 @@ public class Country : MonoBehaviour
 
         DisasterSystem.ActivateDisasters(this);
 
-        if (bAllAtCapacity && m_xTechCompanies.Count<g_iNUM_TECH_COMPANIES)
+        if (bAllAtCapacity && m_xTechCompanies.Count < g_iNUM_TECH_COMPANIES)
         {
             List<(int, int)> xPerimeterTiles = new List<(int, int)>();
-            foreach(TechCompany xTechComp in m_xTechCompanies)
+            foreach (TechCompany xTechComp in m_xTechCompanies)
             {
                 xTechComp.GetAdjacentEmptySystems(ref xPerimeterTiles, true);
             }
             m_xGovernment.GetAdjacentEmptySystems(ref xPerimeterTiles, true);
-            if (xPerimeterTiles.Count > 0) {
+            if (xPerimeterTiles.Count > 0)
+            {
                 var xTileDistribution = new ProjectMaths.Distribution<(int, int)>(xPerimeterTiles, PositionProbWeighting);
                 TechCompany xNewComp = Instantiate(m_xEmptyTechCompanyPrefab, transform).GetComponent<TechCompany>();
                 m_xTechCompanies.Add(xNewComp);
@@ -69,7 +69,7 @@ public class Country : MonoBehaviour
     public float PositionProbWeighting((int, int) xCoords, int iIndex)
     {
         Vector3 xPos = Manager.GetManager().GetPositionFromGridCoords(xCoords.Item1, xCoords.Item2);
-        return 10f / Mathf.Pow( Vector3.Distance(m_xGovernment.transform.position, xPos), 2);
+        return 10f / Mathf.Pow(Vector3.Distance(m_xGovernment.transform.position, xPos), 2);
     }
 
     public CountryData GetCountryData()
@@ -81,12 +81,12 @@ public class Country : MonoBehaviour
     {
         return m_xGovernment;
     }
-    
+
     public Population GetPopulation()
     {
         return m_xPopulation;
     }
-    
+
     public List<TechCompany> GetTechCompanies()
     {
         return m_xTechCompanies;
@@ -133,7 +133,7 @@ public class CountryData
     public int GetTotalTechCompaniesSize()
     {
         int iValue = 0;
-        foreach(var xData in m_xTechCompaniesData)
+        foreach (var xData in m_xTechCompaniesData)
         {
             iValue += xData.GetSize();
         }
@@ -150,7 +150,7 @@ public class CountryData
         PopulationData xFakePop = m_xPopulationData.ShallowCopy();
         GovernmentData xFakeGov = (GovernmentData)m_xGovernmentData.ShallowCopy();
         var xFake = new CountryData(xFakePop, xFakeGov);
-        foreach(var xData in m_xTechCompaniesData)
+        foreach (var xData in m_xTechCompaniesData)
         {
             xFake.AddTechCompanyData((TechCompanyData)xData.ShallowCopy());
         }
@@ -160,11 +160,11 @@ public class CountryData
     public void NormaliseMarketShares()
     {
         float fValue = 0;
-        foreach(var xData in m_xTechCompaniesData)
+        foreach (var xData in m_xTechCompaniesData)
         {
             fValue += xData.GetMarketShare();
         }
-        foreach(var xData in m_xTechCompaniesData)
+        foreach (var xData in m_xTechCompaniesData)
         {
             xData.NormaliseShare(fValue);
         }

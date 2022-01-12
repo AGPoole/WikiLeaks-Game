@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Finance : SystemBase
 {
@@ -17,7 +15,7 @@ public class Finance : SystemBase
     public override void OnNextTurn(int iOwnerLevel)
     {
         base.OnNextTurn(iOwnerLevel);
-        if(m_xSharesText!=null)
+        if (m_xSharesText != null)
             m_xSharesText.text = iSharesBought.ToString();
     }
 

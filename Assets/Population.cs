@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Population : MonoBehaviour
 {
@@ -25,7 +23,7 @@ public class Population : MonoBehaviour
         return m_xPopulationData;
     }
 
-    int m_iNextRevolutionTurn=0;
+    int m_iNextRevolutionTurn = 0;
     public void OnNextTurn()
     {
         m_xHappinessText.text = m_xPopulationData.GetHappiness().ToString("0.00");
@@ -70,7 +68,7 @@ public class PopulationData
         // 10/12/2020 - currently the overall happiness should just be the sum of these 2, so it is ok to sum them. If that ever changes, this should be updates
         m_fCorpHappiness = Manager.CalculateHappiness(0, m_xCountryData.GetTotalTechCompaniesSize(), true);
         m_fGovHappiness = Manager.CalculateHappiness(m_xCountryData.GetGovernmentData().GetSize(), 0, true);
-        if (Mathf.Abs(m_fCorpHappiness + m_fGovHappiness-m_fHappiness)>0.005)
+        if (Mathf.Abs(m_fCorpHappiness + m_fGovHappiness - m_fHappiness) > 0.005)
         {
             Debug.LogError("Happiness from Gov and Corp do not sum to correct total");
         }

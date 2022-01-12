@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
@@ -19,7 +17,7 @@ public class PerkUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
     public static GameObject CreatePerkUI(GameObject xPerkGameObject, SystemBase xOwner, Transform xParent)
     {
-        GameObject xUIGameObject =Instantiate(Manager.GetManager().GetUIPrefab(), xParent);
+        GameObject xUIGameObject = Instantiate(Manager.GetManager().GetUIPrefab(), xParent);
         xUIGameObject.GetComponent<PerkUI>().SetUpPerk(xPerkGameObject, xOwner);
         return xUIGameObject;
     }

@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class MessageIcon : MonoBehaviour
@@ -8,7 +6,7 @@ public class MessageIcon : MonoBehaviour
     int m_iCreationTurn;
     const int iMAX_TURNS_LIFETIME = 200;
     protected Transform m_xTarget;
-    protected Transform m_xSource; 
+    protected Transform m_xSource;
     [SerializeField]
     float m_fSpeed;
 
@@ -63,7 +61,7 @@ public class MessageIcon : MonoBehaviour
             if (Manager.GetTurnNumber() > m_iCreationTurn + iMAX_TURNS_LIFETIME)
             {
                 Destroy(this);
-                Debug.LogError("Did not reach target"); 
+                Debug.LogError("Did not reach target");
             }
         }
     }

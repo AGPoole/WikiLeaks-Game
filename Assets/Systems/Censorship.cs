@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class Censorship : SystemBase
+﻿public class Censorship : SystemBase
 {
     public override void OnNextTurn(int iOwnerLevel)
     {

@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class GovernmentValuesContainer : MonoBehaviour
 {
@@ -10,7 +8,7 @@ public class GovernmentValuesContainer : MonoBehaviour
 
     public static GovernmentValues GetGovernmentValues()
     {
-        // WSTODO: in awake, count instances to ensure there is only one
+        // TODO: in awake, count instances to ensure there is only one
         if (s_xInstance == null)
         {
             s_xInstance = FindObjectOfType(typeof(GovernmentValuesContainer)) as GovernmentValuesContainer;

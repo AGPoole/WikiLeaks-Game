@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class DefenceIcon : MonoBehaviour
@@ -135,7 +134,7 @@ public class DefenceIcon : MonoBehaviour
         if (m_bHasTripWire)
         {
             m_xTripWireDamage.text = string.Format("-{0}", m_iTripWireDamage);
-            m_xTripWireProbability.text = string.Format("{0}%", (m_fTripWireProbability*100).ToString("0"));
+            m_xTripWireProbability.text = string.Format("{0}%", (m_fTripWireProbability * 100).ToString("0"));
         }
 
         m_xDataBackdoor.m_xGameObject.SetActive(m_xDataBackdoor.m_iRequirement > 0);
@@ -144,7 +143,7 @@ public class DefenceIcon : MonoBehaviour
             m_xDataBackdoor.m_xReqirementText.text = string.Format("{0}", m_xDataBackdoor.m_iRequirement);
             m_xDataBackdoor.m_xAdditionText.text = string.Format("+{0}", m_xDataBackdoor.m_iAddition);
         }
-        
+
         m_xMoneyBackdoor.m_xGameObject.SetActive(m_xMoneyBackdoor.m_iRequirement > 0);
         if (m_xMoneyBackdoor.m_xGameObject.activeSelf)
         {
@@ -155,7 +154,7 @@ public class DefenceIcon : MonoBehaviour
 
     public static void OnNextTurnAll()
     {
-        foreach(DefenceIcon xDefenceIcon in s_xDefenceIcons)
+        foreach (DefenceIcon xDefenceIcon in s_xDefenceIcons)
         {
             xDefenceIcon.OnNextTurn();
         }
@@ -173,7 +172,7 @@ public class DefenceIcon : MonoBehaviour
         {
             if (Manager.GetTurnNumber() > m_iNextRefreshTime)
             {
-                if (m_xCyberSecurityOwner != null && !m_xCyberSecurityOwner.IsDisabledByPlayer() )
+                if (m_xCyberSecurityOwner != null && !m_xCyberSecurityOwner.IsDisabledByPlayer())
                 {
                     SetDefenceDegradationTime(m_xCyberSecurityOwner.GetAdditionalDefenceDegradationTime());
                     SetDefenceRechargeTime(m_xCyberSecurityOwner.GetDefenceRechargeTime());
@@ -281,9 +280,9 @@ public class DefenceIcon : MonoBehaviour
         {
             return false;
         }
-        m_iDefence-=iDamage;
+        m_iDefence -= iDamage;
         m_fRechargeTimer = 0;
-        if (bDetectable && m_bHasTripWire && Random.Range(0f, 1f)<m_fTripWireProbability)
+        if (bDetectable && m_bHasTripWire && Random.Range(0f, 1f) < m_fTripWireProbability)
         {
             Manager.GetManager().ChangeAlert(-m_iTripWireDamage);
             m_bHasTripWire = false;
@@ -318,8 +317,8 @@ public class DefenceIcon : MonoBehaviour
 
     public void OnClick()
     {
-        if (WeaponManager.GetWeaponManager().GetSelectedWeapon() is WeaponBase<DefenceIcon>) 
-        { 
+        if (WeaponManager.GetWeaponManager().GetSelectedWeapon() is WeaponBase<DefenceIcon>)
+        {
             var xWeapon = (WeaponBase<DefenceIcon>)WeaponManager.GetWeaponManager().GetSelectedWeapon();
             xWeapon.Use(this);
         }
@@ -344,7 +343,7 @@ public class DefenceIcon : MonoBehaviour
 
     public void DisarmTripWire(float fProbDecrease, int iDamageDecrease)
     {
-        if(fProbDecrease<0f || iDamageDecrease < 0)
+        if (fProbDecrease < 0f || iDamageDecrease < 0)
         {
             Debug.LogError("Incorrect values put into disarm");
         }
@@ -352,7 +351,7 @@ public class DefenceIcon : MonoBehaviour
         {
             m_fTripWireProbability -= fProbDecrease;
             m_iTripWireDamage -= iDamageDecrease;
-            if(m_iTripWireDamage<=0 || m_fTripWireProbability <= 0)
+            if (m_iTripWireDamage <= 0 || m_fTripWireProbability <= 0)
             {
                 m_bHasTripWire = false;
             }

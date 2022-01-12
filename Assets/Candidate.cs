@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Candidate : MonoBehaviour
 {
@@ -113,7 +111,7 @@ public class Candidate : MonoBehaviour
     public float GetPredictedHappiness()
     {
         // only calculate this once a turn, for now. May be good to recalculate if the player does something that could change it
-        if (m_iLastCalculated < Manager.GetTurnNumber()-m_iCalculateionDelay)
+        if (m_iLastCalculated < Manager.GetTurnNumber() - m_iCalculateionDelay)
         {
             m_iLastCalculated = Manager.GetTurnNumber();
 
@@ -140,7 +138,7 @@ public class Candidate : MonoBehaviour
         NotificationSystem.AddNotification(string.Format("Breaking news: {0}", xScandal.GetScandalText(m_xName)));
         PopularityModifier xPopMod = new PopularityModifier(CandidateValues.GetScandalEffect(), m_xCandidateData.GetOrientation(),
             CandidateValues.GetScandalLength(), xScandal.GetScandalText(m_xName));
-        m_xGovernment.AddModifier(xPopMod);        
+        m_xGovernment.AddModifier(xPopMod);
     }
 }
 

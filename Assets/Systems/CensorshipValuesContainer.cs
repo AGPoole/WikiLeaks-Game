@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class CensorshipValuesContainer : MonoBehaviour
 {
@@ -35,7 +33,7 @@ public class CensorshipValues : SystemValuesBase
 
     public void UseNotification()
     {
-        if(Random.Range(0f, 1f)< m_fMessageRate)
+        if (Random.Range(0f, 1f) < m_fMessageRate)
         {
             string[] xStrings = m_xMessages;
             NotificationSystem.AddNotification(xStrings[Random.Range(0, xStrings.Length)]);

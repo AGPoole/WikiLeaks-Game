@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
-// TODO: Rename this
 [RequireComponent(typeof(LineRenderer))]
 public class Edge : MonoBehaviour
 {
@@ -28,7 +25,7 @@ public class Edge : MonoBehaviour
     void Start()
     {
         m_xRenderer = GetComponent<LineRenderer>();
-        if(s_xAllEdges==null)
+        if (s_xAllEdges == null)
         {
             s_xAllEdges = new List<Edge>();
         }
@@ -38,7 +35,7 @@ public class Edge : MonoBehaviour
         m_xDefenceIconInstances.Add(m_xMainDefenceIcon);
         SetDefenceIconPositions();
         SetMainDefenceIconValues();
-     }
+    }
 
     public void SetEndPoints(SystemBase xStart, SystemBase xEnd)
     {
@@ -56,7 +53,7 @@ public class Edge : MonoBehaviour
     float m_fIconOffset = 0.01f;
     void SetDefenceIconPositions()
     {
-        if(m_xStart==null || m_xEnd == null)
+        if (m_xStart == null || m_xEnd == null)
         {
             return;
         }
@@ -64,9 +61,9 @@ public class Edge : MonoBehaviour
         Vector3 xDifference = m_xEnd.transform.position - m_xStart.transform.position;
         xDifference -= 2 * m_fIconOffset * xDifference.normalized;
         Vector3 xStart = m_xStart.transform.position + m_fIconOffset * xDifference.normalized;
-        for (int i=0; i<iLength; i++)
+        for (int i = 0; i < iLength; i++)
         {
-            m_xDefenceIconInstances[i].transform.position = xStart + ((i+1) * xDifference / (iLength+1));
+            m_xDefenceIconInstances[i].transform.position = xStart + ((i + 1) * xDifference / (iLength + 1));
         }
     }
 
@@ -99,10 +96,10 @@ public class Edge : MonoBehaviour
         {
             s_xAllEdges = new List<Edge>();
         }
-        for(int i = s_xAllEdges.Count-1; i>=0; i--)
+        for (int i = s_xAllEdges.Count - 1; i >= 0; i--)
         {
             Edge xEdge = s_xAllEdges[i];
-            if(xEdge.Contains(xSystem1) && xEdge.Contains(xSystem2))
+            if (xEdge.Contains(xSystem1) && xEdge.Contains(xSystem2))
             {
                 return xEdge;
             }
@@ -127,7 +124,7 @@ public class Edge : MonoBehaviour
 
     public void CheckDefences()
     {
-        foreach(DefenceIcon xIcon in m_xDefenceIconInstances)
+        foreach (DefenceIcon xIcon in m_xDefenceIconInstances)
         {
             if (xIcon.GetDefence() > 0)
             {
@@ -147,7 +144,7 @@ public class Edge : MonoBehaviour
     // TODO: remove this
     public void Defend()
     {
-        foreach(DefenceIcon xIcon in m_xDefenceIconInstances)
+        foreach (DefenceIcon xIcon in m_xDefenceIconInstances)
         {
             xIcon.Defend();
         }
@@ -157,7 +154,7 @@ public class Edge : MonoBehaviour
     {
         return m_xStart;
     }
-    
+
     public SystemBase GetEnd()
     {
         return m_xEnd;
@@ -166,7 +163,7 @@ public class Edge : MonoBehaviour
     public void RegisterCyberSec(CyberSecurity xSec)
     {
         // TODO: use a hash-map
-        foreach(DefenceIcon xIcon in m_xDefenceIconInstances)
+        foreach (DefenceIcon xIcon in m_xDefenceIconInstances)
         {
             if (xIcon.GetCyberSecurityOwner() == xSec)
             {
@@ -189,7 +186,7 @@ public class Edge : MonoBehaviour
 
     public Vector3 GetPosition()
     {
-        return (m_xStart.transform.position + m_xEnd.transform.position) / 2; 
+        return (m_xStart.transform.position + m_xEnd.transform.position) / 2;
     }
 
     public bool IsReachable(DefenceIcon xIcon)
@@ -207,7 +204,7 @@ public class Edge : MonoBehaviour
                 return true;
             }
             bool bReachableFromStart = true;
-            for(int i=0; i < iIndex; i++)
+            for (int i = 0; i < iIndex; i++)
             {
                 if (m_xDefenceIconInstances[i].GetDefence() > 0)
                 {
@@ -224,11 +221,11 @@ public class Edge : MonoBehaviour
         {
             return false;
         }
-        if (iIndex == m_xDefenceIconInstances.Count-1)
+        if (iIndex == m_xDefenceIconInstances.Count - 1)
         {
             return true;
         }
-        for (int i = iIndex+1; i < m_xDefenceIconInstances.Count; i++)
+        for (int i = iIndex + 1; i < m_xDefenceIconInstances.Count; i++)
         {
             if (m_xDefenceIconInstances[i].GetDefence() > 0)
             {

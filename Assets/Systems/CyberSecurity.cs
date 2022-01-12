@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class CyberSecurity : SystemBase, IDisablable
@@ -32,7 +31,7 @@ public class CyberSecurity : SystemBase, IDisablable
         ref readonly List<Edge> xEdges = ref Edge.GetAllEdges();
         foreach (Edge xEdge in xEdges)
         {
-            if((xEdge.GetPosition()-transform.position).magnitude < CyberSecurityValuesContainer.GetCyberSecurityValues().GetMaxLength())
+            if ((xEdge.GetPosition() - transform.position).magnitude < CyberSecurityValuesContainer.GetCyberSecurityValues().GetMaxLength())
             {
                 xEdge.RegisterCyberSec(this);
             }
@@ -46,16 +45,16 @@ public class CyberSecurity : SystemBase, IDisablable
             return 0;
         }
         return CyberSecurityValuesContainer.GetCyberSecurityValues().GetDefenceGainAtLevelForDistance(
-            GetLevel(), 
+            GetLevel(),
             Manager.GetManager().GetTechLevel(),
-            (xEdge.GetPosition()-transform.position).magnitude);
+            (xEdge.GetPosition() - transform.position).magnitude);
     }
 
     public float GetAdditionalDefenceDegradationTime()
     {
         return CyberSecurityValuesContainer.GetCyberSecurityValues().GetAdditionalDefenceDegradationTime();
     }
-    
+
     public float GetDefenceRechargeTime()
     {
         return CyberSecurityValuesContainer.GetCyberSecurityValues().GetDefenceRechargeTime();

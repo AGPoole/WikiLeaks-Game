@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -24,7 +23,7 @@ public class ProjectMaths
     public static int HexagonGridDistance(int iX1, int iY1, int iX2, int iY2)
     {
         // start at bottom co-ordinate
-        if( iY1 > iY2 )
+        if (iY1 > iY2)
         {
             int iTempX = iX1;
             iX1 = iX2;
@@ -34,12 +33,12 @@ public class ProjectMaths
             iY1 = iY2;
             iY2 = iTempY;
         }
-        
-        if(iX1 == iX2)
+
+        if (iX1 == iX2)
         {
             return Math.Abs(iY1 - iY2);
         }
-        if(iY1 == iY2)
+        if (iY1 == iY2)
         {
             return Math.Abs(iX1 - iX2);
         }
@@ -48,12 +47,12 @@ public class ProjectMaths
         bool bIs2Peak = Mod(iX2, 2) == 1;
 
         // case 1: trough to trough or peak to peak
-        if(bIs1Peak == bIs2Peak)
+        if (bIs1Peak == bIs2Peak)
         {
             int iXDifference = Math.Abs(iX1 - iX2);
             int iYDifference = Math.Abs(iY1 - iY2);
 
-            if(iXDifference < 2*iYDifference)
+            if (iXDifference < 2 * iYDifference)
             {
                 // Move in across, up-across increments until below the target, then move up
                 return (iXDifference / 2) + iYDifference;
@@ -66,7 +65,7 @@ public class ProjectMaths
         }
 
         // case 2: peak to trough
-        if(bIs1Peak && !bIs2Peak)
+        if (bIs1Peak && !bIs2Peak)
         {
             // To do this, we reduce to case 1 by moving diagonally down in the wrong direction.
             // This takes to a trough to trough where we know the first move would be diagonally
@@ -86,10 +85,11 @@ public class ProjectMaths
     public class Distribution<T>
     {
         List<(T, float)> m_xProbabilities;
-        public Distribution(List<T> xOutcomes, Func<T, int, float> xPDf){
+        public Distribution(List<T> xOutcomes, Func<T, int, float> xPDf)
+        {
             m_xProbabilities = new List<(T, float)>();
             float fTotalProb = 0;
-            for(int i = 0; i < xOutcomes.Count; i++)
+            for (int i = 0; i < xOutcomes.Count; i++)
             {
                 float fNewValue = xPDf(xOutcomes[i], i);
                 if (fNewValue >= 0f)
@@ -119,7 +119,7 @@ public class ProjectMaths
         {
             float fValue = UnityEngine.Random.Range(0f, 1f);
             float fRunningTotal = 0;
-            for(int i=0; i<m_xProbabilities.Count; i++)
+            for (int i = 0; i < m_xProbabilities.Count; i++)
             {
                 fRunningTotal += m_xProbabilities[i].Item2;
                 if (fRunningTotal > fValue)

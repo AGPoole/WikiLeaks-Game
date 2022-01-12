@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class StealWeapon : WeaponBase<SystemBase>
 {
@@ -12,7 +10,7 @@ public class StealWeapon : WeaponBase<SystemBase>
     {
         // TODO: version for government
         // TODO: limit on smaller companies/build resistance/make income gain proportional to company size
-        if(xSys.GetOwner() is TechCompany)
+        if (xSys.GetOwner() is TechCompany)
         {
             Manager.GetManager().ChangeMoney(GetMoney(xSys));
             TechCompany xTechCompanyOwner = xSys.GetOwner() as TechCompany;

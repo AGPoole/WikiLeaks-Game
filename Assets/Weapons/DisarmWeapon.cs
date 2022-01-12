@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 // TODO: Add ShieldsWeaponBase
 public class DisarmWeapon : WeaponBase<DefenceIcon>
@@ -22,6 +20,6 @@ public class DisarmWeapon : WeaponBase<DefenceIcon>
 
     public override string GetDescription()
     {
-        return string.Format("Probability Reduction: {0}%\nDamage Reduction: {1}\n", (m_fProbDecrease*100).ToString("0"), m_iDamageDecrease) + base.GetDescription();
+        return string.Format("Probability Reduction: {0}%\nDamage Reduction: {1}\n", (m_fProbDecrease * 100).ToString("0"), m_iDamageDecrease) + base.GetDescription();
     }
 }

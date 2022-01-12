@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -51,9 +50,9 @@ public class Government : OrganisationBase
     [SerializeField]
     UnityEngine.UI.Text m_xElectionTurnsCounter;
 
-    #if (UNITY_EDITOR)
+#if (UNITY_EDITOR)
     StreamWriter m_xStreamWriter;
-    #endif
+#endif
     [SerializeField]
     Transform m_xLeftTarget;
     [SerializeField]
@@ -62,10 +61,10 @@ public class Government : OrganisationBase
     public override void Init()
     {
         base.Init();
-        #if (UNITY_EDITOR)
+#if (UNITY_EDITOR)
         string xPath = Application.dataPath + "/CSV/Taxes.csv";
         m_xStreamWriter = File.CreateText(xPath);
-        #endif
+#endif
         var xGovData = (GovernmentData)m_xMyData;
         xGovData.SetCandidateData(m_xLeftCandidate.GetCandidateData());
         m_xLeftCandidate.SetAsLeader();
@@ -173,12 +172,12 @@ public class Government : OrganisationBase
 
         UpdateModifiers();
 
-        #if (UNITY_EDITOR)
+#if (UNITY_EDITOR)
         if (Manager.GetTurnNumber() % 100 == 0 && Manager.ShouldWriteTaxesToFile())
         {
             WriteToFile();
         }
-        #endif
+#endif
     }
 
     public void EnableElections()
@@ -188,8 +187,8 @@ public class Government : OrganisationBase
             return;
         }
         bool bLeft = m_xLeader.GetOrientation() != Orientation.LEFT;
-        Orientation eNewOrientation = bLeft ? Orientation.LEFT: Orientation.RIGHT;
-        Candidate xNewCandidate = Instantiate(m_xCandidatePrefab, bLeft ? m_xLeftTransform: m_xRightTransform).GetComponent<Candidate>();
+        Orientation eNewOrientation = bLeft ? Orientation.LEFT : Orientation.RIGHT;
+        Candidate xNewCandidate = Instantiate(m_xCandidatePrefab, bLeft ? m_xLeftTransform : m_xRightTransform).GetComponent<Candidate>();
         CandidateData xNewCandidateData = xNewCandidate.GetCandidateData();
         xNewCandidateData.SetTaxRate(bLeft ? m_xLeader.GetCandidateData().GetTaxRate() + CandidateValues.GetTaxDifference() : m_xLeader.GetCandidateData().GetTaxRate() + CandidateValues.GetTaxDifference() - CandidateValues.GetTaxDifference());
         xNewCandidateData.SetPoliticalOrientation(eNewOrientation);
@@ -277,32 +276,32 @@ public class Government : OrganisationBase
         m_xElectionTurnsCounter.text = String.Format("{0} Turns Until Election", GetTimeTillNextElection());
     }
 
-    #if (UNITY_EDITOR)
+#if (UNITY_EDITOR)
     void WriteToFile()
     {
         var xGovData = (GovernmentData)GetData();
         float fHappiness = xGovData.GetCountryData().GetPopulationData().GetHappiness();
         fHappiness -= 0.45f;
         fHappiness /= 0.55f;
-        m_xStreamWriter.WriteLine(string.Format("{0} {1} {2} {3}", 
-            xGovData.GetTaxRate().ToString("0.00"), 
+        m_xStreamWriter.WriteLine(string.Format("{0} {1} {2} {3}",
+            xGovData.GetTaxRate().ToString("0.00"),
             fHappiness.ToString("0.00"),
-            (xGovData.GetSize()/140f).ToString("0.00"),
-            (xGovData.GetCountryData().GetTotalTechCompaniesSize()/80f).ToString("0.00")));
+            (xGovData.GetSize() / 140f).ToString("0.00"),
+            (xGovData.GetCountryData().GetTotalTechCompaniesSize() / 80f).ToString("0.00")));
         m_xStreamWriter.Flush();
     }
 #endif
 
-    #if (UNITY_EDITOR)
+#if (UNITY_EDITOR)
     void OnApplicationQuit()
     {
         m_xStreamWriter.Close();
         Debug.Log("Application ending after " + Time.time + " seconds");
     }
-    #endif
+#endif
     void UpdateModifiers()
     {
-        for(int i=m_xModifiers.Count-1; i>=0; i--)
+        for (int i = m_xModifiers.Count - 1; i >= 0; i--)
         {
             m_xModifiers[i].OnNextTurn();
             if (m_xModifiers[i].ShouldRemove())
@@ -346,7 +345,7 @@ public class Government : OrganisationBase
 
     void ReplaceCandidate(Candidate xCandidate)
     {
-        if(xCandidate==null)
+        if (xCandidate == null)
         {
             Debug.LogError("Null candidate set to be replaced!");
             return;
@@ -382,12 +381,12 @@ public class Government : OrganisationBase
     public bool OnRevolution()
     {
         float fSuccessProb = 0.5f;
-        if(UnityEngine.Random.Range(0f, 1f) < fSuccessProb)
+        if (UnityEngine.Random.Range(0f, 1f) < fSuccessProb)
         {
             return false;
         }
         EnableElections();
-        foreach(var sys in GetSystemsOfType(typeof(Censorship)))
+        foreach (var sys in GetSystemsOfType(typeof(Censorship)))
         {
             sys.ModifyLevel(-100, 1000);
         }
@@ -480,11 +479,11 @@ public class PopularityModifier
     [SerializeField]
     protected bool m_bTimesOut;
 
-    public PopularityModifier(float fEffect, Orientation eOrientation, int iRemovalTime, string xDescription, bool bTimesOut=true)
+    public PopularityModifier(float fEffect, Orientation eOrientation, int iRemovalTime, string xDescription, bool bTimesOut = true)
     {
         m_fEffect = fEffect;
         m_eOrientation = eOrientation;
-        m_iRemovalTurn = Manager.GetTurnNumber()+iRemovalTime;
+        m_iRemovalTurn = Manager.GetTurnNumber() + iRemovalTime;
         m_xDescription = xDescription;
         m_bTimesOut = bTimesOut;
     }
@@ -493,9 +492,9 @@ public class PopularityModifier
     {
         return m_bTimesOut && Manager.GetTurnNumber() > m_iRemovalTurn;
     }
-    public virtual void OnNextTurn() {}
+    public virtual void OnNextTurn() { }
 
-    public virtual void OnRemoval() {}
+    public virtual void OnRemoval() { }
 
     public float GetEffect()
     {

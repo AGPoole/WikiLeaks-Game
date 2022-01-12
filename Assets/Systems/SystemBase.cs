@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -72,8 +71,9 @@ public abstract class SystemBase : MonoBehaviour, IPointerEnterHandler, IPointer
 
         CorrectPosition();
 
-        if (m_xHexagonLineRenderers != null) {
-            for (int i=m_xHexagonLineRenderers.Count-1; i>=0; i--)
+        if (m_xHexagonLineRenderers != null)
+        {
+            for (int i = m_xHexagonLineRenderers.Count - 1; i >= 0; i--)
             {
                 Destroy(m_xHexagonLineRenderers[i]);
                 m_xHexagonLineRenderers.RemoveAt(i);
@@ -103,13 +103,13 @@ public abstract class SystemBase : MonoBehaviour, IPointerEnterHandler, IPointer
             Destroy(m_xImageContainer.gameObject);
         }
         m_xImageContainer = Manager.GetManager().CreateImagePrefab(this);
-        m_xImageContainer.UpdateSpriteAndColour( m_iLevel );
+        m_xImageContainer.UpdateSpriteAndColour(m_iLevel);
         m_xUI.gameObject.SetActive(m_iLevel != 0);
     }
 
-    #if (UNITY_EDITOR)
+#if (UNITY_EDITOR)
     [ContextMenu("Correct Position")]
-    #endif
+#endif
     public void CorrectPosition()
     {
         transform.position = Manager.GetManager().GetPositionFromGridCoords(m_iXPosInGrid, m_iYPosInGrid);
@@ -126,10 +126,10 @@ public abstract class SystemBase : MonoBehaviour, IPointerEnterHandler, IPointer
     {
         CorrectPosition();
 
-        for(int i=0; i<6; i++)
+        for (int i = 0; i < 6; i++)
         {
             SystemBase xSys = Manager.GetAdjacentSystem(m_iXPosInGrid, m_iYPosInGrid, (Manager.GridDirection)i);
-            bool bEnabled = xSys==null || xSys.m_xOwner!=m_xOwner;
+            bool bEnabled = xSys == null || xSys.m_xOwner != m_xOwner;
             m_xHexagonLineRenderers[i].SetActive(bEnabled);
         }
 
@@ -156,7 +156,7 @@ public abstract class SystemBase : MonoBehaviour, IPointerEnterHandler, IPointer
     }
 
     public bool IsHacked() { return m_bHacked; }
-    public bool IsHackable() 
+    public bool IsHackable()
     {
         for (int i = 0; i < 6; i++)
         {
@@ -169,22 +169,22 @@ public abstract class SystemBase : MonoBehaviour, IPointerEnterHandler, IPointer
         return false;
     }
     public int GetLevel() { return m_iLevel; }
-    protected void SetLevel(int iLevel) 
+    protected void SetLevel(int iLevel)
     {
         SetLevel(iLevel, GetDefaultTimer());
     }
     protected virtual void SetLevel(int iLevel, int iTimer)
     {
-        if(iLevel <= 0)
+        if (iLevel <= 0)
         {
             iLevel = 0;
             OnDeactivation();
         }
-        if(iLevel > GetMaxLevel())
+        if (iLevel > GetMaxLevel())
         {
             iLevel = GetMaxLevel();
         }
-        if(iLevel==1 && m_iLevel == 0)
+        if (iLevel == 1 && m_iLevel == 0)
         {
             OnActivation();
         }
@@ -259,7 +259,7 @@ public abstract class SystemBase : MonoBehaviour, IPointerEnterHandler, IPointer
     {
         if (m_iLevel > 0)
         {
-            return GetMyValues().GetLevelUpCost(m_iLevel-1);
+            return GetMyValues().GetLevelUpCost(m_iLevel - 1);
         }
         else
         {
@@ -267,21 +267,21 @@ public abstract class SystemBase : MonoBehaviour, IPointerEnterHandler, IPointer
         }
     }
 
-    protected virtual void OnDeactivation() 
+    protected virtual void OnDeactivation()
     {
         if (m_xUI != null)
         {
             m_xUI.OnDeactivation();
         }
     }
-    protected virtual void OnActivation() 
+    protected virtual void OnActivation()
     {
         m_xUI.OnActivation();
     }
     public abstract SystemValuesBase GetMyValues();
 
     // TODO: remove this
-    public void Attack(bool bIsPlayer, int iDamage=1, bool bAttackingPlayer=false)
+    public void Attack(bool bIsPlayer, int iDamage = 1, bool bAttackingPlayer = false)
     {
         //if (bIsPlayer)
         //{
@@ -315,16 +315,16 @@ public abstract class SystemBase : MonoBehaviour, IPointerEnterHandler, IPointer
         }
     }
 
-    #if (UNITY_EDITOR)
+#if (UNITY_EDITOR)
     [ContextMenu("Hack")]
-    #endif
+#endif
     public virtual void Hack()
     {
         m_bHacked = true;
-        for(int i=0; i<6; i++)
+        for (int i = 0; i < 6; i++)
         {
             SystemBase xSys = GetConnectedSystem((Manager.GridDirection)i);
-            if (xSys!=null && xSys.m_bHacked)
+            if (xSys != null && xSys.m_bHacked)
             {
                 m_xEdges[i].Hack();
             }
@@ -332,9 +332,9 @@ public abstract class SystemBase : MonoBehaviour, IPointerEnterHandler, IPointer
         m_xUI.OnHacked();
     }
 
-    #if (UNITY_EDITOR)
+#if (UNITY_EDITOR)
     [ContextMenu("Unhack")]
-    #endif
+#endif
     public virtual void UnHack()
     {
         m_bHacked = false;
@@ -350,7 +350,7 @@ public abstract class SystemBase : MonoBehaviour, IPointerEnterHandler, IPointer
 
     public static void SetUpEdges()
     {
-        for(int i = 0; i<s_xAllSystems.Count; i++)
+        for (int i = 0; i < s_xAllSystems.Count; i++)
         {
             SystemBase xSys1 = s_xAllSystems[i];
             for (int iDir = 0; iDir < 6; iDir++)
@@ -358,7 +358,7 @@ public abstract class SystemBase : MonoBehaviour, IPointerEnterHandler, IPointer
                 int iOpposite = (int)Manager.GetOppositeDirection((Manager.GridDirection)iDir);
                 SystemBase xSys2 = Manager.GetAdjacentSystem(xSys1.m_iXPosInGrid, xSys1.m_iYPosInGrid, (Manager.GridDirection)iDir);
                 Edge xEdge1 = xSys1 != null ? xSys1.m_xEdges[iDir] : null;
-                Edge xEdge2 = xSys2!=null ? xSys2.m_xEdges[iOpposite] : null;
+                Edge xEdge2 = xSys2 != null ? xSys2.m_xEdges[iOpposite] : null;
                 if (xEdge1 != null && !xEdge1.Contains(xSys2))
                 {
 
@@ -366,25 +366,25 @@ public abstract class SystemBase : MonoBehaviour, IPointerEnterHandler, IPointer
                     Destroy(xEdge1.gameObject);
                     xSys1.m_xEdges[iDir] = null;
                 }
-                if((xEdge2 != null && !xEdge2.Contains(xSys1)))
+                if ((xEdge2 != null && !xEdge2.Contains(xSys1)))
                 {
                     Destroy(xEdge2.gameObject);
                     xSys2.m_xEdges[iOpposite] = null;
                 }
-                if (xSys1!=null && xSys2!=null && xEdge1==null && xEdge2==null)
+                if (xSys1 != null && xSys2 != null && xEdge1 == null && xEdge2 == null)
                 {
                     GameObject xGameObject = Instantiate(Manager.GetManager().GetEdgePrefabGameObject());
                     xGameObject.GetComponent<Edge>().SetEndPoints(xSys1, xSys2);
                     xSys1.m_xEdges[iDir] = xGameObject.GetComponent<Edge>();
                     xSys2.m_xEdges[iOpposite] = xGameObject.GetComponent<Edge>();
-                }          
+                }
             }
         }
     }
 
     public bool IsConnected(SystemBase xSys)
     {
-        for(int i=0; i<6; i++)
+        for (int i = 0; i < 6; i++)
         {
             if (GetConnectedSystem((Manager.GridDirection)i) == xSys)
             {
@@ -429,9 +429,9 @@ public abstract class SystemBase : MonoBehaviour, IPointerEnterHandler, IPointer
 
     public static SystemBase GetSystemWithCoords(int iX, int iY)
     {
-        foreach(SystemBase xSys in s_xAllSystems)
+        foreach (SystemBase xSys in s_xAllSystems)
         {
-            if(iX==xSys.m_iXPosInGrid && iY == xSys.m_iYPosInGrid)
+            if (iX == xSys.m_iXPosInGrid && iY == xSys.m_iYPosInGrid)
             {
                 return xSys;
             }
@@ -454,7 +454,7 @@ public abstract class SystemBase : MonoBehaviour, IPointerEnterHandler, IPointer
 
     public void GetConnectedSystems(ref List<SystemBase> xOut)
     {
-        for(int i = 0; i<6; i++)
+        for (int i = 0; i < 6; i++)
         {
             xOut[i] = GetConnectedSystem((Manager.GridDirection)i);
         }
@@ -475,7 +475,7 @@ public abstract class SystemBase : MonoBehaviour, IPointerEnterHandler, IPointer
     protected List<DefenceIcon> GetDefenceIcons()
     {
         List<DefenceIcon> xDefenceIcons = new List<DefenceIcon>();
-        foreach(Edge xEdge in m_xEdges)
+        foreach (Edge xEdge in m_xEdges)
         {
             if (xEdge != null)
             {

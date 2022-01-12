@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class ToggleActiveScrollBar : MonoBehaviour
@@ -24,7 +23,7 @@ public class ToggleActiveScrollBar : MonoBehaviour
         }
         else
         {
-            foreach(GameObject xArea in s_xScrollAreas)
+            foreach (GameObject xArea in s_xScrollAreas)
             {
                 xArea.SetActive(false);
             }

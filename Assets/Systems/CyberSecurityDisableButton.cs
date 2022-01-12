@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class CyberSecurityDisableButton : MonoBehaviour
 {
@@ -9,7 +7,7 @@ public class CyberSecurityDisableButton : MonoBehaviour
     [SerializeField]
     UnityEngine.UI.Text m_xText;
     bool m_bDisabled = false;
-    
+
     public void OnClick()
     {
         m_bDisabled = !m_bDisabled;
