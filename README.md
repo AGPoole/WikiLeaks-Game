@@ -28,3 +28,6 @@ With a simulation where different entities interact in complex ways, the player 
 ## Code Overview
 
 ![Book logo](/Images/Typical-Game-Screen.png)
+
+Above is a screen-shot of the game in its current state. It takes place on a hexagon grid, made up of several governments and companies. These then consist of several systems, which are the buildings shown on the screen. These can have different roles (e.g. data-science, cyber-security, military) and can be traded between the different organisations as they gain and lose money. The white lines dividing up the grid show where the areas owned by each organisation. The black buildings are government while the blue ones are companies. The player can hack into different systems (the ones currently hacked have their text in green) and can then hack adjacent ones. The shields indicate how difficult it will be to hack them.
+TODO: building level ups
