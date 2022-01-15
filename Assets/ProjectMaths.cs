@@ -89,6 +89,8 @@ public class ProjectMaths
         {
             m_xProbabilities = new List<(T, float)>();
             float fTotalProb = 0;
+
+
             for (int i = 0; i < xOutcomes.Count; i++)
             {
                 float fNewValue = xPDf(xOutcomes[i], i);
@@ -102,12 +104,13 @@ public class ProjectMaths
                     Debug.LogError("Probability relative value less than 0. The calculations will not work for this");
                 }
             }
-            if (fTotalProb == 0)
+            if (fTotalProb <= 0f || Mathf.Approximately(fTotalProb, 0f))
             {
                 Debug.LogError("All probabilities are 0. This distribution will not work");
             }
             else
             {
+                // Normalise the results
                 for (int i = 0; i < m_xProbabilities.Count; i++)
                 {
                     m_xProbabilities[i] = (m_xProbabilities[i].Item1, m_xProbabilities[i].Item2 / fTotalProb);
@@ -117,7 +120,7 @@ public class ProjectMaths
 
         public T Sample()
         {
-            float fValue = UnityEngine.Random.Range(0f, 1f);
+            float fValue = RandomRange(0f, 1f);
             float fRunningTotal = 0;
             for (int i = 0; i < m_xProbabilities.Count; i++)
             {
@@ -129,5 +132,12 @@ public class ProjectMaths
             }
             return m_xProbabilities[m_xProbabilities.Count - 1].Item1;
         }
+    }
+
+    // TODO: use this across the project, make it deterministic and make the seed clone-able, for use in
+    // cloned systems
+    static float RandomRange(float fMin, float fMax)
+    {
+        return UnityEngine.Random.Range(fMin, fMax);
     }
 }
