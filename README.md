@@ -213,3 +213,36 @@ public T Sample()
     return m_xProbabilities[m_xProbabilities.Count - 1].Item1;
 }
 ```
+
+## Future Work
+
+This project is currently on-hold. This section outlines the next features I intend to work on if I return to it.
+
+### Code Improvements
+
+The project is at a stage where I can relatively easily add new features. However, I would like to ensure that the system is as robust as possible before increasing the complexity. If there are flaws or unknown errors that are not fixed now, it could cause problems in later features meaning they need to be rewritten.
+
+Here are a few of the code improvements I'd like to make:
+* Split large files into smaller modules. This makes the code easier to navigate and understand.
+* Implement more logging and automated tests, so that I can understand the internal systems and detect when systems are broken by later changes.
+* Add pointer checks and divide-by-0 checks, to ensure the game is safe in rare edge-cases.
+* Add more comments.
+
+### Add In-Game Visualisation Tools
+
+I'd like to introduce some features to visualise the internal systems and state of the game. Currently, I have an in-built notifications system and a system to log data to a csv so I can graph it, but nothing else. The game is already fairly complex and it's difficult to keep track of everything that's going on. This makes it hard for the player to make predictions and come up with strategies. It also makes it hard for me to tune the internal parameters and understand how the world will change as a result.
+
+There are 3 features I'd like to add to help with this:
+* Add filtering features to the notification systems. This could just be a simple set of tick-boxes, for criteria such as "politics" and "economics". Then I could add these flags to the notifications. 
+* Add overlays to display different features. The systems and organisations already have several internal values, such as capital, size, rate-of-increase and CEO. This is only going to increase as I add to the project. For instance, I may wish to give companies affiliations to different political parties. It is already too much data to show on the small amount of space they occupy on the screen and this amount of information can overwhelm the player. The game Oxygen Not Included handles this by having several different overlays you can switch between to view different characteristics (you can read about this [here](https://oxygennotincluded.fandom.com/wiki/Overlays)). I feel this would be an elegant way to solve these problems.
+* Implement pie-charts and line-charts. The former could be used to display the market shares of companies or the popularities of different politicians, while the latter could be used for showing how tax rates and life satisfaction rates (this is currently just a function of the economy size) have changed over time. I could then use these features to display data from within the code, improving my understanding.
+
+### Implement More Tools for the Player
+
+There currently aren't a huge number of abilities and weapons for the player to unlock. However, it is very easy to add new ones. I'd like to spend some time experimenting with different ideas and trying to think of interesting ways for abilities to combine together. I'd also like to ensure that the player can have a large affect on the world and can interact with each of the systems and characters.
+
+I'd also like to add more features to obtain new abilities, such as shops and missions with abilities as rewards.
+
+### Get Feedback
+
+Finally, once the previous new features are implemented, I'd be interested in hearing perspectives from different people on the game. I'd be interested in talking to people with different political affiliations, to ensure the game fairly represents their views on how technology may affect the world.
