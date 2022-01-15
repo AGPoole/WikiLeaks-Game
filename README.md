@@ -67,3 +67,89 @@ The code includes a range of abstract classes for creating new instances of diff
 There is also a notification system, to display information to the player. I also use this to show debug info, as I have more control over it than the in-built Unity systems. For instance, I can make it display extra information when the mouse hovers over.
 
 In addition, there is a system to log data (e.g. what the government sets the tax level at) to a .csv file so I can graph it and see what is going on.
+
+### Algorithms
+
+In this section, I'll go over 2 examples of algorithms I used in this project.
+
+#### Hexagon Grid Distance
+
+![](/Images/Hexagon-Grid.png)
+
+The game takes place on a hexagon grid, indexed as shown above. Many features in the game would need to calculate the distance between different grid positions. This can obviously be done with any path-finding algorithm, but these would be O(n). I wanted an O(1) solution, similar to how you can find the distance in a regular square grid by adding the x difference and y difference.
+
+To do this, observe that in the indexing in the image above, it is almost the same as a square grid. _(x, y)_ is adjacent to _(x-1, y)_, _(x+1, y)_, _(x, y+1)_ and _(x, y-1)_. In addition, if it is on an odd row, it is also adjacent to the 2 diagonally below (_(x-1, y-1)_ and _(x+1, y-1)_), while if it is on an even row it is adjacent to the 2 diagonally below. We will call the points on the odd rows _peaks_ while the points on even rows will be called _troughs_. Drawing this out as a grid, it looks like this:
+
+![](/Images/Grid-As-Node-Graph.png)
+
+From this, imagine you start at a _peak_ and want to get to another _peak_. Without loss of generality, we can assume the first coordinate is to the left and below the second (due to the symmetry of the graph and the fact that we can swap the two inputs). You can then see that the fast route will be a sequence of alternating right movements and diagonal up-right movements until you are in the same row or column as the target. If you are in the same row, you then can simply go right until you reach the target. If you are in the same column, you simply go up. We therefore need to calculate whether we'll reach the same row or column first. As the 2 moves we repeat overall increase the y coordinate by 1 and the x coordiate by 2, this is equivalent to calculating whether the overall x change between the source and the target is less than 2 times the target. If it is, the answer will be _xChange_+(_yChange_-(_xChange_/2) = _xChange_/2 + _yChange_. If not, it will be just be _xChange_, as each step will move you one across until you reach the target. The first case is shown on the left below while the other is shown on the right.
+
+![](/Images/Possible-Routes.png)
+
+Going from _trough_ to _trough_ is the same. For _trough_ to _peak_, observe that if you start one step down-left, it becomes equivalent to a _peak_ to _peak_ where the first move will take you to the actual starting position- you simply have to take away one from the answer. _Peak_ to _trough_ is the same, but you go up_right and add one.
+
+The code for this is shown below:
+
+```
+public static int HexagonGridDistance(int iX1, int iY1, int iX2, int iY2)
+{
+    // start at bottom co-ordinate
+    if (iY1 > iY2)
+    {
+        int iTempX = iX1;
+        iX1 = iX2;
+        iX2 = iTempX;
+
+        int iTempY = iY1;
+        iY1 = iY2;
+        iY2 = iTempY;
+    }
+
+    // For same row or column, just go in a straight line
+    if (iX1 == iX2)
+    {
+        return Math.Abs(iY1 - iY2);
+    }
+    if (iY1 == iY2)
+    {
+        return Math.Abs(iX1 - iX2);
+    }
+
+    bool bIs1Peak = Mod(iX1, 2) == 1;
+    bool bIs2Peak = Mod(iX2, 2) == 1;
+
+    // case 1: trough to trough or peak to peak
+    if (bIs1Peak == bIs2Peak)
+    {
+        int iXDifference = Math.Abs(iX1 - iX2);
+        int iYDifference = Math.Abs(iY1 - iY2);
+
+        if (iXDifference < 2 * iYDifference)
+        {
+            // Move in across, up-across increments until below the target, then move up
+            return (iXDifference / 2) + iYDifference;
+        }
+        else
+        {
+            // Move in across, up-across increments, then just move right
+            return iXDifference;
+        }
+    }
+
+    // case 2: peak to trough
+    if (bIs1Peak && !bIs2Peak)
+    {
+        // To do this, we reduce to case 1 by moving diagonally down in the wrong direction.
+        // This takes to a trough to trough where we know the first move would be diagonally
+        // up. We can take away 1 from the result to then remove this
+
+        int iXMoveAway = iX1 < iX2 ? -1 : 1;
+        return HexagonGridDistance(iX1 + iXMoveAway, iY1 - 1, iX2, iY2) - 1;
+    }
+
+    // case 3: trough to peak
+    // the first move will be diagonally up. Then we have case 1
+    int iXMoveToward = iX1 < iX2 ? 1 : -1;
+    return HexagonGridDistance(iX1 + iXMoveToward, iY1 + 1, iX2, iY2) + 1;
+}
+```
