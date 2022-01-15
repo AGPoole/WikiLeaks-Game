@@ -153,3 +153,63 @@ public static int HexagonGridDistance(int iX1, int iY1, int iX2, int iY2)
     return HexagonGridDistance(iX1 + iXMoveToward, iY1 + 1, iX2, iY2) + 1;
 }
 ```
+
+#### Distribution Generic
+
+In this project, I wanted a more nuanced system for randomness than the in-built Unity Random library. I had multiple entities that would need to pick from lists of options (e.g. it could be a company deciding what strategy to use), where the probabilities would be different for different entries and would depend on their properties in complex ways. To do this, I created a generic class that allowed random sampling according to a given probability density function. The constructor for this class is as follows:
+
+```
+public Distribution(List<T> xOutcomes, Func<T, int, float> xPDf)
+{
+    m_xProbabilities = new List<(T, float)>();
+    float fTotalProb = 0;
+
+
+    for (int i = 0; i < xOutcomes.Count; i++)
+    {
+        float fNewValue = xPDf(xOutcomes[i], i);
+        if (fNewValue >= 0f)
+        {
+            m_xProbabilities.Add((xOutcomes[i], fNewValue));
+            fTotalProb += fNewValue;
+        }
+        else
+        {
+            Debug.LogError("Probability relative value less than 0. The calculations will not work for this");
+        }
+    }
+    if (fTotalProb <= 0f || Mathf.Approximately(fTotalProb, 0f))
+    {
+        Debug.LogError("All probabilities are 0. This distribution will not work");
+    }
+    else
+    {
+        // Normalise the results
+        for (int i = 0; i < m_xProbabilities.Count; i++)
+        {
+            m_xProbabilities[i] = (m_xProbabilities[i].Item1, m_xProbabilities[i].Item2 / fTotalProb);
+        }
+    }
+}
+```
+
+To create a distribution, the player passes in the possible outcomes, as well as a function that calculates the probability of getting that outcome. The probability can also depend on the location in the list. The code then stores these in the member variable _m_xProbabilities_. It sums up the probabilities as it goes and divides each by the total at the end, to normalise the result (ensure it adds up to 1). This means we do not need to make the probability function does not need logic to make the total equal 1, which makes it more flexible.
+
+Then, to sample, we simply choose a random number from 0 to 1 and sum through the probabilities in the list in order until it exceeds our random number:
+
+```
+public T Sample()
+{
+    float fValue = RandomRange(0f, 1f);
+    float fRunningTotal = 0;
+    for (int i = 0; i < m_xProbabilities.Count; i++)
+    {
+        fRunningTotal += m_xProbabilities[i].Item2;
+        if (fRunningTotal > fValue)
+        {
+            return m_xProbabilities[i].Item1;
+        }
+    }
+    return m_xProbabilities[m_xProbabilities.Count - 1].Item1;
+}
+```
