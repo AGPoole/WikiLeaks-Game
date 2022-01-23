@@ -12,7 +12,7 @@ These are the main goals I had when I began the project:
 
 <ul>
 <li> Improve my software engineering skills. When I was working on it, I was at a period in my job where the majority of my work was bug fixing. While I did enjoy this, I felt it would be useful to also work on designing larger systems. This would prepare me for my later career and help me build on the skills I developed at university. For this project, I needed to design a larger system of multiple interacting classes. I also included some automated testing and logging systems which weren't part of my job at the time. </li>
-<li> Develop an easily modifiable and extendable system. It's difficult at the start of a project to plan it all out, as there are many trade-offs that are hard to figure out. For instance, when deciding how complex the simulation will be, there can be issues if you go to far in either direction. A very complex simulation will be hard for the player to reason about, while a very simple one will be easy to exploit or lack interesting ways to interact with it. You can't tell easily what will feel right before developing the project, so I wanted to make it easy to change in drastic ways. This would also make it possible to have different settings and modes to suit different player preferences.<br />
+<li> Develop an easily modifiable and extendable system. It's difficult at the start of a project to plan it all out, as there are many trade-offs that are hard to figure out. For instance, when deciding how complex the simulation will be, there can be issues if you go too far in either direction. A very complex simulation will be hard for the player to reason about, while a very simple one will be easy to exploit or lack interesting ways to interact with it. You can't tell easily what will feel right before developing the project, so I wanted to make it easy to change in drastic ways. This would also make it possible to have different settings and modes to suit different player preferences.<br />
 I also wanted to be able to add new features as easily as possible. I wanted the player to have a wide range of tools to interact with the world. I would inevitably come up with new ideas while working on or testing the game, so wanted to be able to include those as easily as possible. </li>
 <li> Build an economic simulation complex enough for players to come up with their own schemes and heists. To give a few examples:
   <ul>
@@ -39,7 +39,7 @@ The systems then grant different bonuses and abilities to the organisation that 
 
 ![](/Images/Organisation-and-System-UML.png)
 
-As shown in the above UML diagram, both the systems and organisations inherit from abstract base classes, which include an *OnNextTurn* function that dictates what to when updated. The organisation stores a list of systems which it calls _OnNextTurn_ on to update within its own _OnNextTurn_.
+As shown in the above UML diagram, both the systems and organisations inherit from abstract base classes, which include an _OnNextTurn_ function that dictates what to do when updated. The organisation stores a list of systems which it calls _OnNextTurn_ on to update within its own _OnNextTurn_.
 
 ![](/Images/Organisation-UML.png)
 
@@ -47,11 +47,11 @@ Each organisation also references 2 corresponding classes, a _Values_ class and 
 
 The _Values_ classes contains settings for the organisation, so that they can be viewed and editted in the Unity editor. There is only one instance, so I can adjust the values for all governments or companies at once. This seems like something that should be handled with static variables, but these cannot be seen in the Unity editor and therefore I cannot easily edit them during gameplay.
 
-The _Data_ classes contain the logic for the class, separate from the UI. The reason I wanted this was so that you could duplicate the game's state and run it ahead for several turns to predict what will happen, without having to do costly UI updates. The game is entirely deterministic (I.E. there is no randomness in the logic), so you can guarentee that when you do this, your predictions will be accurate (unless the player interferes). This has several benefits:
+The _Data_ classes contain the logic for the class, separate from the UI. The reason I wanted this was so that you could duplicate the game's state and run it ahead for several turns to predict what will happen, without having to do costly UI updates. The game is entirely deterministic (I.E. there is no randomness in the logic), so you can guarantee that when you do this, your predictions will be accurate (unless the player interferes). This has several benefits:
 
 * You can quickly run tests outside the game to see what happens. For instance, I could adjust a parameter and then run a quick simulation of the game to measure what how the world is likely to turn out.
-* When elections happen in game, it can simulate the world with each party's policies in 20 turns time, to see which outcome is better. This can then be factored in to deciding which people vote for, along with the influence of the player and the other organisations.
-* Companies can decide on their actions by running simulations with the different options. This means you want need complex AI logic that understands how the game works, as they can just calculate which of their options is best for them. This also means you would not need to update AI logic as you update the game.
+* When elections happen in game, it can simulate the world with each party's policies in 20 turns' time, to see which outcome is better. This can then be factored in to deciding which people vote for, along with the influence of the player and the other organisations.
+* Companies can decide on their actions by running simulations with the different options. This means you won't need complex AI logic that understands how the game works, as they can just calculate which of their options is best for them. This also means you would not need to update AI logic as you update the game.
 * After the game is complete, you can run it quickly from the start to calculate how the world would be without the player's interaction. You could then display the differences to the player. For instance, it may tell them that without them, there would have a been a nuclear war or financial collapse.
 
 The _Data_ classes include a _ShallowCopy_ function to get a duplicate. They know whether they are clones and have slightly different logic if they are, to prevent infinite loops where the clones duplicate the world's data to simulate the future.
@@ -216,7 +216,7 @@ public T Sample()
 
 ## Future Work
 
-This project is currently on-hold. This section outlines the next features I intend to work on if I return to it.
+This project is currently on hold. This section outlines the next features I intend to work on if I return to it.
 
 ### Code Improvements
 
@@ -235,11 +235,11 @@ I'd like to introduce some features to visualise the internal systems and state 
 There are 3 features I'd like to add to help with this:
 * Add filtering features to the notification systems. This could just be a simple set of tick-boxes, for criteria such as "politics" and "economics". Then I could add these flags to the notifications. 
 * Add overlays to display different features. The systems and organisations already have several internal values, such as capital, size, rate-of-increase and CEO. This is only going to increase as I add to the project. For instance, I may wish to give companies affiliations to different political parties. It is already too much data to show on the small amount of space they occupy on the screen and this amount of information can overwhelm the player. The game Oxygen Not Included handles this by having several different overlays you can switch between to view different characteristics (you can read about this [here](https://oxygennotincluded.fandom.com/wiki/Overlays)). I feel this would be an elegant way to solve these problems.
-* Implement pie-charts and line-charts. The former could be used to display the market shares of companies or the popularities of different politicians, while the latter could be used for showing how tax rates and life satisfaction rates (this is currently just a function of the economy size) have changed over time. I could then use these features to display data from within the code, improving my understanding.
+* Implement pie-charts and line-charts. The former could be used to display the market shares of companies or the popularity of different politicians, while the latter could be used for showing how tax rates and life satisfaction rates (this is currently just a function of the economy size) have changed over time. I could then use these features to display data from within the code, improving my understanding.
 
 ### Implement More Tools for the Player
 
-There currently aren't a huge number of abilities and weapons for the player to unlock. However, it is very easy to add new ones. I'd like to spend some time experimenting with different ideas and trying to think of interesting ways for abilities to combine together. I'd also like to ensure that the player can have a large affect on the world and can interact with each of the systems and characters.
+There currently aren't a huge number of abilities and weapons for the player to unlock. However, it is very easy to add new ones. I'd like to spend some time experimenting with different ideas and trying to think of interesting ways for abilities to combine together. I'd also like to ensure that the player can have a large impact on the world and can interact with each of the systems and characters.
 
 I'd also like to add more features to obtain new abilities, such as shops and missions with abilities as rewards.
 
