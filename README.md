@@ -6,6 +6,8 @@ This document details a video game I have been developing in my spare time, base
 
 The purpose of this document is to give an overview of the key features of the project. The project was created in Unity Engine with C# and is currently on hold. I felt an explanation would be useful as the code is not widely documented or self-explanatory (much of it interacts with the Unity systems and is hard to follow on its own).
 
+In this document, I will first outline the goals I had when I started. I will then give an overview of the different features of the game, followed by an outline of the code. As part of that, I will also explain how I built a deterministic system, so that the AI could make correct predictions and choose strategies accordingly. Afterwards, I will outline two algorithms I used in the code and then finish off by stating some future goals for the project.
+
 ### Goals
 
 These are the main goals I had when I began the project:
@@ -29,9 +31,9 @@ With a simulation where different entities interact in complex ways, the player 
 
 ![](/Images/Typical-Game-Screen.png)
 
-Above is a screen-shot of the game in its current state. It takes place on a hexagon grid, made up of several governments and companies (we will call these collectively "organisations"). These then consist of several systems, which are the buildings shown on the screen. These can have different roles (e.g. data-science, cyber-security, military) and can be traded between the different organisations as they gain and lose money. The white lines dividing up the grid show where the areas owned by each organisation. The black buildings are government while the blue ones are companies. The player can hack into different systems (the ones currently hacked have their text in green) and can then hack adjacent ones. The shields indicate how difficult it will be to hack them. The icons in the bottom left are the skills available to the player, while the bar at the top show the player's current statistics (e.g. how much money they have).
+Above is a screen-shot of the game in its current state. It takes place on a hexagon grid, made up of several governments and companies (we will call these collectively "organisations"). These then consist of several systems, which are the buildings shown on the screen. These can have different roles (e.g. data-science, cyber-security, military) and can be traded between the different organisations as they gain and lose money. The white lines dividing up the grid show which the areas are owned by each organisation. The black buildings are government while the blue ones are companies. The player can hack into different systems (the ones currently hacked have their text in green) and can then hack adjacent ones. The shields indicate how difficult it will be to hack them. The icons in the bottom left are the skills available to the player, while the bar at the top show the player's current statistics (e.g. how much money they have).
 
-The systems then grant different bonuses and abilities to the organisation that owns them, as well as the player if they hack it. They will increase or decrease in size as their owner gains or loses money, with images as shown below.
+The systems grant different bonuses and abilities to the organisation that owns them, as well as the player if they hack it. They will increase or decrease in size as their owner gains or loses money, with images as shown below.
 
 ![](/Images/Building-Levels.png)
 
@@ -156,7 +158,7 @@ public static int HexagonGridDistance(int iX1, int iY1, int iX2, int iY2)
 
 #### Distribution Generic
 
-In this project, I wanted a more nuanced system for randomness than the in-built Unity Random library. I had multiple entities that would need to pick from lists of options (e.g. it could be a company deciding what strategy to use), where the probabilities would be different for different entries and would depend on their properties in complex ways. To do this, I created a generic class that allowed random sampling according to a given probability density function. The constructor for this class is as follows:
+In this project, I wanted a more nuanced system for pseudo-randomness than the in-built Unity Random library. I had multiple entities that would need to pick from lists of options (e.g. it could be a company deciding what strategy to use), where the probabilities would be different for different entries and would depend on their properties in complex ways. To do this, I created a generic class that allowed random sampling according to a given probability density function. The constructor for this class is as follows:
 
 ```
 public Distribution(List<T> xOutcomes, Func<T, int, float> xPDf)
